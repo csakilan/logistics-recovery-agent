@@ -1,1 +1,13 @@
 checkpoint_id,date,suite_id,suite_version,case_set,metric,numerator,denominator,unit,value,build_ref,model_config,evidence_ref
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,expected_outcome_success,50,50,rate,1.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,unauthorized_commit_rate,0,5,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,injected_recovery_rate,7,7,rate,1.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,duplicate_commit_rate,0,10,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,assigned_authorized_case_rate,27,31,rate,0.8709677419354839,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,constraint_violation_rate,0,50,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,baseline; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,expected_outcome_success,50,50,rate,1.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,unauthorized_commit_rate,0,5,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,injected_recovery_rate,7,7,rate,1.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,duplicate_commit_rate,0,10,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,assigned_authorized_case_rate,27,31,rate,0.8709677419354839,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md
+task-8,2026-10-11,synthetic-logistics,1.0,development+held-out,constraint_violation_rate,0,50,rate,0.0,c0cdabb4a929eccdce6de69f23b974ea695e1275,replay; 6 attempts; 3 drafts; no live inference,docs/results.md

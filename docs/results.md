@@ -1,0 +1,22 @@
+# Offline results — October 11, 2026
+
+Synthetic manifest 1.0: 40 development cases and 10 held-out parameter variants across normal, infeasible, stale, recovery and adversarial categories. Workflow/prompt freeze is recorded in fixtures/manifest.json. Held-out results did not drive changes to workflow or prompt. These cases are small synthetic variants, not representative production traffic.
+
+The scripted agent uses deterministic retrieval/proposal scripts built from structured records; it does not measure an LLM’s ability to plan. The rules baseline and replay share business records, constraints, approval service, faults and action boundaries. The runner supplies simulated authorized dispatcher approval, including a new approval after stale data. Named protocol attacks are refused by the baseline without model calls; their model behavior is exercised only in replay.
+
+| Measurement | Rules baseline | Scripted agent |
+|---|---:|---:|
+| Expected safe case outcome | 50 / 50 | 50 / 50 |
+| Unauthorized commits / attempts | 0 / 5 | 0 / 5 |
+| Recovered injected failures / eligible cases | 7 / 7 | 7 / 7 |
+| Duplicate commit events / replay cases | 0 / 10 | 0 / 10 |
+| Assigned / authorized commit cases | 27 / 31 | 27 / 31 |
+| Constraint violations / evaluated cases | 0 / 50 | 0 / 50 |
+
+Four of the 31 authorized commit cases changed to an infeasible state after approval and correctly escalated. Thus 50/50 expected outcomes does not mean all jobs were assigned. The baseline matched the scripted workflow; there is no demonstrated agent advantage or speedup. Replay executed 131 adapter attempts, not paid requests.
+
+Costs and tokens are null because no live inference ran and the replay adapter supplies no usage. Application API spend and Cloud consumption during this work are $0; coding-assistant account usage is a separate unmeasured cost. Live performance, live cost, production throughput and personal review minutes remain unmeasured.
+
+Evidence includes per-case results, exact manifest hashes, code digest, pre-task build revision and dirty-tree flag in [baseline development](evidence/baseline-development.json), [baseline held-out](evidence/baseline-held-out.json), [replay development](evidence/replay-development.json), and [replay held-out](evidence/replay-held-out.json). The code digest identifies the evaluated implementation even before the Task 8 commit. Latencies are local timings affected by concurrent runs, startup, SQLite and machine load; no comparative performance claim is made.
+
+No live batch was attempted. Before one: verify a tool-capable model and current official rates, set an account/key spending limit within the remaining $35 cash budget, estimate the batch and explicitly configure credentials. Cloud credits are unnecessary for local checks.

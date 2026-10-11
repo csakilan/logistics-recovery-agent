@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "date": "2026-10-11",
+  "workflow_freeze_ref": "c0cdabb4a929eccdce6de69f23b974ea695e1275",
+  "definition": "Synthetic development cases plus parameter variants held out from workflow/prompt changes. Expected fields are evaluator-only. Offline replay is a deterministic scripted adapter.",
+  "sha256": {
+    "development.jsonl": "dfbaf9feca13ef4081c3f8ad9e25ac5452c1ac3e054fb89e117d2c102af1fab1",
+    "held-out.jsonl": "b888908b6e93797db21d8971dd7af17916538119756b9e61fb8e6865a97a92e9"
+  }
+}
