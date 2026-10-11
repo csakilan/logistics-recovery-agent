@@ -1,0 +1,6 @@
+2026-10-11; Python 3.14.8; fresh virtual environment
+python -m pip install -r requirements.lock: exit 0
+python -m pip install -e . --no-deps: exit 0
+python -m pytest tests/test_smoke.py -q: 2 passed
+CLI seed-demo + factory TestClient walkthrough: protected views, investigation, unapproved booking denial, authorized approval, simulated pickup/delivery, escalation: passed. One assignment commit event. Random private credentials used and not exported.
+Full suite in development environment: 118 passed in 2.83s.

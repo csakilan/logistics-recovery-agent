@@ -1,4 +1,5 @@
 import json
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 from urllib.parse import parse_qsl
@@ -139,4 +140,30 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
         data = await read_input(request, EventRequest)
         return action_response(request, incident_id, service.record_event(incident_id, data.event_id, data.kind, operator).model_dump(mode="json"))
 
+    return app
+
+
+def build_application(settings: Settings | None = None) -> FastAPI:
+    import httpx
+    from .evaluation import replay_script
+    from .model import OpenRouterModel, ReplayModel
+    from .repository import Repository
+    from .workflow import Workflow
+
+    settings = settings or Settings.from_env()
+    repository = Repository(settings.data_dir / "business.sqlite")
+    service = AssignmentService(repository)
+    client = httpx.Client() if settings.mode == "live" else None
+    model = OpenRouterModel(settings, client) if client else ReplayModel({incident_id: replay_script(repository.snapshot(incident_id)) for incident_id in repository.list_incidents()})
+    workflow = Workflow(repository, service, model, settings.data_dir / "checkpoints.sqlite")
+    app = create_app(settings, service, workflow)
+
+    @asynccontextmanager
+    async def lifespan(app):
+        try: yield
+        finally:
+            workflow.close()
+            if client: client.close()
+
+    app.router.lifespan_context = lifespan
     return app
