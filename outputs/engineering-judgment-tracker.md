@@ -4,7 +4,7 @@ Started: October 11, 2026
 
 Purpose: collect evidence that the builder can direct coding agents, identify flawed work, make engineering decisions, and verify corrections. The user has made this the primary résumé priority for the proposed logistics project. Budget: $35 cash plus $300 in active Google Cloud credits, available for 90 days. First résumé-ready milestone: a working prototype within one week; ordinary weekly capacity is 15 hours, with 45–50 hours confirmed for the first week on October 11, 2026.
 
-Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. No verified implementation corrections or performance measurements have been recorded. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
+Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. One naturally occurring implementation defect has been verified and corrected by the assistant; no user-attributable correction is recorded yet. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
 
 ## Metrics to collect
 
@@ -61,3 +61,5 @@ Implementation planning, October 11, 2026: the user said "alright we can begin."
 Execution approval, October 11, 2026: user said "yes approved lets continue." Native execution is authorized. Generic approval is excluded from personal engineering-decision/correction counts. The implementation repository now holds the canonical tracker and logs.
 
 Task 1 checkpoint: business records, feasibility validation and the cheapest-feasible baseline implemented; 16 policy checks passed. No human diagnosis or defect correction is inferred from planned implementation steps. No model/cloud usage.
+
+Task 2 checkpoint: 27 tests passed, including approval denial, actor mismatch, rollback, replay, and competing-incident capacity checks. Agent-discovered SQL INSERT arity error is recorded as AGENT-001 with reproducible before/after output. Its diagnosis and correction are attributed to the assistant, not the user.

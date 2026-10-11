@@ -1,0 +1,12 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________________ test_valid_approved_assignment ________________________
+tests/test_assignments.py:20: in test_valid_approved_assignment
+    result = service.commit(approved.proposal_id, operator)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/assignments.py:77: in commit
+    connection.execute("INSERT INTO assignments VALUES (?,?,?,?,?,?,?)", tuple(assignment.model_dump().values()))
+E   sqlite3.OperationalError: table assignments has 6 columns but 7 values were supplied
+=========================== short test summary info ============================
+FAILED tests/test_assignments.py::test_valid_approved_assignment - sqlite3.Op...
+1 failed in 0.07s
