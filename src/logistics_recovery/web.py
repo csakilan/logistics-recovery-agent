@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from typing import Literal
 from urllib.parse import parse_qsl
+from uuid import uuid4
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
@@ -24,6 +25,11 @@ class DecisionRequest(Record):
 
 class CommitRequest(Record):
     proposal_id: Identifier
+
+
+class EventRequest(Record):
+    event_id: Identifier
+    kind: Literal["pickup", "delivery"]
 
 
 async def read_input(request: Request, record_type):
@@ -100,7 +106,7 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
     @app.get("/incidents/{incident_id}")
     def incident_detail(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency)):
         snapshot = repository.snapshot(incident_id)
-        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), "snapshot": snapshot, "case_status": repository.terminal_status(incident_id), "proposal": repository.latest_proposal(incident_id), "assignment": repository.assignment(incident_id), "history": repository.history(incident_id), "stats": repository.stats(incident_id), "pretty": lambda value: json.dumps(value, indent=2)})
+        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), "snapshot": snapshot, "event_id": uuid4().hex, "case_status": repository.terminal_status(incident_id), "proposal": repository.latest_proposal(incident_id), "assignment": repository.assignment(incident_id), "history": repository.history(incident_id), "stats": repository.stats(incident_id), "pretty": lambda value: json.dumps(value, indent=2)})
 
     @app.post("/incidents/{incident_id}/investigate")
     async def investigate(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency), origin: None = Depends(origin_dependency)):
@@ -127,5 +133,10 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
         data = await read_input(request, CommitRequest)
         require_proposal(incident_id, data.proposal_id)
         return action_response(request, incident_id, service.commit(data.proposal_id, operator).model_dump(mode="json"))
+
+    @app.post("/incidents/{incident_id}/events")
+    async def event(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency), origin: None = Depends(origin_dependency)):
+        data = await read_input(request, EventRequest)
+        return action_response(request, incident_id, service.record_event(incident_id, data.event_id, data.kind, operator).model_dump(mode="json"))
 
     return app

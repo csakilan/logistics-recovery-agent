@@ -12,19 +12,6 @@ def reads(names=None):
     return ModelTurn(kind="tools", tool_calls=tuple(ToolCall(id=f"call-{name}", name=name, arguments={}) for name in names))
 
 
-@pytest.fixture
-def workflow_factory(repo, service, tmp_path, valid_candidate):
-    from logistics_recovery.workflow import Workflow
-    instances = []
-    def factory(model=None):
-        model = model or ReplayModel({"i1": (reads(), ModelTurn(kind="proposal", candidate=valid_candidate))})
-        instance = Workflow(repo, service, model, tmp_path / "graph.sqlite")
-        instances.append(instance)
-        return instance
-    yield factory
-    for instance in instances: instance.close()
-
-
 def test_pause_survives_restart(workflow_factory, repo, service, operator):
     paused = workflow_factory().start("i1")
     assert paused.status == "awaiting_approval"

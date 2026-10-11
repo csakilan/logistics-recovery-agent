@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
 Nonnegative = Annotated[StrictInt, Field(ge=0)]
 Positive = Annotated[StrictInt, Field(gt=0)]
 Identifier = Annotated[str, Field(min_length=1, max_length=80, pattern=r"^[A-Za-z0-9._-]+$")]
-Custody = Literal["depot", "unknown", "in_transit"]
+Custody = Literal["depot", "unknown", "in_transit", "delivered"]
 
 
 class Record(BaseModel):

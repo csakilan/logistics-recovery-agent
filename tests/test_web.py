@@ -81,3 +81,19 @@ def test_configuration_requires_https_for_remote_host(tmp_path):
 
 def test_configuration_repr_does_not_expose_secrets(settings):
     assert "test-password" not in repr(settings)
+
+
+def test_simulated_events_require_auth_and_origin(client, auth, origin, service, approved, operator, repo):
+    service.commit(approved.proposal_id, operator)
+    payload = {"event_id": "pickup-1", "kind": "pickup"}
+    assert client.post("/incidents/i1/events", json=payload, headers=origin).status_code == 401
+    assert client.post("/incidents/i1/events", json=payload, auth=auth).status_code == 403
+    assert repo.assignment("i1").status == "assigned"
+    assert "Simulate pickup" in client.get("/incidents/i1", auth=auth).text
+    response = client.post("/incidents/i1/events", json=payload, auth=auth, headers=origin)
+    assert response.status_code == 200
+    assert response.json()["status"] == "picked_up"
+    assert "Simulate delivery" in client.get("/incidents/i1", auth=auth).text
+    response = client.post("/incidents/i1/events", data={"event_id": "delivery-1", "kind": "delivery"}, auth=auth, headers=origin, follow_redirects=False)
+    assert response.status_code == 303
+    assert repo.assignment("i1").status == "delivered"

@@ -160,3 +160,21 @@ class Repository:
 
     def reserve_proposal_attempt(self, incident_id: str, limit: int = 3) -> int:
         return self._reserve_count(incident_id, "proposal_attempts", min(limit, 3))
+
+    def change_courier(self, courier_id: str, available: bool) -> None:
+        if type(available) is not bool: raise DomainError("invalid_availability")
+        with self.transaction() as connection:
+            row = connection.execute("SELECT payload FROM couriers WHERE id=?", (courier_id,)).fetchone()
+            if row is None: raise DomainError("courier_not_found")
+            courier = Courier.model_validate_json(row[0])
+            changed = courier.model_copy(update={"available": available, "version": courier.version + 1})
+            connection.execute("UPDATE couriers SET payload=? WHERE id=?", (changed.model_dump_json(), courier_id))
+
+    def advance_clock(self, incident_id: str, now_min: int) -> None:
+        if type(now_min) is not int or now_min < 0: raise DomainError("invalid_clock")
+        with self.transaction() as connection:
+            snapshot = self._snapshot(connection, incident_id)
+            if now_min < snapshot.now_min: raise DomainError("invalid_clock")
+            if now_min != snapshot.now_min:
+                connection.execute("UPDATE incidents SET now_min=?, version=version+1 WHERE id=?", (now_min, incident_id))
+                self.audit(connection, incident_id, "simulated_clock", {"now_min": now_min})

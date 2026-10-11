@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_contradictory_same_time_custody_not_resolved_by_id ____________
+
+snapshot_data = {'incident_id': 'i1', 'incident_version': 1, 'now_min': 0, 'job': {'id': 'j1', 'parcel_count': 3, 'deadline_min': 60, 'custody': 'depot', ...}, ...}
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+
+    def test_contradictory_same_time_custody_not_resolved_by_id(snapshot_data, valid_candidate):
+        from logistics_recovery.policy import validate_candidate
+        snapshot_data["events"].append({"id": "e0", "job_id": "j1", "kind": "pickup", "at_min": 0, "custody": "in_transit", "version": 1, "note": "Conflicting custody record."})
+        candidate = valid_candidate.model_copy(update={"evidence_ids": (*valid_candidate.evidence_ids, "event:e0@1")})
+        result = validate_candidate(candidate, Snapshot.model_validate(snapshot_data))
+>       assert not result.valid
+E       assert not True
+E        +  where True = ValidationReport(valid=True, errors=()).valid
+
+tests/test_recovery.py:115: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_recovery.py::test_contradictory_same_time_custody_not_resolved_by_id
+1 failed in 0.08s

@@ -4,7 +4,7 @@ Started: October 11, 2026
 
 Purpose: collect evidence that the builder can direct coding agents, identify flawed work, make engineering decisions, and verify corrections. The user has made this the primary résumé priority for the proposed logistics project. Budget: $35 cash plus $300 in active Google Cloud credits, available for 90 days. First résumé-ready milestone: a working prototype within one week; ordinary weekly capacity is 15 hours, with 45–50 hours confirmed for the first week on October 11, 2026.
 
-Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. Two naturally occurring implementation defects have been verified and corrected by the assistant; no user-attributable correction is recorded yet. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
+Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. Three naturally occurring implementation defects have been verified and corrected by the assistant; no user-attributable correction is recorded yet. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
 
 ## Metrics to collect
 
@@ -52,7 +52,7 @@ Before making a personal accomplishment claim, require confirmed attribution and
 
 Potential case studies, currently unverified: bypassing approval through the backend, creating duplicate assignments after a retry, accepting stale courier availability, and following malicious instructions embedded in courier notes. These are investigation targets, not completed accomplishments.
 
-Current milestone summary: no implementation evidence recorded yet.
+Current milestone summary: Tasks 1–6 implemented and verified offline. Live inference remains unmeasured. All three verified natural defects were found and corrected by the assistant; personal user review is still pending.
 
 Planning update, October 11, 2026: [week-one approved design and delivery roadmap](week-one-logistics-plan.md) uses 43 scheduled hours plus 2–7 hours of contingency after the user confirmed 45–50 first-week hours. Ten of the scheduled hours are reserved for the builder's reviews, diagnosis, analysis, and evidence notes. The user approved the written scope by replying "yes" and asking for an explanation of the agentic setup. The agent proposed the technical scope and allocations; approval does not attribute those decisions or any defect diagnosis to the user. Availability and approval are planning records, not measured engineering contributions. No implementation metrics or verified defect corrections are added by writing or approving this roadmap. Implementation-plan review and execution-method selection remain pending.
 
@@ -69,3 +69,5 @@ Task 3 checkpoint: 41 tests passed, including HTTP authentication, origin checks
 Task 4 checkpoint: 62 tests passed. Read-only tool dispatch, provider parsing/error sanitization, context limits, and incident-indexed replay adapter implemented. Live requests remain unrun. The user requested that review priorities be grounded in employers’ published software-engineering expectations rather than choosing an edge case personally; this steering is recorded without attributing a technical diagnosis or decision to the user.
 
 Task 5 checkpoint: 73 tests passed. Persistent approval, incident-scoped retrieval, unobserved-evidence rejection, concurrency guard and durable six-attempt/three-draft budgets verified offline. AGENT-002 records the status-display correction. Employer-guidance research recommends the lost-response recovery case as the first case study; source mapping is in docs/employer-principles.md. No live inference or paid usage has been measured.
+
+Task 6 checkpoint: 85 tests passed. Lost-response recovery witnessed the injected failure after a real commit and returned the original assignment with one commit event and one capacity reservation. Stale availability and quote expiry block old approvals; simulated pickup/delivery are ordered, authenticated, idempotent and accurately update custody. AGENT-003 documents the naturally occurring ambiguous-custody validation error and its correction. Injected response loss is a recovery test, not a natural defect or user diagnosis.

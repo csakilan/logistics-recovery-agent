@@ -81,3 +81,21 @@ def client(settings, service):
     from logistics_recovery.web import create_app
     with TestClient(create_app(settings, service), base_url=settings.origin) as instance:
         yield instance
+
+
+@pytest.fixture
+def workflow_factory(repo, service, tmp_path, valid_candidate):
+    from logistics_recovery.workflow import Workflow
+    from logistics_recovery.model import ModelTurn, ReplayModel, ToolCall
+    def reads():
+        return ModelTurn(kind="tools", tool_calls=tuple(ToolCall(id=f"call-{name}", name=name, arguments={}) for name in ("get_order", "get_couriers", "get_quotes", "get_policy", "get_events")))
+    instances = []
+    def factory(model=None):
+        model = model or ReplayModel({"i1": (reads(), ModelTurn(kind="proposal", candidate=valid_candidate))})
+        instance = Workflow(repo, service, model, tmp_path / "graph.sqlite")
+        instances.append(instance)
+        return instance
+    yield factory
+    for instance in instances: instance.close()
+
+

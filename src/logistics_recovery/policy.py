@@ -13,8 +13,8 @@ def required_evidence(snapshot: Snapshot, quote: Quote) -> tuple[str, ...]:
     names = [f"job:{snapshot.job.id}", f"policy:{snapshot.policy.id}", f"quote:{quote.id}", f"courier:{quote.courier_id}"]
     events = [e for e in snapshot.events if e.job_id == snapshot.job.id]
     if events:
-        latest = max(events, key=lambda e: (e.at_min, e.id))
-        names.append(f"event:{latest.id}")
+        latest_time = max(e.at_min for e in events)
+        names.extend(f"event:{e.id}" for e in events if e.at_min == latest_time)
     return tuple(f"{name}@{records[name]}" for name in names if name in records)
 
 
@@ -34,8 +34,9 @@ def validate_candidate(candidate: Candidate, snapshot: Snapshot) -> ValidationRe
     if snapshot.now_min + quote.travel_min > snapshot.job.deadline_min: errors.append("deadline")
     if quote.cost_cents > snapshot.policy.max_cost_cents: errors.append("budget")
     events = [e for e in snapshot.events if e.job_id == snapshot.job.id]
-    latest = max(events, key=lambda e: (e.at_min, e.id)) if events else None
-    if snapshot.job.custody != "depot" or latest is None or latest.custody != "depot": errors.append("custody")
+    latest_time = max((e.at_min for e in events), default=None)
+    latest = [e for e in events if e.at_min == latest_time]
+    if snapshot.job.custody != "depot" or not latest or any(e.custody != "depot" for e in latest): errors.append("custody")
     known = {f"{name}@{version}" for name, version in evidence_records(snapshot).items()}
     supplied = set(candidate.evidence_ids)
     if not set(required_evidence(snapshot, quote)).issubset(supplied) or not supplied.issubset(known): errors.append("evidence")

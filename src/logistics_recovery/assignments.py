@@ -1,6 +1,9 @@
 from uuid import uuid4
+from typing import Literal
 
-from .domain import Approval, Assignment, Candidate, DomainError, Operator, Proposal
+from pydantic import TypeAdapter
+
+from .domain import Approval, Assignment, Candidate, DomainError, Identifier, IncidentEvent, Operator, Proposal
 from .policy import evidence_records, validate_candidate
 from .repository import Repository
 
@@ -79,3 +82,35 @@ class AssignmentService:
             connection.execute("UPDATE incidents SET version=version+1, terminal_status='assigned' WHERE id=?", (proposal.incident_id,))
             self.repository.audit(connection, proposal.incident_id, "assignment_committed", assignment.model_dump(), assignment.operation_id)
             return assignment
+
+    def record_event(self, incident_id: str, event_id: str, kind: Literal["pickup", "delivery"], operator: Operator) -> Assignment:
+        TypeAdapter(Identifier).validate_python(event_id)
+        if kind not in {"pickup", "delivery"}: raise DomainError("invalid_transition")
+        with self.repository.transaction() as connection:
+            snapshot = self.repository._snapshot(connection, incident_id)
+            assignment = self.repository._assignment(connection, incident_id)
+            if assignment is None: raise DomainError("assignment_not_found")
+            approval = connection.execute("SELECT operator_id FROM approvals WHERE proposal_id=?", (assignment.proposal_id,)).fetchone()
+            if approval[0] != operator.id: raise DomainError("operator_mismatch")
+            operation_id = f"{incident_id}:{event_id}"
+            existing = connection.execute("SELECT kind FROM audit WHERE operation_id=?", (operation_id,)).fetchone()
+            if existing:
+                if existing[0] != f"simulated_{kind}": raise DomainError("event_conflict")
+                return assignment
+            if connection.execute("SELECT 1 FROM source_events WHERE incident_id=? AND id=?", (incident_id, event_id)).fetchone():
+                raise DomainError("event_conflict")
+            expected = "assigned" if kind == "pickup" else "picked_up"
+            if assignment.status != expected: raise DomainError("invalid_transition")
+            status, custody = ("picked_up", "in_transit") if kind == "pickup" else ("delivered", "delivered")
+            job = snapshot.job.model_copy(update={"custody": custody, "version": snapshot.job.version + 1})
+            connection.execute("UPDATE jobs SET payload=? WHERE id=?", (job.model_dump_json(), job.id))
+            if kind == "delivery":
+                courier = next(c for c in snapshot.couriers if c.id == assignment.courier_id)
+                released = courier.model_copy(update={"free_capacity": courier.free_capacity + job.parcel_count, "version": courier.version + 1})
+                connection.execute("UPDATE couriers SET payload=? WHERE id=?", (released.model_dump_json(), courier.id))
+            connection.execute("UPDATE assignments SET status=? WHERE incident_id=?", (status, incident_id))
+            connection.execute("UPDATE incidents SET version=version+1 WHERE id=?", (incident_id,))
+            event = IncidentEvent(id=event_id, job_id=job.id, kind=kind, at_min=snapshot.now_min, custody=custody, version=1, note="Dispatcher-triggered simulated event.")
+            connection.execute("INSERT INTO source_events VALUES (?,?,?)", (incident_id, event_id, event.model_dump_json()))
+            self.repository.audit(connection, incident_id, f"simulated_{kind}", event.model_dump(), operation_id)
+            return assignment.model_copy(update={"status": status})
