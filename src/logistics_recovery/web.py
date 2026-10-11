@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+from starlette.concurrency import run_in_threadpool
 
 from .assignments import AssignmentService
 from .auth import authenticate
@@ -99,13 +100,13 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
     @app.get("/incidents/{incident_id}")
     def incident_detail(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency)):
         snapshot = repository.snapshot(incident_id)
-        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), "snapshot": snapshot, "proposal": repository.latest_proposal(incident_id), "assignment": repository.assignment(incident_id), "history": repository.history(incident_id), "stats": repository.stats(incident_id), "pretty": lambda value: json.dumps(value, indent=2)})
+        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), "snapshot": snapshot, "case_status": repository.terminal_status(incident_id), "proposal": repository.latest_proposal(incident_id), "assignment": repository.assignment(incident_id), "history": repository.history(incident_id), "stats": repository.stats(incident_id), "pretty": lambda value: json.dumps(value, indent=2)})
 
     @app.post("/incidents/{incident_id}/investigate")
     async def investigate(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency), origin: None = Depends(origin_dependency)):
         repository.snapshot(incident_id)
         if workflow is None: raise DomainError("workflow_unavailable")
-        result = workflow.start(incident_id)
+        result = await run_in_threadpool(workflow.start, incident_id)
         return action_response(request, incident_id, result.model_dump(mode="json"))
 
     @app.post("/incidents/{incident_id}/decision")
@@ -118,7 +119,7 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
         else:
             result = service.approve(data.proposal_id, data.incident_version, operator).model_dump(mode="json")
             if workflow is not None:
-                result = workflow.resume(incident_id, data.proposal_id).model_dump(mode="json")
+                result = (await run_in_threadpool(workflow.resume, incident_id, data.proposal_id)).model_dump(mode="json")
         return action_response(request, incident_id, result)
 
     @app.post("/incidents/{incident_id}/commit")

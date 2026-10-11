@@ -4,7 +4,7 @@ Started: October 11, 2026
 
 Purpose: collect evidence that the builder can direct coding agents, identify flawed work, make engineering decisions, and verify corrections. The user has made this the primary résumé priority for the proposed logistics project. Budget: $35 cash plus $300 in active Google Cloud credits, available for 90 days. First résumé-ready milestone: a working prototype within one week; ordinary weekly capacity is 15 hours, with 45–50 hours confirmed for the first week on October 11, 2026.
 
-Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. One naturally occurring implementation defect has been verified and corrected by the assistant; no user-attributable correction is recorded yet. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
+Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. Two naturally occurring implementation defects have been verified and corrected by the assistant; no user-attributable correction is recorded yet. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
 
 ## Metrics to collect
 
@@ -67,3 +67,5 @@ Task 2 checkpoint: 27 tests passed, including approval denial, actor mismatch, r
 Task 3 checkpoint: 41 tests passed, including HTTP authentication, origin checks, forged approval rejection, successful authorized actions, and escaped HTML notes. Personal review preference/reasoning requested from the user; no response is inferred or recorded yet.
 
 Task 4 checkpoint: 62 tests passed. Read-only tool dispatch, provider parsing/error sanitization, context limits, and incident-indexed replay adapter implemented. Live requests remain unrun. The user requested that review priorities be grounded in employers’ published software-engineering expectations rather than choosing an edge case personally; this steering is recorded without attributing a technical diagnosis or decision to the user.
+
+Task 5 checkpoint: 73 tests passed. Persistent approval, incident-scoped retrieval, unobserved-evidence rejection, concurrency guard and durable six-attempt/three-draft budgets verified offline. AGENT-002 records the status-display correction. Employer-guidance research recommends the lost-response recovery case as the first case study; source mapping is in docs/employer-principles.md. No live inference or paid usage has been measured.

@@ -1,0 +1,10 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_escalated_case_is_visible_to_dispatcher _________________
+tests/test_workflow.py:127: in test_escalated_case_is_visible_to_dispatcher
+    assert "Escalated" in response.text
+E   assert 'Escalated' in '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-... prototype · Simulated courier assignments · Every booking requires dispatcher approval.</footer></main></body></html>'
+E    +  where '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-... prototype · Simulated courier assignments · Every booking requires dispatcher approval.</footer></main></body></html>' = <Response [200 OK]>.text
+=========================== short test summary info ============================
+FAILED tests/test_workflow.py::test_escalated_case_is_visible_to_dispatcher
+1 failed in 0.54s

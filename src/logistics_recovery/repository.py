@@ -127,3 +127,36 @@ class Repository:
             return {"model_calls": row[0], "proposal_attempts": row[1],
                 "assignments": connection.execute("SELECT count(*) FROM assignments WHERE incident_id=?", (incident_id,)).fetchone()[0],
                 "commit_events": connection.execute("SELECT count(*) FROM audit WHERE incident_id=? AND kind='assignment_committed'", (incident_id,)).fetchone()[0]}
+
+    def log_event(self, incident_id: str, kind: str, payload: dict) -> None:
+        with self.transaction() as connection:
+            self.audit(connection, incident_id, kind, payload)
+
+    def terminal_status(self, incident_id: str) -> str | None:
+        with self.connection() as connection:
+            row = connection.execute("SELECT terminal_status FROM incidents WHERE id=?", (incident_id,)).fetchone()
+            if row is None: raise DomainError("incident_not_found")
+            return row[0]
+
+    def set_terminal(self, incident_id: str, status: str, detail: str = "") -> None:
+        if status not in {"assigned", "rejected", "escalated"}: raise DomainError("invalid_status")
+        with self.transaction() as connection:
+            row = connection.execute("SELECT terminal_status FROM incidents WHERE id=?", (incident_id,)).fetchone()
+            if row is None: raise DomainError("incident_not_found")
+            if row[0] != status:
+                connection.execute("UPDATE incidents SET terminal_status=? WHERE id=?", (status, incident_id))
+                self.audit(connection, incident_id, f"case_{status}", {"detail": detail})
+
+    def _reserve_count(self, incident_id: str, column: str, limit: int) -> int:
+        with self.transaction() as connection:
+            row = connection.execute(f"SELECT {column} FROM incidents WHERE id=?", (incident_id,)).fetchone()
+            if row is None: raise DomainError("incident_not_found")
+            if row[0] >= limit: raise DomainError("budget_exhausted")
+            connection.execute(f"UPDATE incidents SET {column}={column}+1 WHERE id=?", (incident_id,))
+            return row[0] + 1
+
+    def reserve_model_call(self, incident_id: str, limit: int = 6) -> int:
+        return self._reserve_count(incident_id, "model_calls", min(limit, 6))
+
+    def reserve_proposal_attempt(self, incident_id: str, limit: int = 3) -> int:
+        return self._reserve_count(incident_id, "proposal_attempts", min(limit, 3))
