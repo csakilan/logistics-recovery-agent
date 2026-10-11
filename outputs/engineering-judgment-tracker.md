@@ -65,3 +65,5 @@ Task 1 checkpoint: business records, feasibility validation and the cheapest-fea
 Task 2 checkpoint: 27 tests passed, including approval denial, actor mismatch, rollback, replay, and competing-incident capacity checks. Agent-discovered SQL INSERT arity error is recorded as AGENT-001 with reproducible before/after output. Its diagnosis and correction are attributed to the assistant, not the user.
 
 Task 3 checkpoint: 41 tests passed, including HTTP authentication, origin checks, forged approval rejection, successful authorized actions, and escaped HTML notes. Personal review preference/reasoning requested from the user; no response is inferred or recorded yet.
+
+Task 4 checkpoint: 62 tests passed. Read-only tool dispatch, provider parsing/error sanitization, context limits, and incident-indexed replay adapter implemented. Live requests remain unrun. The user requested that review priorities be grounded in employers’ published software-engineering expectations rather than choosing an edge case personally; this steering is recorded without attributing a technical diagnosis or decision to the user.
