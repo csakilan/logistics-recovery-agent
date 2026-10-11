@@ -59,3 +59,25 @@ def proposal(service, valid_candidate):
 @pytest.fixture
 def approved(service, proposal, operator):
     return service.approve(proposal.id, 1, operator)
+
+
+@pytest.fixture
+def settings(tmp_path):
+    from logistics_recovery.config import Settings
+    return Settings(data_dir=tmp_path, origin="http://127.0.0.1:8000", dispatcher_username="dispatcher", dispatcher_password="test-password")
+
+
+@pytest.fixture
+def auth(): return ("dispatcher", "test-password")
+
+
+@pytest.fixture
+def origin(): return {"Origin": "http://127.0.0.1:8000"}
+
+
+@pytest.fixture
+def client(settings, service):
+    from fastapi.testclient import TestClient
+    from logistics_recovery.web import create_app
+    with TestClient(create_app(settings, service), base_url=settings.origin) as instance:
+        yield instance

@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}
+<div class="eyebrow">Dispatch desk</div><h1>Delivery exceptions</h1><p class="muted">Investigate a cancellation, review the evidence, and approve a recovery plan.</p>
+<section class="card"><table><thead><tr><th>Incident</th><th>Job</th><th>Parcels</th><th>Delivery deadline</th><th>Status</th><th></th></tr></thead><tbody>{% for incident in incidents %}<tr><td>{{ incident.snapshot.incident_id }}</td><td>{{ incident.snapshot.job.id }}</td><td>{{ incident.snapshot.job.parcel_count }}</td><td>Minute {{ incident.snapshot.job.deadline_min }}</td><td class="status">{{ incident.assignment.status if incident.assignment else 'Needs review' }}</td><td><a href="/incidents/{{ incident.snapshot.incident_id }}">Review →</a></td></tr>{% endfor %}</tbody></table></section>
+{% endblock %}

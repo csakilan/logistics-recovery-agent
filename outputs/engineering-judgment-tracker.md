@@ -63,3 +63,5 @@ Execution approval, October 11, 2026: user said "yes approved lets continue." Na
 Task 1 checkpoint: business records, feasibility validation and the cheapest-feasible baseline implemented; 16 policy checks passed. No human diagnosis or defect correction is inferred from planned implementation steps. No model/cloud usage.
 
 Task 2 checkpoint: 27 tests passed, including approval denial, actor mismatch, rollback, replay, and competing-incident capacity checks. Agent-discovered SQL INSERT arity error is recorded as AGENT-001 with reproducible before/after output. Its diagnosis and correction are attributed to the assistant, not the user.
+
+Task 3 checkpoint: 41 tests passed, including HTTP authentication, origin checks, forged approval rejection, successful authorized actions, and escaped HTML notes. Personal review preference/reasoning requested from the user; no response is inferred or recorded yet.
