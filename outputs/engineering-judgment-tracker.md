@@ -4,7 +4,7 @@ Started: October 11, 2026
 
 Purpose: collect evidence that the builder can direct coding agents, identify flawed work, make engineering decisions, and verify corrections. The user has made this the primary résumé priority for the proposed logistics project. Budget: $35 cash plus $300 in active Google Cloud credits, available for 90 days. First résumé-ready milestone: a working prototype within one week; ordinary weekly capacity is 15 hours, with 45–50 hours confirmed for the first week on October 11, 2026.
 
-Status: implementation has not started. No verified implementation corrections or performance measurements have been recorded. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
+Status: implementation started October 11, 2026 after the user approved the written implementation plan and Native execution. No verified implementation corrections or performance measurements have been recorded. Empty logs mean no observations recorded, not a measured zero. This tracker records work; it does not approve the application design or authorize deployment.
 
 ## Metrics to collect
 
@@ -57,3 +57,7 @@ Current milestone summary: no implementation evidence recorded yet.
 Planning update, October 11, 2026: [week-one approved design and delivery roadmap](week-one-logistics-plan.md) uses 43 scheduled hours plus 2–7 hours of contingency after the user confirmed 45–50 first-week hours. Ten of the scheduled hours are reserved for the builder's reviews, diagnosis, analysis, and evidence notes. The user approved the written scope by replying "yes" and asking for an explanation of the agentic setup. The agent proposed the technical scope and allocations; approval does not attribute those decisions or any defect diagnosis to the user. Availability and approval are planning records, not measured engineering contributions. No implementation metrics or verified defect corrections are added by writing or approving this roadmap. Implementation-plan review and execution-method selection remain pending.
 
 Implementation planning, October 11, 2026: the user said "alright we can begin." The assistant prepared and self-reviewed [the implementation plan](logistics-implementation-plan.md), containing nine tasks totaling the approved 43 scheduled hours. Planned test examples and task structure were checked; no product tests have run and no product code exists. The user's instruction authorizes progress, while the written-plan review and execution-method requirements remain pending under the selected Superpowers workflow. Preparing this document creates no personal engineering metric or verified correction entry.
+
+Execution approval, October 11, 2026: user said "yes approved lets continue." Native execution is authorized. Generic approval is excluded from personal engineering-decision/correction counts. The implementation repository now holds the canonical tracker and logs.
+
+Task 1 checkpoint: business records, feasibility validation and the cheapest-feasible baseline implemented; 16 policy checks passed. No human diagnosis or defect correction is inferred from planned implementation steps. No model/cloud usage.
