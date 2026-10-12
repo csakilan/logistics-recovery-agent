@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-11",
+  "status": "prepared; credential setup pending; no live inference",
+  "model_id": "google/gemini-2.5-flash-lite",
+  "standard_input_usd_per_million": 0.1,
+  "standard_output_usd_per_million": 0.4,
+  "advertised_supported_parameters": [
+    "tools",
+    "tool_choice",
+    "max_tokens"
+  ],
+  "metadata_source": "https://openrouter.ai/api/v1/models/google/gemini-2.5-flash-lite/endpoints",
+  "metadata_check": "Anonymous GET succeeded; advertised tool support checked; live behavior unverified",
+  "cases": [
+    "normal-development-01",
+    "infeasible-development-01",
+    "stale-development-01"
+  ],
+  "held_out_cases_selected": 0,
+  "planned_max_attempts": 18,
+  "assumed_input_tokens_per_attempt": 12000,
+  "max_output_tokens_per_attempt": 600,
+  "planning_cost_usd": 0.02592,
+  "planning_is_hard_bill_cap": false,
+  "proposed_key_lifetime_limit_usd": 1,
+  "limit_reset": null,
+  "live_requests_sent": 0,
+  "credential_check": "No key or model configured in environment; no project private live config found"
+}
