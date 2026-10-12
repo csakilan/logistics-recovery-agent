@@ -1,0 +1,108 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+__ test_rejected_model_output_gets_feedback_and_recovers_within_budget[prose] __
+
+fault = 'prose'
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-166/test_rej...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+workflow_factory = <function workflow_factory.<locals>.factory at 0x108d9e1f0>
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+service = <logistics_recovery.assignments.AssignmentService object at 0x108c670e0>
+repo = <logistics_recovery.repository.Repository object at 0x108b27cb0>
+operator = Operator(id='dispatcher')
+
+    @pytest.mark.parametrize("fault", ("prose", "invalid_arguments"))
+    def test_rejected_model_output_gets_feedback_and_recovers_within_budget(fault, settings, workflow_factory, valid_candidate, service, repo, operator):
+        def provider(request):
+            body = json.loads(request.content)
+            messages = body["messages"]
+            if not any(message["role"] == "tool" for message in messages):
+                return provider_response(READS, {})
+            if any(message["role"] == "user" and "invalid_model_response" in message["content"] for message in messages):
+                return provider_response(("propose_recovery",), valid_candidate.model_dump())
+            if fault == "prose":
+                return httpx.Response(200, json={"id": "test-generation", "object": "chat.completion", "created": 0, "model": "test/model", "choices": [{"index": 0, "message": {"role": "assistant", "content": "untrusted-provider-detail"}, "finish_reason": "length"}], "usage": {"prompt_tokens": 10, "completion_tokens": 600, "total_tokens": 610, "cost": 0}})
+            return provider_response(("propose_recovery",), {**valid_candidate.model_dump(), "extra": "untrusted-provider-detail"})
+    
+        live = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": "test/model"})
+        with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+            workflow = workflow_factory(OpenRouterModel(live, client))
+            paused = workflow.start("i1")
+>           assert paused.status == "awaiting_approval"
+E           AssertionError: assert 'escalated' == 'awaiting_approval'
+E             
+E             - awaiting_approval
+E             + escalated
+
+tests/test_revision_feedback.py:40: AssertionError
+_ test_rejected_model_output_gets_feedback_and_recovers_within_budget[invalid_arguments] _
+
+fault = 'invalid_arguments'
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-166/test_rej...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+workflow_factory = <function workflow_factory.<locals>.factory at 0x109c70510>
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+service = <logistics_recovery.assignments.AssignmentService object at 0x109c5c410>
+repo = <logistics_recovery.repository.Repository object at 0x109c5c190>
+operator = Operator(id='dispatcher')
+
+    @pytest.mark.parametrize("fault", ("prose", "invalid_arguments"))
+    def test_rejected_model_output_gets_feedback_and_recovers_within_budget(fault, settings, workflow_factory, valid_candidate, service, repo, operator):
+        def provider(request):
+            body = json.loads(request.content)
+            messages = body["messages"]
+            if not any(message["role"] == "tool" for message in messages):
+                return provider_response(READS, {})
+            if any(message["role"] == "user" and "invalid_model_response" in message["content"] for message in messages):
+                return provider_response(("propose_recovery",), valid_candidate.model_dump())
+            if fault == "prose":
+                return httpx.Response(200, json={"id": "test-generation", "object": "chat.completion", "created": 0, "model": "test/model", "choices": [{"index": 0, "message": {"role": "assistant", "content": "untrusted-provider-detail"}, "finish_reason": "length"}], "usage": {"prompt_tokens": 10, "completion_tokens": 600, "total_tokens": 610, "cost": 0}})
+            return provider_response(("propose_recovery",), {**valid_candidate.model_dump(), "extra": "untrusted-provider-detail"})
+    
+        live = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": "test/model"})
+        with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+            workflow = workflow_factory(OpenRouterModel(live, client))
+            paused = workflow.start("i1")
+>           assert paused.status == "awaiting_approval"
+E           AssertionError: assert 'escalated' == 'awaiting_approval'
+E             
+E             - awaiting_approval
+E             + escalated
+
+tests/test_revision_feedback.py:40: AssertionError
+________ test_constraint_feedback_allows_replacing_an_infeasible_quote _________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-166/test_con...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+workflow_factory = <function workflow_factory.<locals>.factory at 0x109ceca90>
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+service = <logistics_recovery.assignments.AssignmentService object at 0x109c5e710>
+repo = <logistics_recovery.repository.Repository object at 0x109c5dbd0>
+operator = Operator(id='dispatcher')
+
+    def test_constraint_feedback_allows_replacing_an_infeasible_quote(settings, workflow_factory, valid_candidate, service, repo, operator):
+        repo.change_courier("c1", available=False)
+        alternative = {"quote_id": "q2", "evidence_ids": ["job:j1@1", "courier:c2@1", "quote:q2@1", "policy:p1@1", "event:e1@1"], "summary": "Courier c2 has capacity."}
+        # q1 evidence must match the changed courier, so availability is the only error.
+        invalid = {**valid_candidate.model_dump(), "evidence_ids": ["job:j1@1", "courier:c1@2", "quote:q1@1", "policy:p1@1", "event:e1@1"]}
+    
+        def provider(request):
+            messages = json.loads(request.content)["messages"]
+            if not any(message["role"] == "tool" for message in messages):
+                return provider_response(READS, {})
+            corrected = any(message["role"] == "user" and "availability" in message["content"] for message in messages)
+            return provider_response(("propose_recovery",), alternative if corrected else invalid)
+    
+        live = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": "test/model"})
+        with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+            workflow = workflow_factory(OpenRouterModel(live, client))
+            paused = workflow.start("i1")
+>           assert paused.status == "awaiting_approval"
+E           AssertionError: assert 'escalated' == 'awaiting_approval'
+E             
+E             - awaiting_approval
+E             + escalated
+
+tests/test_revision_feedback.py:68: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_revision_feedback.py::test_rejected_model_output_gets_feedback_and_recovers_within_budget[prose]
+FAILED tests/test_revision_feedback.py::test_rejected_model_output_gets_feedback_and_recovers_within_budget[invalid_arguments]
+FAILED tests/test_revision_feedback.py::test_constraint_feedback_allows_replacing_an_infeasible_quote
+3 failed in 1.73s

@@ -63,7 +63,11 @@ class Workflow:
         except (DomainError, ValidationError) as error:
             code = error.code if isinstance(error, DomainError) else "invalid_model_response"
             self.repository.log_event(incident_id, "model_error", {"attempt": index, "code": code})
-            return {"stage": "escalated" if code == "context_too_large" else "investigate", "detail": code}
+            update = {"stage": "escalated" if code == "context_too_large" else "investigate", "detail": code}
+            if code == "invalid_model_response":
+                # Never replay rejected provider content or exception details.
+                update["messages"] = state["messages"] + [{"role": "user", "content": "Response rejected: invalid_model_response. Use native function calls with complete schema-valid JSON arguments, no prose. Keep summary or reason to one short sentence. Use retrieved evidence for propose_recovery, or escalate if no feasible plan exists; retrieve evidence first if needed."}]
+            return update
         self.repository.log_event(incident_id, "model_turn", {"attempt": index, "kind": turn.kind, "usage": turn.usage.model_dump(mode="json")})
         return {"turn": turn.model_dump(mode="json"), "stage": "proposal" if turn.kind == "proposal" else "escalated" if turn.kind == "escalate" else "tools", "detail": turn.reason}
 
@@ -95,7 +99,10 @@ class Workflow:
         except DomainError as error:
             self.repository.log_event(state["incident_id"], "proposal_invalid", {"code": error.code, "detail": error.message})
             exhausted = self.repository.stats(state["incident_id"])["proposal_attempts"] >= 3
-            return {"stage": "escalated" if exhausted else "investigate", "detail": error.code, "messages": state["messages"] + [{"role": "user", "content": f"Proposal failed application validation: {error.code}. Retrieve authoritative evidence before revising."}]}
+            allowed = {"quote_missing", "quote_job", "courier_missing", "availability", "capacity", "quote_expired", "deadline", "budget", "custody", "evidence"}
+            constraints = sorted(set(error.message.split(",")) & allowed) if error.code == "invalid_proposal" else []
+            detail = f" Failed constraints: {', '.join(constraints)}." if constraints else ""
+            return {"stage": "escalated" if exhausted else "investigate", "detail": error.code, "messages": state["messages"] + [{"role": "user", "content": f"Proposal failed application validation: {error.code}.{detail} Retrieve authoritative evidence before revising. Choose a feasible alternative or call escalate if none exists. Keep summary or reason to one short sentence."}]}
         return {"proposal_id": proposal.id, "stage": "awaiting_approval", "detail": "Dispatcher approval required"}
 
     def _approval(self, state: GraphState):
