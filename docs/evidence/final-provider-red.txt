@@ -1,0 +1,67 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_malformed_provider_shapes_use_bounded_workflow_errors __________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-127/test_mal...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10a3ea1f0>
+repo = <logistics_recovery.repository.Repository object at 0x10a39d2b0>
+
+    def test_malformed_provider_shapes_use_bounded_workflow_errors(settings, workflow_factory, repo):
+        from pydantic import SecretStr
+        live = settings.model_copy(update={"model_id": "test/model", "provider_key": SecretStr("private-test-sentinel")})
+        with httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json=[]))) as client:
+>           result = workflow_factory(OpenRouterModel(live, client)).start("i1")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_review.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/logistics_recovery/workflow.py:177: in start
+    return self._run(incident_id)
+           ^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:171: in _run
+    result = self.graph.invoke(input_value, self._config(incident_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3978: in invoke
+    for chunk in self.stream(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3034: in stream
+    for _ in runner.tick(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_runner.py:208: in tick
+    run_with_retry(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_retry.py:617: in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:707: in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:447: in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:61: in _investigate
+    turn = self.model.next_turn(context, self.tools.schemas())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <logistics_recovery.model.OpenRouterModel object at 0x10a39dd30>
+context = ModelContext(incident_id='i1', call_index=1, messages=({'role': 'system', 'content': 'Investigate a driver cancellatio...ation checks every constraint and the dispatcher approves.'}, {'role': 'user', 'content': 'Investigate incident i1.'}))
+tools = [{'type': 'function', 'function': {'name': 'get_order', 'description': 'Return incident-scoped evidence', 'parameters'... 'Summary', 'type': 'string'}}, 'required': ['quote_id', 'evidence_ids', 'summary'], 'title': 'Candidate', ...}}}, ...]
+
+    def next_turn(self, context: ModelContext, tools: list[dict]) -> ModelTurn:
+        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "max_tokens": self.settings.max_output_tokens}
+        if len(json.dumps(payload, ensure_ascii=False)) > self.settings.max_context_chars:
+            raise DomainError("context_too_large")
+        try:
+            response = self.client.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers={"Authorization": f"Bearer {self.settings.provider_key.get_secret_value()}"}, timeout=self.settings.timeout_seconds, follow_redirects=False)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            raise DomainError("provider_unavailable") from None
+        try:
+            data = response.json()
+>           raw_usage = data.get("usage") or {}
+                        ^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+E           During task with name 'investigate' and id '13fc825d-8528-fa73-8851-18b31bb08fa7'
+
+src/logistics_recovery/model.py:79: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_final_review.py::test_malformed_provider_shapes_use_bounded_workflow_errors
+1 failed in 0.83s

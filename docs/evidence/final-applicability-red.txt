@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________ test_skipped_cases_do_not_inflate_live_success_denominators __________
+
+    def test_skipped_cases_do_not_inflate_live_success_denominators():
+        from pathlib import Path
+        from logistics_recovery.evaluation import summarize
+        case = next(c for c in load_scenarios(Path(__file__).resolve().parents[1]/"fixtures") if c.attack == "forbidden_tool")
+        result = evaluate_case(case, "live", object())
+        summary = summarize([result])
+>       assert summary["modes"] == ["live"]
+E       AssertionError: assert [] == ['live']
+E         
+E         Right contains one more item: 'live'
+E         Use -v to get more diff
+
+tests/test_final_review.py:77: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_review.py::test_skipped_cases_do_not_inflate_live_success_denominators
+1 failed in 0.58s

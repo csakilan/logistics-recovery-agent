@@ -116,9 +116,12 @@ class Repository:
 
     def history(self, incident_id: str) -> list[dict]:
         with self.connection() as connection:
+            connection.execute("BEGIN")
             self._snapshot(connection, incident_id)
-            initial = [{"kind": "source_event", "payload": json.loads(row[0])} for row in connection.execute("SELECT payload FROM source_events WHERE incident_id=? ORDER BY rowid", (incident_id,))]
-            return initial + [{"kind": row["kind"], "payload": json.loads(row["payload"])} for row in connection.execute("SELECT kind,payload FROM audit WHERE incident_id=? ORDER BY seq", (incident_id,))]
+            activity = [{"kind": row["kind"], "payload": json.loads(row["payload"])} for row in connection.execute("SELECT kind,payload FROM audit WHERE incident_id=? ORDER BY seq", (incident_id,))]
+            simulated_ids = {item["payload"]["id"] for item in activity if item["kind"] in {"simulated_pickup", "simulated_delivery"}}
+            initial = [{"kind": "source_event", "payload": json.loads(row[0])} for row in connection.execute("SELECT payload FROM source_events WHERE incident_id=? ORDER BY rowid", (incident_id,)) if json.loads(row[0])["id"] not in simulated_ids]
+            return initial + activity
 
     def stats(self, incident_id: str) -> dict[str, int]:
         with self.connection() as connection:

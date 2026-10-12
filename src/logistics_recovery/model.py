@@ -76,9 +76,13 @@ class OpenRouterModel:
             raise DomainError("provider_unavailable") from None
         try:
             data = response.json()
-            raw_usage = data.get("usage") or {}
+            if not isinstance(data, dict): raise ValueError("Invalid response object")
+            raw_usage = data.get("usage")
+            if raw_usage is None: raw_usage = {}
+            if not isinstance(raw_usage, dict): raise ValueError("Invalid usage object")
             usage = Usage(prompt_tokens=raw_usage.get("prompt_tokens"), completion_tokens=raw_usage.get("completion_tokens"), cost_usd=raw_usage.get("cost"))
             message = data["choices"][0]["message"]
+            if not isinstance(message, dict): raise ValueError("Invalid message object")
             calls = tuple(ToolCall(id=call["id"], name=call["function"]["name"], arguments=json.loads(call["function"]["arguments"])) for call in message.get("tool_calls", []))
             terminal = [call for call in calls if call.name in {"propose_recovery", "escalate"}]
             if terminal:

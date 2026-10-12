@@ -33,6 +33,11 @@ class AssignmentService:
             self.repository.audit(connection, incident_id, "proposal_created", {"proposal_id": proposal.id, "quote_id": candidate.quote_id})
             return proposal
 
+    def check_current(self, proposal_id: str) -> None:
+        with self.repository.connection() as connection:
+            connection.execute("BEGIN")
+            self._current(connection, self.repository._proposal(connection, proposal_id))
+
     def approve(self, proposal_id: str, expected_version: int, operator: Operator) -> Approval:
         with self.repository.transaction() as connection:
             proposal = self.repository._proposal(connection, proposal_id)

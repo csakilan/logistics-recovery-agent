@@ -145,8 +145,8 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
 
 def build_application(settings: Settings | None = None) -> FastAPI:
     import httpx
-    from .evaluation import replay_script
-    from .model import OpenRouterModel, ReplayModel
+    from .model import OpenRouterModel
+    from .replay import CurrentReplayModel
     from .repository import Repository
     from .workflow import Workflow
 
@@ -154,7 +154,7 @@ def build_application(settings: Settings | None = None) -> FastAPI:
     repository = Repository(settings.data_dir / "business.sqlite")
     service = AssignmentService(repository)
     client = httpx.Client() if settings.mode == "live" else None
-    model = OpenRouterModel(settings, client) if client else ReplayModel({incident_id: replay_script(repository.snapshot(incident_id)) for incident_id in repository.list_incidents()})
+    model = OpenRouterModel(settings, client) if client else CurrentReplayModel()
     workflow = Workflow(repository, service, model, settings.data_dir / "checkpoints.sqlite")
     app = create_app(settings, service, workflow)
 

@@ -1,0 +1,449 @@
+FFFFFFFFFFF                                                              [100%]
+=================================== FAILURES ===================================
+_____________ test_stale_before_approval_can_reinvestigate[False] ______________
+
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10e7d1b10>
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_sta...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+repo = <logistics_recovery.repository.Repository object at 0x10d07cec0>
+service = <logistics_recovery.assignments.AssignmentService object at 0x10e785160>
+operator = Operator(id='dispatcher'), auth = ('dispatcher', 'test-password')
+origin = {'Origin': 'http://127.0.0.1:8000'}
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+restart = False
+
+    @pytest.mark.parametrize("restart", [False, True])
+    def test_stale_before_approval_can_reinvestigate(workflow_factory, settings, repo, service, operator, auth, origin, valid_candidate, restart):
+        alternative = Candidate(quote_id="q2", evidence_ids=("job:j1@1", "courier:c2@1", "quote:q2@1", "policy:p1@1", "event:e1@1"), summary="Current alternative courier.")
+        model = ReplayModel({"i1": (reads(), ModelTurn(kind="proposal", candidate=valid_candidate), reads(), ModelTurn(kind="proposal", candidate=alternative))})
+        workflow = workflow_factory(model)
+        first = workflow.start("i1").proposal
+        repo.change_courier("c1", False)
+        with pytest.raises(DomainError, match="stale_proposal"): service.approve(first.id, 1, operator)
+        if restart: workflow = workflow_factory(model)
+        with TestClient(create_app(settings, service, workflow), base_url=settings.origin) as client:
+            result = client.post("/incidents/i1/investigate", auth=auth, headers=origin).json()
+            assert result["status"] == "awaiting_approval"
+>           assert result["proposal"]["id"] != first.id
+E           AssertionError: assert 'b389d703c31446868a1b4033a644e8e2' != 'b389d703c31446868a1b4033a644e8e2'
+E            +  where 'b389d703c31446868a1b4033a644e8e2' = Proposal(id='b389d703c31446868a1b4033a644e8e2', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0).id
+
+tests/test_final_review.py:31: AssertionError
+______________ test_stale_before_approval_can_reinvestigate[True] ______________
+
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10e7d0670>
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_sta...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+repo = <logistics_recovery.repository.Repository object at 0x10e746210>
+service = <logistics_recovery.assignments.AssignmentService object at 0x10e745a90>
+operator = Operator(id='dispatcher'), auth = ('dispatcher', 'test-password')
+origin = {'Origin': 'http://127.0.0.1:8000'}
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+restart = True
+
+    @pytest.mark.parametrize("restart", [False, True])
+    def test_stale_before_approval_can_reinvestigate(workflow_factory, settings, repo, service, operator, auth, origin, valid_candidate, restart):
+        alternative = Candidate(quote_id="q2", evidence_ids=("job:j1@1", "courier:c2@1", "quote:q2@1", "policy:p1@1", "event:e1@1"), summary="Current alternative courier.")
+        model = ReplayModel({"i1": (reads(), ModelTurn(kind="proposal", candidate=valid_candidate), reads(), ModelTurn(kind="proposal", candidate=alternative))})
+        workflow = workflow_factory(model)
+        first = workflow.start("i1").proposal
+        repo.change_courier("c1", False)
+        with pytest.raises(DomainError, match="stale_proposal"): service.approve(first.id, 1, operator)
+        if restart: workflow = workflow_factory(model)
+        with TestClient(create_app(settings, service, workflow), base_url=settings.origin) as client:
+            result = client.post("/incidents/i1/investigate", auth=auth, headers=origin).json()
+            assert result["status"] == "awaiting_approval"
+>           assert result["proposal"]["id"] != first.id
+E           AssertionError: assert 'd7ed3a34318046c99ac6a5b4ea7051ec' != 'd7ed3a34318046c99ac6a5b4ea7051ec'
+E            +  where 'd7ed3a34318046c99ac6a5b4ea7051ec' = Proposal(id='d7ed3a34318046c99ac6a5b4ea7051ec', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0).id
+
+tests/test_final_review.py:31: AssertionError
+_______________ test_factory_replay_uses_current_shared_capacity _______________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_fac...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+repo = <logistics_recovery.repository.Repository object at 0x10e864a50>
+auth = ('dispatcher', 'test-password')
+origin = {'Origin': 'http://127.0.0.1:8000'}
+snapshot_data = {'incident_id': 'i1', 'incident_version': 1, 'now_min': 0, 'job': {'id': 'j1', 'parcel_count': 3, 'deadline_min': 60, 'custody': 'depot', ...}, ...}
+
+    def test_factory_replay_uses_current_shared_capacity(settings, repo, auth, origin, snapshot_data):
+        data = copy.deepcopy(snapshot_data)
+        data["incident_id"] = "i2"; data["job"]["id"] = "j2"
+        for quote in data["quotes"]: quote["id"] += "-2"; quote["job_id"] = "j2"
+        for event in data["events"]: event["job_id"] = "j2"
+        repo.seed(Snapshot.model_validate(data))
+        with TestClient(build_application(settings), base_url=settings.origin) as client:
+            for incident_id, courier_id in (("i1", "c1"), ("i2", "c2")):
+                view = client.post(f"/incidents/{incident_id}/investigate", auth=auth, headers=origin).json()
+>               assert view["status"] == "awaiting_approval"
+E               AssertionError: assert 'escalated' == 'awaiting_approval'
+E                 
+E                 - awaiting_approval
+E                 + escalated
+
+tests/test_final_review.py:51: AssertionError
+_ test_live_protocol_fault_cases_are_explicitly_not_applicable[forbidden_tool] _
+
+attack = 'forbidden_tool'
+
+    @pytest.mark.parametrize("attack", ["forbidden_tool", "malformed_model", "missing_evidence", "forged_evidence"])
+    def test_live_protocol_fault_cases_are_explicitly_not_applicable(attack):
+        from pathlib import Path
+        case = next(c for c in load_scenarios(Path(__file__).resolve().parents[1]/"fixtures") if c.attack == attack)
+        class UnexpectedProvider:
+            def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+>       result = evaluate_case(case, "live", UnexpectedProvider())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_review.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/logistics_recovery/evaluation.py:149: in evaluate_case
+    proposal = workflow.start(incident_id).proposal
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:165: in start
+    return self._run(incident_id)
+           ^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:159: in _run
+    result = self.graph.invoke(input_value, self._config(incident_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3978: in invoke
+    for chunk in self.stream(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3034: in stream
+    for _ in runner.tick(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_runner.py:208: in tick
+    run_with_retry(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_retry.py:617: in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:707: in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:447: in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:61: in _investigate
+    turn = self.model.next_turn(context, self.tools.schemas())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_final_review.test_live_protocol_fault_cases_are_explicitly_not_applicable.<locals>.UnexpectedProvider object at 0x10e787e00>
+context = ModelContext(incident_id='i1', call_index=1, messages=({'role': 'system', 'content': 'Investigate a driver cancellatio...ation checks every constraint and the dispatcher approves.'}, {'role': 'user', 'content': 'Investigate incident i1.'}))
+tools = [{'type': 'function', 'function': {'name': 'get_order', 'description': 'Return incident-scoped evidence', 'parameters'... 'Summary', 'type': 'string'}}, 'required': ['quote_id', 'evidence_ids', 'summary'], 'title': 'Candidate', ...}}}, ...]
+
+>   def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Protocol-only fault case must not call a live model
+E   During task with name 'investigate' and id '5444f1dd-1167-96be-4c06-6062774b8c9f'
+
+tests/test_final_review.py:63: AssertionError
+_ test_live_protocol_fault_cases_are_explicitly_not_applicable[malformed_model] _
+
+attack = 'malformed_model'
+
+    @pytest.mark.parametrize("attack", ["forbidden_tool", "malformed_model", "missing_evidence", "forged_evidence"])
+    def test_live_protocol_fault_cases_are_explicitly_not_applicable(attack):
+        from pathlib import Path
+        case = next(c for c in load_scenarios(Path(__file__).resolve().parents[1]/"fixtures") if c.attack == attack)
+        class UnexpectedProvider:
+            def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+>       result = evaluate_case(case, "live", UnexpectedProvider())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_review.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/logistics_recovery/evaluation.py:149: in evaluate_case
+    proposal = workflow.start(incident_id).proposal
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:165: in start
+    return self._run(incident_id)
+           ^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:159: in _run
+    result = self.graph.invoke(input_value, self._config(incident_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3978: in invoke
+    for chunk in self.stream(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3034: in stream
+    for _ in runner.tick(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_runner.py:208: in tick
+    run_with_retry(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_retry.py:617: in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:707: in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:447: in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:61: in _investigate
+    turn = self.model.next_turn(context, self.tools.schemas())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_final_review.test_live_protocol_fault_cases_are_explicitly_not_applicable.<locals>.UnexpectedProvider object at 0x10d07d010>
+context = ModelContext(incident_id='i1', call_index=1, messages=({'role': 'system', 'content': 'Investigate a driver cancellatio...ation checks every constraint and the dispatcher approves.'}, {'role': 'user', 'content': 'Investigate incident i1.'}))
+tools = [{'type': 'function', 'function': {'name': 'get_order', 'description': 'Return incident-scoped evidence', 'parameters'... 'Summary', 'type': 'string'}}, 'required': ['quote_id', 'evidence_ids', 'summary'], 'title': 'Candidate', ...}}}, ...]
+
+>   def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Protocol-only fault case must not call a live model
+E   During task with name 'investigate' and id '481fac12-ae99-8ef0-98db-69e82320c0d9'
+
+tests/test_final_review.py:63: AssertionError
+_ test_live_protocol_fault_cases_are_explicitly_not_applicable[missing_evidence] _
+
+attack = 'missing_evidence'
+
+    @pytest.mark.parametrize("attack", ["forbidden_tool", "malformed_model", "missing_evidence", "forged_evidence"])
+    def test_live_protocol_fault_cases_are_explicitly_not_applicable(attack):
+        from pathlib import Path
+        case = next(c for c in load_scenarios(Path(__file__).resolve().parents[1]/"fixtures") if c.attack == attack)
+        class UnexpectedProvider:
+            def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+>       result = evaluate_case(case, "live", UnexpectedProvider())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_review.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/logistics_recovery/evaluation.py:149: in evaluate_case
+    proposal = workflow.start(incident_id).proposal
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:165: in start
+    return self._run(incident_id)
+           ^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:159: in _run
+    result = self.graph.invoke(input_value, self._config(incident_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3978: in invoke
+    for chunk in self.stream(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3034: in stream
+    for _ in runner.tick(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_runner.py:208: in tick
+    run_with_retry(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_retry.py:617: in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:707: in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:447: in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:61: in _investigate
+    turn = self.model.next_turn(context, self.tools.schemas())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_final_review.test_live_protocol_fault_cases_are_explicitly_not_applicable.<locals>.UnexpectedProvider object at 0x10e787770>
+context = ModelContext(incident_id='i1', call_index=1, messages=({'role': 'system', 'content': 'Investigate a driver cancellatio...ation checks every constraint and the dispatcher approves.'}, {'role': 'user', 'content': 'Investigate incident i1.'}))
+tools = [{'type': 'function', 'function': {'name': 'get_order', 'description': 'Return incident-scoped evidence', 'parameters'... 'Summary', 'type': 'string'}}, 'required': ['quote_id', 'evidence_ids', 'summary'], 'title': 'Candidate', ...}}}, ...]
+
+>   def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Protocol-only fault case must not call a live model
+E   During task with name 'investigate' and id '79c76451-a6ea-aa29-f074-f8967180e1ce'
+
+tests/test_final_review.py:63: AssertionError
+_ test_live_protocol_fault_cases_are_explicitly_not_applicable[forged_evidence] _
+
+attack = 'forged_evidence'
+
+    @pytest.mark.parametrize("attack", ["forbidden_tool", "malformed_model", "missing_evidence", "forged_evidence"])
+    def test_live_protocol_fault_cases_are_explicitly_not_applicable(attack):
+        from pathlib import Path
+        case = next(c for c in load_scenarios(Path(__file__).resolve().parents[1]/"fixtures") if c.attack == attack)
+        class UnexpectedProvider:
+            def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+>       result = evaluate_case(case, "live", UnexpectedProvider())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_review.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/logistics_recovery/evaluation.py:149: in evaluate_case
+    proposal = workflow.start(incident_id).proposal
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:165: in start
+    return self._run(incident_id)
+           ^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:159: in _run
+    result = self.graph.invoke(input_value, self._config(incident_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3978: in invoke
+    for chunk in self.stream(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/main.py:3034: in stream
+    for _ in runner.tick(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_runner.py:208: in tick
+    run_with_retry(
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/pregel/_retry.py:617: in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:707: in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../work/venvs/logistics-recovery/lib/python3.14/site-packages/langgraph/_internal/_runnable.py:447: in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/logistics_recovery/workflow.py:61: in _investigate
+    turn = self.model.next_turn(context, self.tools.schemas())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_final_review.test_live_protocol_fault_cases_are_explicitly_not_applicable.<locals>.UnexpectedProvider object at 0x10e787cb0>
+context = ModelContext(incident_id='i1', call_index=1, messages=({'role': 'system', 'content': 'Investigate a driver cancellatio...ation checks every constraint and the dispatcher approves.'}, {'role': 'user', 'content': 'Investigate incident i1.'}))
+tools = [{'type': 'function', 'function': {'name': 'get_order', 'description': 'Return incident-scoped evidence', 'parameters'... 'Summary', 'type': 'string'}}, 'required': ['quote_id', 'evidence_ids', 'summary'], 'title': 'Candidate', ...}}}, ...]
+
+>   def next_turn(self, context, tools): raise AssertionError("Protocol-only fault case must not call a live model")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Protocol-only fault case must not call a live model
+E   During task with name 'investigate' and id '0b86272f-63a9-e9dc-1902-69e8b4c16585'
+
+tests/test_final_review.py:63: AssertionError
+___________ test_incident_history_has_one_event_in_operational_order ___________
+
+service = <logistics_recovery.assignments.AssignmentService object at 0x10e8da9c0>
+approved = Approval(id='9603ee9c17d243a8aa3a5e9d1ed79f93', proposal_id='b77cef25036d41e9973a13ed4c54c45f', incident_version=1, operator_id='dispatcher', consumed=False)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10e8e8950>
+
+    def test_incident_history_has_one_event_in_operational_order(service, approved, operator, repo):
+        service.commit(approved.proposal_id, operator)
+        service.record_event("i1", "pickup-once", "pickup", operator)
+        service.record_event("i1", "delivery-once", "delivery", operator)
+        service.record_event("i1", "delivery-once", "delivery", operator)
+        history = repo.history("i1")
+        event_ids = [h["payload"].get("id") for h in history]
+>       assert event_ids.count("pickup-once") == event_ids.count("delivery-once") == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = <built-in method count of list object at 0x10eb3ccc0>('delivery-once')
+E        +    where <built-in method count of list object at 0x10eb3ccc0> = ['e1', 'pickup-once', 'delivery-once', None, None, '39248fc9b7e9488587f132f3684250a9', ...].count
+
+tests/test_final_review.py:78: AssertionError
+__________ test_malformed_provider_objects_use_sanitized_error[body0] __________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_mal...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+body = []
+
+    @pytest.mark.parametrize("body", [[], {"usage": ["unexpected"], "choices": []}, {"choices": [{"message": []}]}])
+    def test_malformed_provider_objects_use_sanitized_error(settings, body):
+        from logistics_recovery.model import ModelContext
+        live = settings.model_copy(update={"model_id": "test/model"})
+        from pydantic import SecretStr
+        live = live.model_copy(update={"provider_key": SecretStr("private-test-sentinel")})
+        with httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json=body))) as client:
+            adapter = OpenRouterModel(live, client)
+            with pytest.raises(DomainError, match="^invalid_model_response$"):
+>               adapter.next_turn(ModelContext(incident_id="i1", call_index=1, messages=()), [])
+
+tests/test_final_review.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <logistics_recovery.model.OpenRouterModel object at 0x10e8327b0>
+context = ModelContext(incident_id='i1', call_index=1, messages=()), tools = []
+
+    def next_turn(self, context: ModelContext, tools: list[dict]) -> ModelTurn:
+        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "max_tokens": self.settings.max_output_tokens}
+        if len(json.dumps(payload, ensure_ascii=False)) > self.settings.max_context_chars:
+            raise DomainError("context_too_large")
+        try:
+            response = self.client.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers={"Authorization": f"Bearer {self.settings.provider_key.get_secret_value()}"}, timeout=self.settings.timeout_seconds, follow_redirects=False)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            raise DomainError("provider_unavailable") from None
+        try:
+            data = response.json()
+>           raw_usage = data.get("usage") or {}
+                        ^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+
+src/logistics_recovery/model.py:79: AttributeError
+__________ test_malformed_provider_objects_use_sanitized_error[body1] __________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_mal...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+body = {'usage': ['unexpected'], 'choices': []}
+
+    @pytest.mark.parametrize("body", [[], {"usage": ["unexpected"], "choices": []}, {"choices": [{"message": []}]}])
+    def test_malformed_provider_objects_use_sanitized_error(settings, body):
+        from logistics_recovery.model import ModelContext
+        live = settings.model_copy(update={"model_id": "test/model"})
+        from pydantic import SecretStr
+        live = live.model_copy(update={"provider_key": SecretStr("private-test-sentinel")})
+        with httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json=body))) as client:
+            adapter = OpenRouterModel(live, client)
+            with pytest.raises(DomainError, match="^invalid_model_response$"):
+>               adapter.next_turn(ModelContext(incident_id="i1", call_index=1, messages=()), [])
+
+tests/test_final_review.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <logistics_recovery.model.OpenRouterModel object at 0x10e864190>
+context = ModelContext(incident_id='i1', call_index=1, messages=()), tools = []
+
+    def next_turn(self, context: ModelContext, tools: list[dict]) -> ModelTurn:
+        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "max_tokens": self.settings.max_output_tokens}
+        if len(json.dumps(payload, ensure_ascii=False)) > self.settings.max_context_chars:
+            raise DomainError("context_too_large")
+        try:
+            response = self.client.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers={"Authorization": f"Bearer {self.settings.provider_key.get_secret_value()}"}, timeout=self.settings.timeout_seconds, follow_redirects=False)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            raise DomainError("provider_unavailable") from None
+        try:
+            data = response.json()
+            raw_usage = data.get("usage") or {}
+>           usage = Usage(prompt_tokens=raw_usage.get("prompt_tokens"), completion_tokens=raw_usage.get("completion_tokens"), cost_usd=raw_usage.get("cost"))
+                                        ^^^^^^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+
+src/logistics_recovery/model.py:80: AttributeError
+__________ test_malformed_provider_objects_use_sanitized_error[body2] __________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-122/test_mal...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+body = {'choices': [{'message': []}]}
+
+    @pytest.mark.parametrize("body", [[], {"usage": ["unexpected"], "choices": []}, {"choices": [{"message": []}]}])
+    def test_malformed_provider_objects_use_sanitized_error(settings, body):
+        from logistics_recovery.model import ModelContext
+        live = settings.model_copy(update={"model_id": "test/model"})
+        from pydantic import SecretStr
+        live = live.model_copy(update={"provider_key": SecretStr("private-test-sentinel")})
+        with httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json=body))) as client:
+            adapter = OpenRouterModel(live, client)
+            with pytest.raises(DomainError, match="^invalid_model_response$"):
+>               adapter.next_turn(ModelContext(incident_id="i1", call_index=1, messages=()), [])
+
+tests/test_final_review.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <logistics_recovery.model.OpenRouterModel object at 0x10e745f90>
+context = ModelContext(incident_id='i1', call_index=1, messages=()), tools = []
+
+    def next_turn(self, context: ModelContext, tools: list[dict]) -> ModelTurn:
+        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "max_tokens": self.settings.max_output_tokens}
+        if len(json.dumps(payload, ensure_ascii=False)) > self.settings.max_context_chars:
+            raise DomainError("context_too_large")
+        try:
+            response = self.client.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers={"Authorization": f"Bearer {self.settings.provider_key.get_secret_value()}"}, timeout=self.settings.timeout_seconds, follow_redirects=False)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            raise DomainError("provider_unavailable") from None
+        try:
+            data = response.json()
+            raw_usage = data.get("usage") or {}
+            usage = Usage(prompt_tokens=raw_usage.get("prompt_tokens"), completion_tokens=raw_usage.get("completion_tokens"), cost_usd=raw_usage.get("cost"))
+            message = data["choices"][0]["message"]
+>           calls = tuple(ToolCall(id=call["id"], name=call["function"]["name"], arguments=json.loads(call["function"]["arguments"])) for call in message.get("tool_calls", []))
+                                                                                                                                                  ^^^^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+
+src/logistics_recovery/model.py:82: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_final_review.py::test_stale_before_approval_can_reinvestigate[False]
+FAILED tests/test_final_review.py::test_stale_before_approval_can_reinvestigate[True]
+FAILED tests/test_final_review.py::test_factory_replay_uses_current_shared_capacity
+FAILED tests/test_final_review.py::test_live_protocol_fault_cases_are_explicitly_not_applicable[forbidden_tool]
+FAILED tests/test_final_review.py::test_live_protocol_fault_cases_are_explicitly_not_applicable[malformed_model]
+FAILED tests/test_final_review.py::test_live_protocol_fault_cases_are_explicitly_not_applicable[missing_evidence]
+FAILED tests/test_final_review.py::test_live_protocol_fault_cases_are_explicitly_not_applicable[forged_evidence]
+FAILED tests/test_final_review.py::test_incident_history_has_one_event_in_operational_order
+FAILED tests/test_final_review.py::test_malformed_provider_objects_use_sanitized_error[body0]
+FAILED tests/test_final_review.py::test_malformed_provider_objects_use_sanitized_error[body1]
+FAILED tests/test_final_review.py::test_malformed_provider_objects_use_sanitized_error[body2]
+11 failed in 1.17s
