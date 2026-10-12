@@ -4,3 +4,4 @@ python -m pip install -e . --no-deps: exit 0
 python -m pytest tests/test_smoke.py -q: 2 passed
 CLI seed-demo + factory TestClient walkthrough: protected views, investigation, unapproved booking denial, authorized approval, simulated pickup/delivery, escalation: passed. One assignment commit event. Random private credentials used and not exported.
 Full suite in development environment: 118 passed in 2.83s.
+Final correction checkpoint: 132 tests passed in the same independently installed pinned-dependency environment. A real Uvicorn factory launch on loopback returned authenticated HTML and committed no assignment at startup; server stopped and random private password was absent from its log. No real provider requests.

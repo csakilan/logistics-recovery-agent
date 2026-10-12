@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; no live requests have been measured yet. This project demonstrates approval and recovery engineering, not a proven benefit over a rules baseline.
+The local prototype is runnable; the final suite passed 132 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; no live requests have been measured yet. This project demonstrates approval and recovery engineering, not a proven benefit over a rules baseline.
 
 ## Run locally
 
@@ -52,7 +52,7 @@ flowchart LR
     C -->|Facts changed| R
 ```
 
-The immutable approval binds the proposal, incident version and cited record versions. Approval consumption, capacity reservation, unique assignment and audit event share one transaction. Stale facts require a new proposal and approval. Notes are untrusted; prompt instructions never grant authority. See the [threat model](docs/threat-model.md).
+Local replay computes a plan from the current tool results, including capacity already reserved by other incidents. Revisiting a stale waiting proposal reopens investigation within the same attempt budget and requires a new approval. The immutable approval binds the proposal, incident version and cited record versions. Approval consumption, capacity reservation, unique assignment and audit event share one transaction. Stale facts require a new proposal and approval. Notes are untrusted; prompt instructions never grant authority. See the [threat model](docs/threat-model.md).
 
 ## Live model and budget
 
@@ -64,7 +64,7 @@ For live mode, first verify the selected model's tool-calling support and curren
 logistics-recovery estimate --cases 1 --input-rate INPUT_USD_PER_MILLION --output-rate OUTPUT_USD_PER_MILLION
 ```
 
-A live batch additionally requires --confirmed-provider-settings, --live-budget-usd, --input-rate and --output-rate. The estimate assumes 12,000 input tokens per attempt; it is not a guaranteed bill. The provider spending limit is the hard monetary boundary. Failed requests count against the six-attempt incident budget; absent usage remains unknown. Do not use free-tier availability as a reliability assumption.
+Deterministic protocol fault cases are excluded from live model-quality comparison and reported as skipped; client enforcement is tested offline. A live batch additionally requires --confirmed-provider-settings, --live-budget-usd, --input-rate and --output-rate. The estimate assumes 12,000 input tokens per attempt; it is not a guaranteed bill. The provider spending limit is the hard monetary boundary. Failed requests count against the six-attempt incident budget; absent usage remains unknown. Do not use free-tier availability as a reliability assumption.
 
 ## Portfolio evidence
 
