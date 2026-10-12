@@ -66,7 +66,7 @@ class OpenRouterModel:
         self.settings, self.client = settings, client
 
     def next_turn(self, context: ModelContext, tools: list[dict]) -> ModelTurn:
-        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "max_tokens": self.settings.max_output_tokens}
+        payload = {"model": self.settings.model_id, "messages": list(context.messages), "tools": tools, "tool_choice": "required", "max_tokens": self.settings.max_output_tokens}
         if len(json.dumps(payload, ensure_ascii=False)) > self.settings.max_context_chars:
             raise DomainError("context_too_large")
         try:

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-12",
+  "quota": {
+    "limit": 1,
+    "limit_remaining": 1,
+    "usage": 0,
+    "free_model_daily_requests": {
+      "used": 0,
+      "limit": 50,
+      "remaining": 50
+    }
+  },
+  "single_diagnostic_request": {
+    "status": 429,
+    "retry_after": null,
+    "error_code": 429,
+    "message": "Provider returned error",
+    "provider": "Google AI Studio"
+  },
+  "diagnostic_request_count": 1,
+  "not_an_independent_scenario_evaluation": true
+}
