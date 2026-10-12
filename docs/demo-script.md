@@ -1,6 +1,6 @@
 # Three-minute walkthrough
 
-0:00–0:30 — State the business problem: a driver cancels before pickup; the dispatcher must recover the job without guessing parcel custody, overspending or double booking. Point out Scripted replay and simulated time. Explain that live-model quality has not been measured.
+0:00–0:30 — State the business problem: a driver cancels before pickup; the dispatcher must recover the job without guessing parcel custody, overspending or double booking. Point out Scripted replay and simulated time. Explain that the latest live development check matched 2/3 expected outcomes and that live reliability remains a limitation; the walkthrough uses reproducible replay.
 
 0:30–1:15 — Open demo-1 and investigate. Show the cited order, courier, quote, policy and custody evidence. Before approval, there is no assignment. Explain that the model has read-only tools and cannot grant itself approval. Approve and show one committed assignment in the history.
 
