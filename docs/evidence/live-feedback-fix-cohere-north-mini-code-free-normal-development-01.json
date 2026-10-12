@@ -1,0 +1,187 @@
+{
+  "phase": "feedback-fix",
+  "date": "2026-10-12",
+  "build_ref": "f71a98b01ef83a5e0d0d79e64fedeafa77128389",
+  "source_sha256": "5c8a0753c9e25522b2d90e794cf655804680971700db8f21bfbcbc074a533808",
+  "manifest": {
+    "version": "1.0",
+    "date": "2026-10-11",
+    "workflow_freeze_ref": "c0cdabb4a929eccdce6de69f23b974ea695e1275",
+    "definition": "Synthetic development cases plus parameter variants held out from workflow/prompt changes. Expected fields are evaluator-only. Offline replay is a deterministic scripted adapter.",
+    "sha256": {
+      "development.jsonl": "dfbaf9feca13ef4081c3f8ad9e25ac5452c1ac3e054fb89e117d2c102af1fab1",
+      "held-out.jsonl": "b888908b6e93797db21d8971dd7af17916538119756b9e61fb8e6865a97a92e9"
+    }
+  },
+  "model_config": {
+    "model_id": "cohere/north-mini-code:free",
+    "mode": "live",
+    "tool_choice": "required",
+    "max_attempts": 6,
+    "max_drafts": 3,
+    "max_output_tokens": 600,
+    "provider": "Cohere",
+    "pricing": "verified free endpoint; no paid fallback"
+  },
+  "case": {
+    "case_id": "normal-development-01",
+    "category": "normal",
+    "split": "development",
+    "mode": "live",
+    "expected_outcome": "assigned",
+    "actual_outcome": "escalated",
+    "passed": false,
+    "applicable": true,
+    "skip_reason": "",
+    "assignment_count": 0,
+    "commit_events": 0,
+    "constraint_violations": 0,
+    "unauthorized_attempts": 0,
+    "unauthorized_commits": 0,
+    "valid_attempts": 0,
+    "valid_successes": 0,
+    "recovery_eligible": 0,
+    "recovery_successes": 0,
+    "replay_eligible": 0,
+    "duplicates": 0,
+    "fault_witnessed": false,
+    "model_calls": 4,
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "cost_usd": null,
+    "latency_ms": 12837.72
+  },
+  "provider_trace": [
+    {
+      "attempt": 1,
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "terminal_arguments": [],
+      "usage": {
+        "prompt_tokens": 505,
+        "completion_tokens": 126,
+        "total_tokens": 631,
+        "cost": 0
+      },
+      "elapsed_ms": 1277.639
+    },
+    {
+      "attempt": 2,
+      "http_status": 200,
+      "finish_reason": "length",
+      "tool_names": [],
+      "terminal_arguments": [],
+      "usage": {
+        "prompt_tokens": 838,
+        "completion_tokens": 586,
+        "total_tokens": 1424,
+        "cost": 0
+      },
+      "elapsed_ms": 4011.617
+    },
+    {
+      "attempt": 3,
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "terminal_arguments": [
+        {
+          "tool": "propose_recovery",
+          "quote_id": "q1"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 890,
+        "completion_tokens": 498,
+        "total_tokens": 1388,
+        "cost": 0
+      },
+      "elapsed_ms": 4091.128
+    },
+    {
+      "attempt": 4,
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "terminal_arguments": [
+        {
+          "tool": "escalate",
+          "reason": "Driver cancelled before pickup; job cannot be fulfilled."
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 929,
+        "completion_tokens": 399,
+        "total_tokens": 1328,
+        "cost": 0
+      },
+      "elapsed_ms": 3212.286
+    }
+  ],
+  "workflow_audit": [
+    {
+      "kind": "model_error",
+      "payload": {
+        "code": "invalid_model_response",
+        "attempt": 2
+      }
+    },
+    {
+      "kind": "proposal_invalid",
+      "payload": {
+        "code": "invalid_proposal",
+        "constraint_codes": [
+          "evidence"
+        ]
+      }
+    }
+  ],
+  "quota_before": {
+    "key": {
+      "limit": 1,
+      "limit_remaining": 1,
+      "limit_reset": "monthly",
+      "usage": 0,
+      "free_model_daily_requests": {
+        "used": 23,
+        "limit": 50,
+        "remaining": 27
+      }
+    },
+    "credits": {
+      "total_credits": 0,
+      "total_usage": 0
+    }
+  },
+  "quota_after": {
+    "key": {
+      "limit": 1,
+      "limit_remaining": 1,
+      "limit_reset": "monthly",
+      "usage": 0,
+      "free_model_daily_requests": {
+        "used": 27,
+        "limit": 50,
+        "remaining": 23
+      }
+    },
+    "credits": {
+      "total_credits": 0,
+      "total_usage": 0
+    }
+  },
+  "observed_key_usage_delta_usd": 0,
+  "observed_account_usage_delta_usd": 0,
+  "limitations": "One development scenario, simulated dispatcher approval, free endpoint. Repeated runs are not independent cases."
+}

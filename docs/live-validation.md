@@ -1,6 +1,6 @@
 # Next milestone: a small live-model check
 
-Prepared October 11, 2026. No paid inference has run. No product code or dependencies changed. This continues the approved plan’s live-validation step.
+Prepared October 11, 2026. This preserves the initial live-check plan. **October 12 update:** bounded free-model checks have now run, and two response-contract corrections were verified. No paid inference, purchase or Cloud usage occurred. Current outcomes and exact configurations are in [live results](live-results.md).
 
 Start with normal-development-01 only. If it is useful and cost remains within the key limit, continue with infeasible-development-01 and stale-development-01. These are development cases; do not use held-out cases for prompt tuning. Run the existing evaluator with the configured real adapter and publish actual outcomes, committed events, attempt counts and usage. The runner simulates authenticated dispatcher approval; a later interactive demo supplies the human approval.
 
@@ -14,4 +14,4 @@ Measure returned inference cost and key-usage change separately from prepaid cas
 
 Personal review prompt for the next case study: a booking is saved, but its response is lost before the workflow checkpoint updates. Explain why the application should inspect the durable assignment before retrying, how you would verify there was only one capacity reservation, and what limitation remains in a one-worker deployment. Your answer can be recorded as your engineering assessment; it does not retrospectively make the original agent diagnosis yours. The reproducible check is tests/test_recovery.py::test_lost_response_recovers_once.
 
-Current status: provider research and the three-case scope are prepared. Credential/account readiness was requested from the user. No live result, user reasoning, credit purchase, account change or new engineering correction is inferred.
+Initial preparation status: provider research and the three-case scope were prepared; credential/account readiness was requested. The subsequent authorized runs and corrections are recorded in [live results](live-results.md). The actual supplied key has a $1 monthly limit, not the lifetime limit recommended above. No account settings were changed. Personal builder diagnosis remains unrecorded; the requested recruiter-facing answer is an assistant-written draft.

@@ -22,10 +22,22 @@ The infeasible case tried invalid plans and exhausted its budget without a nativ
 
 All 15 corrected-cohort HTTP responses reported zero cost: 12,730 prompt tokens and 5,724 completion tokens in the returned HTTP usage. These include rejected responses. Key and account usage deltas were also zero. The evaluator's aggregated token/cost fields remain null whenever parsing fails; HTTP trace totals are a separate observation, not a repaired evaluator result. Free endpoint availability and small-sample success do not establish production reliability.
 
-Including the earlier cases and one separate Google diagnostic, there were 28 chat requests: seven Google HTTP 429 responses and 21 Cohere HTTP 200 responses. The diagnostic is not another evaluated scenario. No observed billed usage or cash spend occurred; coding-assistant account usage is not measured here.
+Before the feedback retest, including earlier cases and one separate Google diagnostic, there were 28 chat requests: seven Google HTTP 429 responses and 21 Cohere HTTP 200 responses. The diagnostic is not another evaluated scenario. No observed billed usage or cash spend occurred; coding-assistant account usage is not measured here.
 
 ## Feedback correction and next check
 
 Source inspection found no corrective context on malformed output and only generic feedback on failed feasibility. Three controlled provider regressions reproduced safe but unhelpful escalation. Fixed schema guidance and allowlisted policy error codes now support useful revisions without replaying rejected provider text or changing approval, request or output limits. Full suite: 136 passed; [RED evidence](evidence/agent-010-red.txt), [GREEN evidence](evidence/agent-010-green.txt).
 
-A separate feedback-fix phase starts with stale-development-01, permits at most three development cases / 18 free attempts, and preserves the previous cohort. Retest pending. Its purpose is to test a specific correction, not to search until a model happens to pass. No held-out tuning, new architecture or paid model purchase is authorized by this record.
+A separate feedback-fix phase permitted at most three development cases / 18 free attempts and used 14 attempts. Build: f71a98b; same model, fixture manifest, six-attempt/three-draft/600-token bounds and simulated approval. Only the revision feedback changed. Reports also retain sanitized workflow audit events. Results:
+
+| Case | Expected / actual | Calls | Assignments / commits |
+|---|---|---|---|
+| stale-development-01 | assigned / assigned | 6 | 1 / 1 |
+| normal-development-01 | assigned / escalated | 4 | 0 / 0 |
+| infeasible-development-01 | escalated / escalated | 4 | 0 / 0 |
+
+Expected outcomes remain **2/3**, and feasible-case assignments are **1/2**. There were **0 constraint violations in three evaluated cases**. In the stale case the audit records q1 proposal/approval, stale-plan replanning, rejected unobserved evidence, a malformed response, then q2 proposal/approval and exactly one assignment to c2. In the normal case a malformed response was followed by a proposal with invalid evidence, then an unnecessary native escalation. In the infeasible case the model used a native escalation that correctly cited both couriers' zero capacity.
+
+The 14 HTTP responses reported 11,643 prompt tokens, 5,638 completion tokens and $0 cost. Key/account usage deltas were zero. Evaluator usage totals remain null because each case included a malformed response; HTTP usage totals are separate evidence. This brings all attempted chat requests to **42**, including the single diagnostic: seven Google HTTP 429 responses and 35 Cohere HTTP 200 responses. Observed billed usage and cash purchases remain $0.
+
+The feedback correction is verified as client behavior, including 136 checks in both development and clean locked environments and a focused read-only assistant review with no findings. **A reliable live demo is not established:** the same feasible case succeeded in one cohort and failed in the next. No aggregate live-quality gain is claimed, and no further requests were made to search for a passing run. The reproducible offline demonstration remains the stable portfolio walkthrough; live quality is a documented next milestone. No held-out case was used for tuning.

@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the final suite passed 132 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; no live requests have been measured yet. This project demonstrates approval and recovery engineering, not a proven benefit over a rules baseline.
+The local prototype is runnable; the current suite passed 136 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; the latest bounded three-case development check matched 2/3 expected outcomes, with one successful recovery and one unnecessary escalation. See [live results](docs/live-results.md). This project demonstrates approval and recovery engineering; live model quality remains a limitation.
 
 ## Run locally
 
@@ -69,5 +69,7 @@ Deterministic protocol fault cases are excluded from live model-quality comparis
 ## Portfolio evidence
 
 [Case studies](docs/case-studies.md) explain a lost-response recovery, ambiguous custody correction and approval boundary. [Demo script](docs/demo-script.md) gives a three-minute walkthrough. [Employer principles](docs/employer-principles.md) ties the review priorities to published engineering expectations. [Judgment tracker](outputs/engineering-judgment-tracker.md) separates agent findings, deliberate fault tests and the builder's own confirmed contributions. Agent-made corrections cannot be claimed as personally diagnosed until the builder does and records their own review.
+
+[Interview preparation](docs/interview-answer.md) explains the response-contract diagnosis, bounded revisions and verification strategy. It is an assistant-written draft, with attribution kept separate from the builder's own review.
 
 This is one depot, one dispatcher and one complete delivery job per incident. There is no route optimizer, real courier integration, account registration, distributed graph coordination or schema migration framework. Use fresh synthetic runtime storage after schema changes. Dependencies are version pinned, not cryptographically hash locked. Never feed sensitive production or healthcare data into this demo.
