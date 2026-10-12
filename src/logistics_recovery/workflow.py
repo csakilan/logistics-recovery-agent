@@ -12,6 +12,7 @@ from pydantic import ValidationError
 from .assignments import AssignmentService
 from .domain import DomainError, Operator, RunView
 from .model import ModelAdapter, ModelContext, ModelTurn
+from .policy import required_evidence
 from .repository import Repository
 from .tools import ToolRegistry
 
@@ -102,6 +103,15 @@ class Workflow:
             allowed = {"quote_missing", "quote_job", "courier_missing", "availability", "capacity", "quote_expired", "deadline", "budget", "custody", "evidence"}
             constraints = sorted(set(error.message.split(",")) & allowed) if error.code == "invalid_proposal" else []
             detail = f" Failed constraints: {', '.join(constraints)}." if constraints else ""
+            if "evidence" in constraints:
+                snapshot = self.repository.snapshot(state["incident_id"])
+                quote = next((quote for quote in snapshot.quotes if quote.id == turn.candidate.quote_id), None)
+                if quote:
+                    # Hints repeat only current, incident-scoped references the
+                    # model has already retrieved. Never fill in the candidate.
+                    omitted = sorted((set(required_evidence(snapshot, quote)) - set(turn.candidate.evidence_ids)) & set(state["seen_evidence"]))
+                    if omitted:
+                        detail += f" Missing required citations already retrieved: {json.dumps(omitted)}. Copy them exactly into evidence_ids. A citation omission alone does not make the delivery infeasible."
             return {"stage": "escalated" if exhausted else "investigate", "detail": error.code, "messages": state["messages"] + [{"role": "user", "content": f"Proposal failed application validation: {error.code}.{detail} Retrieve authoritative evidence before revising. Choose a feasible alternative or call escalate if none exists. Keep summary or reason to one short sentence."}]}
         return {"proposal_id": proposal.id, "stage": "awaiting_approval", "detail": "Dispatcher approval required"}
 

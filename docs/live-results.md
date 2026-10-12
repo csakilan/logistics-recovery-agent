@@ -41,3 +41,13 @@ Expected outcomes remain **2/3**, and feasible-case assignments are **1/2**. The
 The 14 HTTP responses reported 11,643 prompt tokens, 5,638 completion tokens and $0 cost. Key/account usage deltas were zero. Evaluator usage totals remain null because each case included a malformed response; HTTP usage totals are separate evidence. This brings all attempted chat requests to **42**, including the single diagnostic: seven Google HTTP 429 responses and 35 Cohere HTTP 200 responses. Observed billed usage and cash purchases remain $0.
 
 The feedback correction is verified as client behavior, including 136 checks in both development and clean locked environments and a focused read-only assistant review with no findings. **A reliable live demo is not established:** the same feasible case succeeded in one cohort and failed in the next. No aggregate live-quality gain is claimed, and no further requests were made to search for a passing run. The reproducible offline demonstration remains the stable portfolio walkthrough; live quality is a documented next milestone. No held-out case was used for tuning.
+
+## Citation investigation and refinement
+
+The failed stable normal case passed the observed-reference guard before policy returned an evidence error. Since no facts changed and all retrieved references were current, this narrows the class to missing mandatory citations. The exact historical omitted reference was not saved and is not asserted here.
+
+One unchanged instrumented diagnostic recovered in two calls with all five required citations and one approved commit. Its [report](evidence/live-citation-diagnostic-cohere-north-mini-code-free-normal-development-01.json) preserves safe reference comparisons and response-size counts, with no reasoning text or credential. It reported $0 cost and zero key/account usage deltas. It demonstrates variation, not a correction. Total chat attempts through this diagnostic: 44 including the earlier separate provider diagnostic.
+
+A controlled missing-citation regression failed before the refinement while four controls passed. Proposal feedback now names omitted current required citations only when already in the model's retrieved evidence. It neither supplies unseen evidence nor fills in the candidate. All 138 checks passed; [focused review](citation-feedback-review.md) found no issues. This refines AGENT-010 rather than counting a new root cause.
+
+Correction retest pending: normal, stale and infeasible development-01 cases, at most 18 free attempts, same provider and six-attempt/three-draft/600-token incident limits. Default model reasoning and the prompt/schema are unchanged. All older cohorts remain preserved; no held-out tuning or additional feature is introduced.

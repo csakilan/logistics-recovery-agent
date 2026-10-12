@@ -72,3 +72,45 @@ def test_constraint_feedback_allows_replacing_an_infeasible_quote(settings, work
         service.approve(paused.proposal.id, paused.proposal.incident_version, operator)
         assert workflow.resume("i1", paused.proposal.id).assignment.courier_id == "c2"
         assert repo.stats("i1")["commit_events"] == 1
+
+
+def test_missing_citation_feedback_repairs_a_feasible_plan(settings, workflow_factory, valid_candidate, service, repo, operator):
+    """Without precise citation feedback the provider escalates a feasible job."""
+    incomplete = {**valid_candidate.model_dump(), "evidence_ids": ["job:j1@1", "courier:c1@1", "quote:q1@1", "policy:p1@1"]}
+
+    def provider(request):
+        messages = json.loads(request.content)["messages"]
+        if not any(message["role"] == "tool" for message in messages):
+            return provider_response(READS, {})
+        feedback = [message["content"] for message in messages if message["role"] == "user" and "invalid_proposal" in message["content"]]
+        if not feedback:
+            return provider_response(("propose_recovery",), incomplete)
+        if "event:e1@1" in feedback[-1]:
+            return provider_response(("propose_recovery",), valid_candidate.model_dump())
+        return httpx.Response(200, json={"id": "test-generation", "object": "chat.completion", "created": 0, "model": "test/model", "choices": [{"index": 0, "message": {"role": "assistant", "content": None, "tool_calls": [{"id": "call-escalate", "type": "function", "function": {"name": "escalate", "arguments": json.dumps({"reason": "Required evidence unavailable."})}}]}, "finish_reason": "tool_calls"}], "usage": {"prompt_tokens": 10, "completion_tokens": 10, "total_tokens": 20, "cost": 0}})
+
+    live = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": "test/model"})
+    with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+        workflow = workflow_factory(OpenRouterModel(live, client))
+        paused = workflow.start("i1")
+        assert paused.status == "awaiting_approval"
+        assert paused.proposal.candidate.evidence_ids == valid_candidate.evidence_ids
+        assert repo.stats("i1")["model_calls"] == 3
+        assert repo.assignment("i1") is None
+        service.approve(paused.proposal.id, paused.proposal.incident_version, operator)
+        assert workflow.resume("i1", paused.proposal.id).status == "assigned"
+        assert repo.stats("i1")["commit_events"] == 1
+
+
+def test_citation_feedback_never_supplies_unretrieved_evidence(workflow_factory, valid_candidate, repo):
+    from logistics_recovery.model import ModelTurn, ReplayModel, ToolCall
+    incomplete = valid_candidate.model_copy(update={"evidence_ids": ("job:j1@1",)})
+    read_order = ModelTurn(kind="tools", tool_calls=(ToolCall(id="read-order", name="get_order", arguments={}),))
+    invalid = ModelTurn(kind="proposal", candidate=incomplete)
+    workflow = workflow_factory(ReplayModel({"i1": (read_order, invalid, invalid, invalid)}))
+    assert workflow.start("i1").status == "escalated"
+    saved = workflow.graph.get_state(workflow._config("i1")).values
+    feedback = json.dumps([message for message in saved["messages"] if message["role"] == "user"])
+    for unseen in ("courier:c1@1", "quote:q1@1", "policy:p1@1", "event:e1@1"):
+        assert unseen not in feedback
+    assert repo.assignment("i1") is None
