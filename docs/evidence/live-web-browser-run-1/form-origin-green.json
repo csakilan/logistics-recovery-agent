@@ -1,0 +1,22 @@
+{
+  "trace": [
+    {
+      "kind": "response",
+      "status": 303,
+      "path": "/incidents/demo-1/investigate"
+    },
+    {
+      "kind": "request",
+      "path": "/incidents/demo-1/investigate",
+      "method": "POST",
+      "origin": "http://127.0.0.1:8765",
+      "content_type": "application/x-www-form-urlencoded",
+      "fetch_site": "same-origin",
+      "has_authorization": true
+    }
+  ],
+  "shows_origin_rejection": false,
+  "shows_authentication_rejection": false,
+  "shows_proposal": true,
+  "body_code": "rendered HTML"
+}

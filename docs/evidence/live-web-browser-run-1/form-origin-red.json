@@ -1,0 +1,22 @@
+{
+  "trace": [
+    {
+      "kind": "response",
+      "status": 403,
+      "path": "/incidents/demo-1/investigate"
+    },
+    {
+      "kind": "request",
+      "path": "/incidents/demo-1/investigate",
+      "method": "POST",
+      "origin": "null",
+      "content_type": "application/x-www-form-urlencoded",
+      "fetch_site": "same-origin",
+      "has_authorization": true
+    }
+  ],
+  "shows_origin_rejection": true,
+  "shows_authentication_rejection": false,
+  "shows_proposal": false,
+  "body_code": "{\"detail\":\"Origin not allowed\"}"
+}

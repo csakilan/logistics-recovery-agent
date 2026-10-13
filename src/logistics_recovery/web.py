@@ -91,7 +91,7 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
     @app.middleware("http")
     async def private_headers(request: Request, call_next):
         response = await call_next(request)
-        response.headers.update({"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Referrer-Policy": "no-referrer", "Content-Security-Policy": "default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"})
+        response.headers.update({"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Referrer-Policy": "same-origin", "Content-Security-Policy": "default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"})
         return response
 
     def require_proposal(incident_id: str, proposal_id: str):

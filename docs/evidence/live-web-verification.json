@@ -62,5 +62,28 @@
       "Existing monthly key cap retained; not converted to lifetime.",
       "Actual browser/provider/billing validation is a separate pending check."
     ]
+  },
+  "browser_form_correction": {
+    "id": "AGENT-016",
+    "original_build": "cac3a29",
+    "root_cause": "no-referrer privacy policy made actual same-origin Chrome form send Origin:null, rejected by exact-origin guard",
+    "change": "Referrer-Policy:same-origin; original origin allowlist/authentication/approval checks retained",
+    "red": "Real Chrome form failed before model call; Origin:null, HTTP403,0 model calls, ledger252",
+    "green": "Same Chrome form Origin:http://127.0.0.1:8765, HTTP303, valid proposal awaiting approval; no weakening of null/foreign origin rejection",
+    "source_sha256": "4550b57371a301bf6056c4ecd6c4abd271c41e53581e6fc1ca30ea54935155c5",
+    "full_suite": [
+      {
+        "environment": "development",
+        "result": "174 passed in28.93s",
+        "exit_code": 0
+      },
+      {
+        "environment": "clean locked",
+        "result": "174 passed in28.30s",
+        "exit_code": 0
+      }
+    ],
+    "evidence": "live-web-browser-run-1/form-origin-red.json; live-web-browser-run-1/form-origin-green.json",
+    "primary_source": "https://fetch.spec.whatwg.org/#append-a-request-origin-header"
   }
 }

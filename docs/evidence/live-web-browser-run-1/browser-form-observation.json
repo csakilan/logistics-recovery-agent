@@ -1,0 +1,5 @@
+{
+  "status": "investigating",
+  "observation": "Browser rendered Live model page; investigation form navigation did not reach approval and business model_calls stayed0; cumulative ledger stayed252. No model inference was sent.",
+  "root_cause": "pending browser header trace"
+}
