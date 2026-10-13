@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-10-13T19:54:46.930474+00:00",
+  "billing": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 731
+  },
+  "key_limit": 1,
+  "key_limit_reset": "monthly",
+  "provider_daily_quota": {
+    "used": 269,
+    "limit": 1000,
+    "remaining": 731
+  },
+  "local_cumulative_requests": 307,
+  "inference_requests_sent_by_this_check": 0,
+  "change_since_run_close": false,
+  "purpose": "Read-only delayed-billing follow-up after ten unknown receipts; original closing observations preserved."
+}

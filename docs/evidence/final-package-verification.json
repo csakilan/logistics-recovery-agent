@@ -1,0 +1,24 @@
+{
+  "source_commit": "af1bb550674eee1f4220aa3a81ef093f114f2ecd",
+  "archive_file": "logistics-recovery-portfolio-af1bb55.zip",
+  "archive_sha256": "97f82d7f34379c35dc03a88d875b25b0149926b77b330f12c47347af50bb8c2c",
+  "archive_bytes": 8173992,
+  "archive_entries": 343,
+  "zip_integrity": "passed",
+  "private_runtime_git_objects_virtualenvs_excluded": true,
+  "required_tracking_files_present": true,
+  "extracted_package_smoke": {
+    "package_smoke": "passed",
+    "source_loaded_from_extracted_bundle": true,
+    "replay_only": true,
+    "unauthenticated_denial": true,
+    "unapproved_commit_denial": true,
+    "valid_approval_assignment_delivery": true,
+    "restart_assignment_identity": true,
+    "commit_events": 1,
+    "provider_requests": 0
+  },
+  "app_source_fingerprint": "5542c466b46c77325fb96afc003f6105aff5fa490b1e9d91f0d2f6162a96850b",
+  "publication": "local only; destination/visibility pending",
+  "personal_review": "explicitly deferred; assistant-written draft available"
+}
