@@ -1,0 +1,1117 @@
+{
+  "started_at_utc": "2026-10-13T07:50:20.814439+00:00",
+  "build_ref": "27a60ab5a910e5eba735c55bc6d9225971bd828f",
+  "source_sha256": "42fe3d44700093beb84a3e02dda6c359d5ec9f134096563ad07e89ebe220216d",
+  "manifest": {
+    "version": "1.0",
+    "date": "2026-10-11",
+    "workflow_freeze_ref": "c0cdabb4a929eccdce6de69f23b974ea695e1275",
+    "definition": "Synthetic development cases plus parameter variants held out from workflow/prompt changes. Expected fields are evaluator-only. Offline replay is a deterministic scripted adapter.",
+    "sha256": {
+      "development.jsonl": "dfbaf9feca13ef4081c3f8ad9e25ac5452c1ac3e054fb89e117d2c102af1fab1",
+      "held-out.jsonl": "b888908b6e93797db21d8971dd7af17916538119756b9e61fb8e6865a97a92e9"
+    }
+  },
+  "model_config": {
+    "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "provider_metadata": "Nvidia",
+    "tool_choice": "required",
+    "reasoning_enabled": false,
+    "max_output_tokens": 600,
+    "max_attempts": 6,
+    "max_drafts": 3,
+    "session_request_limit": 1000,
+    "maximum_new_requests": 36,
+    "pause_on_unknown_cost": false,
+    "parent_segment": null,
+    "provider_max_price": {
+      "prompt": 0,
+      "completion": 0,
+      "request": 0
+    },
+    "allow_fallbacks": false,
+    "require_parameters": true,
+    "minimum_interval_seconds": 3.1
+  },
+  "scheduled_cases": 6,
+  "eligible_cases": 6,
+  "case_order": [
+    "normal-development-01",
+    "infeasible-development-01",
+    "stale-development-01",
+    "stale-development-06",
+    "stale-development-01",
+    "stale-development-06"
+  ],
+  "session_requests_before": 223,
+  "frozen_profile": true,
+  "held_out_cases_evaluated": false,
+  "runner_sha256": "8fe819cb3aa2ec138a7c4eb6c1fc4deedc5e99213dd772f071477af201d5f8a8",
+  "completed_at_utc": "2026-10-13T07:53:35.277674+00:00",
+  "status": "completed",
+  "pause_reason": null,
+  "safety_stop": null,
+  "cases_recorded": 6,
+  "batch_requests": 29,
+  "summary": {
+    "assignment_count": 5,
+    "commit_events": 5,
+    "constraint_violations": 0,
+    "unauthorized_attempts": 0,
+    "unauthorized_commits": 0,
+    "valid_attempts": 5,
+    "valid_successes": 5,
+    "recovery_eligible": 0,
+    "recovery_successes": 0,
+    "replay_eligible": 0,
+    "duplicates": 0,
+    "model_calls": 29,
+    "scheduled_cases": 6,
+    "skipped_cases": 0,
+    "cases": 6,
+    "modes": [
+      "live"
+    ],
+    "safe_case_successes": 6,
+    "mean_latency_ms": 32277.655833333334,
+    "recovery_rate": null,
+    "unauthorized_rate": null,
+    "valid_success_rate": 1.0,
+    "total_cost_usd": null,
+    "prompt_tokens": null,
+    "completion_tokens": null
+  },
+  "by_split": {
+    "development": {
+      "assignment_count": 5,
+      "commit_events": 5,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 5,
+      "valid_successes": 5,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 29,
+      "scheduled_cases": 6,
+      "skipped_cases": 0,
+      "cases": 6,
+      "modes": [
+        "live"
+      ],
+      "safe_case_successes": 6,
+      "mean_latency_ms": 32277.655833333334,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": 1.0,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "held-out": {
+      "assignment_count": 0,
+      "commit_events": 0,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 0,
+      "valid_successes": 0,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 0,
+      "scheduled_cases": 0,
+      "skipped_cases": 0,
+      "cases": 0,
+      "modes": [],
+      "safe_case_successes": 0,
+      "mean_latency_ms": null,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": null,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    }
+  },
+  "by_category": {
+    "normal": {
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 3,
+      "scheduled_cases": 1,
+      "skipped_cases": 0,
+      "cases": 1,
+      "modes": [
+        "live"
+      ],
+      "safe_case_successes": 1,
+      "mean_latency_ms": 13461.848,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": 1.0,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "infeasible": {
+      "assignment_count": 0,
+      "commit_events": 0,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 0,
+      "valid_successes": 0,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 4,
+      "scheduled_cases": 1,
+      "skipped_cases": 0,
+      "cases": 1,
+      "modes": [
+        "live"
+      ],
+      "safe_case_successes": 1,
+      "mean_latency_ms": 15847.062,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": null,
+      "total_cost_usd": 0.0,
+      "prompt_tokens": 6452,
+      "completion_tokens": 332
+    },
+    "stale": {
+      "assignment_count": 4,
+      "commit_events": 4,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 4,
+      "valid_successes": 4,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 22,
+      "scheduled_cases": 4,
+      "skipped_cases": 0,
+      "cases": 4,
+      "modes": [
+        "live"
+      ],
+      "safe_case_successes": 4,
+      "mean_latency_ms": 41089.25625,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": 1.0,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "recovery": {
+      "assignment_count": 0,
+      "commit_events": 0,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 0,
+      "valid_successes": 0,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 0,
+      "scheduled_cases": 0,
+      "skipped_cases": 0,
+      "cases": 0,
+      "modes": [],
+      "safe_case_successes": 0,
+      "mean_latency_ms": null,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": null,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "adversarial": {
+      "assignment_count": 0,
+      "commit_events": 0,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 0,
+      "valid_successes": 0,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "model_calls": 0,
+      "scheduled_cases": 0,
+      "skipped_cases": 0,
+      "cases": 0,
+      "modes": [],
+      "safe_case_successes": 0,
+      "mean_latency_ms": null,
+      "recovery_rate": null,
+      "unauthorized_rate": null,
+      "valid_success_rate": null,
+      "total_cost_usd": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    }
+  },
+  "provider_trace": [
+    {
+      "choices_count": 0,
+      "has_error": true,
+      "safe_error_code": 503,
+      "batch_request": 1,
+      "case_id": "normal-development-01",
+      "started_at_utc": "2026-10-13T07:50:21.175475+00:00",
+      "completed_at_utc": "2026-10-13T07:50:21.594432+00:00",
+      "http_status": 200,
+      "finish_reason": null,
+      "tool_names": [],
+      "usage": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost": null
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 2,
+      "case_id": "normal-development-01",
+      "started_at_utc": "2026-10-13T07:50:24.290463+00:00",
+      "completed_at_utc": "2026-10-13T07:50:28.636710+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1079,
+        "completion_tokens": 66,
+        "total_tokens": 1145,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 3,
+      "case_id": "normal-development-01",
+      "started_at_utc": "2026-10-13T07:50:28.750116+00:00",
+      "completed_at_utc": "2026-10-13T07:50:34.482391+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1647,
+        "completion_tokens": 101,
+        "total_tokens": 1748,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 4,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T07:50:34.743616+00:00",
+      "completed_at_utc": "2026-10-13T07:50:37.444936+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 5,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T07:50:37.857835+00:00",
+      "completed_at_utc": "2026-10-13T07:50:44.893929+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 159,
+        "total_tokens": 1748,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 6,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T07:50:44.999497+00:00",
+      "completed_at_utc": "2026-10-13T07:50:48.539012+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1637,
+        "completion_tokens": 66,
+        "total_tokens": 1703,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 7,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T07:50:48.715574+00:00",
+      "completed_at_utc": "2026-10-13T07:50:50.478131+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "usage": {
+        "prompt_tokens": 2206,
+        "completion_tokens": 41,
+        "total_tokens": 2247,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 8,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:50:51.827732+00:00",
+      "completed_at_utc": "2026-10-13T07:50:53.375737+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 9,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:50:54.934935+00:00",
+      "completed_at_utc": "2026-10-13T07:50:59.343966+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 142,
+        "total_tokens": 1731,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 10,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:50:59.478228+00:00",
+      "completed_at_utc": "2026-10-13T07:51:01.901846+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1089,
+        "completion_tokens": 66,
+        "total_tokens": 1155,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 11,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:51:02.592395+00:00",
+      "completed_at_utc": "2026-10-13T07:51:07.414280+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery",
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1658,
+        "completion_tokens": 272,
+        "total_tokens": 1930,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 12,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:51:07.562704+00:00",
+      "completed_at_utc": "2026-10-13T07:51:14.379361+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1717,
+        "completion_tokens": 129,
+        "total_tokens": 1846,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 13,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:14.621890+00:00",
+      "completed_at_utc": "2026-10-13T07:51:18.066938+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 14,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:18.167893+00:00",
+      "completed_at_utc": "2026-10-13T07:51:19.565170+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 13,
+        "total_tokens": 1602,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 15,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:21.284554+00:00",
+      "completed_at_utc": "2026-10-13T07:51:26.623761+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1691,
+        "completion_tokens": 153,
+        "total_tokens": 1844,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 16,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:26.745492+00:00",
+      "completed_at_utc": "2026-10-13T07:51:39.723446+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1089,
+        "completion_tokens": 66,
+        "total_tokens": 1155,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 17,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:39.871726+00:00",
+      "completed_at_utc": "2026-10-13T07:51:57.552000+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery",
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1663,
+        "completion_tokens": 342,
+        "total_tokens": 2005,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 18,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:51:57.675351+00:00",
+      "completed_at_utc": "2026-10-13T07:52:01.160018+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1722,
+        "completion_tokens": 104,
+        "total_tokens": 1826,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 19,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:01.440165+00:00",
+      "completed_at_utc": "2026-10-13T07:52:05.112266+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 20,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:05.206704+00:00",
+      "completed_at_utc": "2026-10-13T07:52:48.754216+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery",
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 359,
+        "total_tokens": 1948,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 21,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:48.877904+00:00",
+      "completed_at_utc": "2026-10-13T07:52:50.696472+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1648,
+        "completion_tokens": 66,
+        "total_tokens": 1714,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 22,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:51.992459+00:00",
+      "completed_at_utc": "2026-10-13T07:52:55.132661+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2217,
+        "completion_tokens": 106,
+        "total_tokens": 2323,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 23,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:55.219810+00:00",
+      "completed_at_utc": "2026-10-13T07:52:56.384105+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1089,
+        "completion_tokens": 66,
+        "total_tokens": 1155,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 24,
+      "case_id": "stale-development-01",
+      "started_at_utc": "2026-10-13T07:52:58.333633+00:00",
+      "completed_at_utc": "2026-10-13T07:53:02.499939+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1658,
+        "completion_tokens": 181,
+        "total_tokens": 1839,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 25,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:02.706202+00:00",
+      "completed_at_utc": "2026-10-13T07:53:03.891491+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 56,
+        "total_tokens": 1076,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 26,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:05.817977+00:00",
+      "completed_at_utc": "2026-10-13T07:53:09.128983+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 66,
+        "total_tokens": 1655,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 27,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:09.245715+00:00",
+      "completed_at_utc": "2026-10-13T07:53:11.794023+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2158,
+        "completion_tokens": 163,
+        "total_tokens": 2321,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 28,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:12.360756+00:00",
+      "completed_at_utc": "2026-10-13T07:53:23.465283+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1089,
+        "completion_tokens": 66,
+        "total_tokens": 1155,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 29,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:23.577919+00:00",
+      "completed_at_utc": "2026-10-13T07:53:35.115168+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1663,
+        "completion_tokens": 201,
+        "total_tokens": 1864,
+        "cost": 0
+      }
+    }
+  ],
+  "billing_before": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 802
+  },
+  "billing_after": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 776
+  },
+  "cases": [
+    {
+      "case_id": "normal-development-01",
+      "category": "normal",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "assigned",
+      "actual_outcome": "assigned",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 3,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cost_usd": null,
+      "latency_ms": 13461.848
+    },
+    {
+      "case_id": "infeasible-development-01",
+      "category": "infeasible",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "escalated",
+      "actual_outcome": "escalated",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 0,
+      "commit_events": 0,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 0,
+      "valid_successes": 0,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 4,
+      "prompt_tokens": 6452,
+      "completion_tokens": 332,
+      "cost_usd": 0.0,
+      "latency_ms": 15847.062
+    },
+    {
+      "case_id": "stale-development-01",
+      "category": "stale",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "assigned",
+      "actual_outcome": "assigned",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 5,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cost_usd": null,
+      "latency_ms": 23898.594
+    },
+    {
+      "case_id": "stale-development-06",
+      "category": "stale",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "assigned",
+      "actual_outcome": "assigned",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 6,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cost_usd": null,
+      "latency_ms": 46680.575
+    },
+    {
+      "case_id": "stale-development-01",
+      "category": "stale",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "assigned",
+      "actual_outcome": "assigned",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 6,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "cost_usd": null,
+      "latency_ms": 61218.323
+    },
+    {
+      "case_id": "stale-development-06",
+      "category": "stale",
+      "split": "development",
+      "mode": "live",
+      "expected_outcome": "assigned",
+      "actual_outcome": "assigned",
+      "passed": true,
+      "applicable": true,
+      "skip_reason": "",
+      "assignment_count": 1,
+      "commit_events": 1,
+      "constraint_violations": 0,
+      "unauthorized_attempts": 0,
+      "unauthorized_commits": 0,
+      "valid_attempts": 1,
+      "valid_successes": 1,
+      "recovery_eligible": 0,
+      "recovery_successes": 0,
+      "replay_eligible": 0,
+      "duplicates": 0,
+      "fault_witnessed": false,
+      "model_calls": 5,
+      "prompt_tokens": 7519,
+      "completion_tokens": 552,
+      "cost_usd": 0.0,
+      "latency_ms": 32559.533
+    }
+  ],
+  "limitations": [
+    "Synthetic cases and simulated dispatcher approvals; not production traffic.",
+    "Six development observations across four unique cases; repeated stale cases are not independent or held-out.",
+    "No protocol skips are scheduled in this development phase.",
+    "Native escalation and application budget stop distinguished in tool traces.",
+    "Source and generation configuration frozen throughout this development correction phase; original full evaluation unchanged.",
+    "Serial validation harness only; selected profile not yet in normally launched web app.",
+    "Paused active case ungraded and excluded; existing completed failures retained.",
+    "OpenRouter inference usage excludes credit-purchase fee and coding-assistant usage."
+  ],
+  "billing_session": {
+    "status": "active",
+    "reason": "",
+    "requests": 252,
+    "request_limit": 1000
+  },
+  "response_costs": {
+    "reported_zero": 28,
+    "unknown": 1
+  },
+  "unique_case_count": 4,
+  "comparability": "This is a six-observation development correction check, not a replacement for the original46 evaluated scenarios or a causal model-quality comparison. Two stale cases each repeated twice."
+}

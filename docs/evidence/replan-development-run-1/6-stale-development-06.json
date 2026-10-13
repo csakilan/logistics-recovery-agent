@@ -1,0 +1,234 @@
+{
+  "checked_at_utc": "2026-10-13T07:53:35.243555+00:00",
+  "status": "completed",
+  "build_ref": "27a60ab5a910e5eba735c55bc6d9225971bd828f",
+  "source_sha256": "42fe3d44700093beb84a3e02dda6c359d5ec9f134096563ad07e89ebe220216d",
+  "manifest": {
+    "version": "1.0",
+    "date": "2026-10-11",
+    "workflow_freeze_ref": "c0cdabb4a929eccdce6de69f23b974ea695e1275",
+    "definition": "Synthetic development cases plus parameter variants held out from workflow/prompt changes. Expected fields are evaluator-only. Offline replay is a deterministic scripted adapter.",
+    "sha256": {
+      "development.jsonl": "dfbaf9feca13ef4081c3f8ad9e25ac5452c1ac3e054fb89e117d2c102af1fab1",
+      "held-out.jsonl": "b888908b6e93797db21d8971dd7af17916538119756b9e61fb8e6865a97a92e9"
+    }
+  },
+  "model_config": {
+    "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "provider_metadata": "Nvidia",
+    "tool_choice": "required",
+    "reasoning_enabled": false,
+    "max_output_tokens": 600,
+    "max_attempts": 6,
+    "max_drafts": 3,
+    "session_request_limit": 1000,
+    "maximum_new_requests": 36,
+    "pause_on_unknown_cost": false,
+    "parent_segment": null,
+    "provider_max_price": {
+      "prompt": 0,
+      "completion": 0,
+      "request": 0
+    },
+    "allow_fallbacks": false,
+    "require_parameters": true,
+    "minimum_interval_seconds": 3.1
+  },
+  "case": {
+    "case_id": "stale-development-06",
+    "category": "stale",
+    "split": "development",
+    "mode": "live",
+    "expected_outcome": "assigned",
+    "actual_outcome": "assigned",
+    "passed": true,
+    "applicable": true,
+    "skip_reason": "",
+    "assignment_count": 1,
+    "commit_events": 1,
+    "constraint_violations": 0,
+    "unauthorized_attempts": 0,
+    "unauthorized_commits": 0,
+    "valid_attempts": 1,
+    "valid_successes": 1,
+    "recovery_eligible": 0,
+    "recovery_successes": 0,
+    "replay_eligible": 0,
+    "duplicates": 0,
+    "fault_witnessed": false,
+    "model_calls": 5,
+    "prompt_tokens": 7519,
+    "completion_tokens": 552,
+    "cost_usd": 0.0,
+    "latency_ms": 32559.533
+  },
+  "provider_trace": [
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 25,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:02.706202+00:00",
+      "completed_at_utc": "2026-10-13T07:53:03.891491+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 56,
+        "total_tokens": 1076,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 26,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:05.817977+00:00",
+      "completed_at_utc": "2026-10-13T07:53:09.128983+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 66,
+        "total_tokens": 1655,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 27,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:09.245715+00:00",
+      "completed_at_utc": "2026-10-13T07:53:11.794023+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2158,
+        "completion_tokens": 163,
+        "total_tokens": 2321,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 28,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:12.360756+00:00",
+      "completed_at_utc": "2026-10-13T07:53:23.465283+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1089,
+        "completion_tokens": 66,
+        "total_tokens": 1155,
+        "cost": 0
+      }
+    },
+    {
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "batch_request": 29,
+      "case_id": "stale-development-06",
+      "started_at_utc": "2026-10-13T07:53:23.577919+00:00",
+      "completed_at_utc": "2026-10-13T07:53:35.115168+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1663,
+        "completion_tokens": 201,
+        "total_tokens": 1864,
+        "cost": 0
+      }
+    }
+  ],
+  "workflow_audit": [
+    {
+      "kind": "proposal_created",
+      "payload": {
+        "quote_id": "q2"
+      }
+    },
+    {
+      "kind": "proposal_approved",
+      "payload": {}
+    },
+    {
+      "kind": "replanning_required",
+      "payload": {
+        "code": "stale_proposal"
+      }
+    },
+    {
+      "kind": "proposal_created",
+      "payload": {
+        "quote_id": "q2"
+      }
+    },
+    {
+      "kind": "proposal_approved",
+      "payload": {}
+    },
+    {
+      "kind": "assignment_committed",
+      "payload": {
+        "courier_id": "c2"
+      }
+    }
+  ],
+  "billing_before": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 784
+  },
+  "billing_after": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 776
+  },
+  "scenario_control": {
+    "fault": "none",
+    "attack": "none",
+    "changes": [
+      "advance_clock"
+    ]
+  },
+  "limitations": "Synthetic case; approval/faults simulated by evaluator. Skipped cases ungraded. HTTP usage totals are separate from nullable evaluator usage.",
+  "observation": 6
+}
