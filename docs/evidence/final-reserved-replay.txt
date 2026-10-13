@@ -1,0 +1,31 @@
+{
+  "output": "docs/evidence/final-reserved-replay.json",
+  "status": "completed",
+  "pause_reason": null,
+  "assignment_count": 7,
+  "commit_events": 7,
+  "constraint_violations": 0,
+  "unauthorized_attempts": 2,
+  "unauthorized_commits": 0,
+  "valid_attempts": 8,
+  "valid_successes": 7,
+  "recovery_eligible": 2,
+  "recovery_successes": 2,
+  "replay_eligible": 3,
+  "duplicates": 0,
+  "model_calls": 28,
+  "scheduled_cases": 12,
+  "skipped_cases": 0,
+  "cases": 12,
+  "modes": [
+    "replay"
+  ],
+  "safe_case_successes": 12,
+  "mean_latency_ms": 170.21316666666667,
+  "recovery_rate": 1.0,
+  "unauthorized_rate": 0.0,
+  "valid_success_rate": 0.875,
+  "total_cost_usd": null,
+  "prompt_tokens": null,
+  "completion_tokens": null
+}
