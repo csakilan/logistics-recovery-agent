@@ -1,6 +1,6 @@
 # Free-model selection and spending controls
 
-The builder offers a $10 OpenRouter credit top-up to enable larger free-model testing and requires evaluation to pause if inference uses money. This resumes the previously paused model-selection work. No purchase has been made by the assistant. The latest read-only preflight still reports $0 credits, $0 key/account billed usage and a 50/day free-model allowance.
+The builder offers a $10 OpenRouter credit top-up to enable larger free-model testing and requires evaluation to pause if inference uses money. The user confirmed the top-up is **not yet completed**. No purchase has been made by the assistant. The October 13 closing read-only check reports $0 credits, $0 key/account billed usage and a 50/day free-model allowance: 41 used, nine remaining.
 
 OpenRouter's [official usage guidance](https://openrouter.ai/blog/tutorials/any-coding-agent/) says purchasing $10 in credits raises the free-model allowance to 1,000 requests **per day**, with a 20/minute limit. The same source describes a separate 5.5% credit-purchase fee, minimum $0.80. $10 in credits would therefore normally mean $10.80 before taxes or payment-specific differences; the user should verify the checkout total. Adding credits is cash spending even if subsequent inference remains free.
 
@@ -11,7 +11,7 @@ OpenRouter's [official usage guidance](https://openrouter.ai/blog/tutorials/any-
 | nvidia/nemotron-3-ultra-550b-a55b:free | First candidate: strongest reported agentic index among the eligible tool-capable free entries with an index in the inspected catalog; NVIDIA publishes agentic evaluations. | Free endpoint, tools/tool_choice/max_tokens/reasoning supported. |
 | nvidia/nemotron-3-super-120b-a12b:free | Comparison candidate: NVIDIA specifically documents agent workflows/tool use and configurable reasoning; endpoint also advertises structured outputs. | Free endpoint, required parameters supported. |
 
-The ranking is a nomination, not proof that Ultra is universally best or best for this project. Sources: [current OpenRouter catalog](https://openrouter.ai/api/v1/models), [Ultra free endpoint](https://openrouter.ai/api/v1/models/nvidia/nemotron-3-ultra-550b-a55b:free/endpoints), [Super free endpoint](https://openrouter.ai/api/v1/models/nvidia/nemotron-3-super-120b-a12b:free/endpoints), [NVIDIA Ultra model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4/raw/main/README.md), [NVIDIA Super model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16). Public metadata and sanitized account fields are retained in evidence/free-model-preflight.json and evidence/free-model-endpoints.json.
+The catalog ranking nominated candidates; it did not prove a universal best model. The project pilot below supports choosing Ultra's tested profile for the next evaluation. Sources: [current OpenRouter catalog](https://openrouter.ai/api/v1/models), [Ultra free endpoint](https://openrouter.ai/api/v1/models/nvidia/nemotron-3-ultra-550b-a55b:free/endpoints), [Super free endpoint](https://openrouter.ai/api/v1/models/nvidia/nemotron-3-super-120b-a12b:free/endpoints), [NVIDIA Ultra model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4/raw/main/README.md), [NVIDIA Super model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16). Public metadata and sanitized account fields are retained in evidence/free-model-preflight.json and evidence/free-model-endpoints.json.
 
 ## Test plan
 
@@ -20,6 +20,32 @@ The ranking is a nomination, not proof that Ultra is universally best or best fo
 3. Use at most 1,000 serial requests in this testing session and the actual account's current daily allowance. This is a ceiling, not a target to exhaust. Broader testing requires verifying the top-up and increased allowance first.
 
 The existing application, fixture manifest, six model attempts, three proposal drafts, 600 output tokens and approval/commit checks remain unchanged. The explicitly named profile disables optional reasoning, supported by both candidates, to leave the bounded output available for native tool calls. This changes model and generation configuration compared with earlier Cohere runs; no model-only causal gain is claimed. API metadata does not guarantee correct schema generation or provider availability.
+
+## Completed pilot and unchanged repeat
+
+All runs used source build **2f775ab**, the same fixture manifest and the profile above. The first comparison used 31 of its 36 permitted requests. Ultra's unchanged repeat used ten additional requests, for **41 total**. No held-out scenario was used.
+
+| Candidate / run | Expected outcomes | Feasible case assignments | Requests | Constraint violations |
+|---|---|---|---|---|
+| Ultra, first pilot | 3/3 | 2/2 | 13 | 0/3 |
+| Super, comparison | 1/3 | 0/2 | 18 | 0/3 |
+| Ultra, unchanged repeat | 3/3 | 2/2 | 10 | 0/3 |
+
+| Case | Ultra first result / requests | Super result / requests | Ultra repeat result / requests |
+|---|---|---|---|
+| Normal recovery | Assigned / 3 | Escalated / 6, failed | Assigned / 2 |
+| No feasible courier | Escalated / 6 | Escalated / 6, budget stop | Escalated / 4 |
+| Availability changed after approval | Assigned / 4 | Escalated / 6, failed | Assigned / 4 |
+
+Choose **nvidia/nemotron-3-ultra-550b-a55b:free with optional reasoning disabled** for the next evaluation. It completed both feasible cases twice, and the stale cases required a new proposal and simulated fresh approval before committing once. This is six Ultra case-runs across **three unique synthetic development cases**, not six independent samples or a broad reliability rate.
+
+The failures matter. Ultra's first normal run submitted two terminal proposals in one response; the adapter rejected that response and a later single proposal succeeded. Both infeasible runs proposed an invalid plan before backend rejection and eventual native escalation. The first infeasible run also repeatedly retrieved the same records and used all six requests. Super repeatedly fetched records, never produced a proposal or native escalation, and exhausted the six-attempt budget in all three cases. Its infeasible passing grade comes from the application safely stopping, not demonstrated model recognition of infeasibility.
+
+All 41 HTTP responses reported $0 cost. The per-request ledger, before/after case checks and final read-only reconciliation report $0 key/account billed usage and unchanged $0 balance; **no billing pause occurred**. Raw HTTP usage totals are 60,923 prompt tokens and 2,906 completion tokens, including rejected output. Evaluator usage remains null in Ultra's first normal case after a malformed response; HTTP totals are separate measurements. Recorded case latency includes billing checks and local workflow work, so it is not bare model latency.
+
+The [summary](evidence/free-model-pilot-summary.json) links all nine immutable case reports, including failures, configuration, source hashes, safe tool traces, workflow audits and billing receipts. The [closing account check](evidence/free-model-closing-preflight.json) confirms 41/50 used and nine remaining. These cases contain no live unauthorized-action, replay or lost-response attempts; those outcomes remain verified offline only.
+
+Larger evaluation waits for the user's top-up and a read-only check confirming the increased allowance. Freeze this selected profile before testing reserved held-out cases. The 1,000-request session limit is a ceiling, not a requirement to spend every request. The selected generation profile and money guard have **not** been promoted into the normally launched web application.
 
 ## Spending stop
 
@@ -31,4 +57,4 @@ Account changes can originate outside this run, so a balance change triggers con
 
 ## Verification
 
-Nine injected billing/control checks passed. Full suite: 147 passed in development and clean locked environments. Simulated charge amounts in tests are not actual spending. The focused review found a missing balance-decrease rule; its failing reproduction and passing correction are preserved as AGENT-011. See [review](free-billing-review.md), [RED](evidence/agent-011-red.txt), [GREEN](evidence/agent-011-green.txt), and [clean suite](evidence/free-billing-clean-suite.txt). Live candidate pilot pending.
+Nine injected billing/control checks passed. Full suite: 147 passed in development and clean locked environments before these source-matched pilot runs. Simulated charge amounts in tests are not actual spending. The focused review found a missing balance-decrease rule; its failing reproduction and passing correction are preserved as AGENT-011. See [review](free-billing-review.md), [RED](evidence/agent-011-red.txt), [GREEN](evidence/agent-011-green.txt), and [clean suite](evidence/free-billing-clean-suite.txt).

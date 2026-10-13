@@ -1,6 +1,6 @@
 # Bounded live-model validation
 
-October 12, 2026. Development cases only; approval is simulated by the evaluator. Repeated runs are tuning observations, not independent samples. No credit purchase or Cloud usage occurred. The configured key has a $1 monthly limit, not the initially recommended lifetime limit; no provider settings were changed.
+October 12–13, 2026. Development cases only; approval is simulated by the evaluator. Repeated runs are tuning observations, not independent samples. No credit purchase or Cloud usage occurred. The configured key has a $1 monthly limit, not the initially recommended lifetime limit; no provider settings were changed.
 
 ## Retained runs
 
@@ -50,6 +50,22 @@ One unchanged instrumented diagnostic recovered in two calls with all five requi
 
 A controlled missing-citation regression failed before the refinement while four controls passed. Proposal feedback now names omitted current required citations only when already in the model's retrieved evidence. It neither supplies unseen evidence nor fills in the candidate. All 138 checks passed; [focused review](citation-feedback-review.md) found no issues. This refines AGENT-010 rather than counting a new root cause.
 
-Correction retest pending: normal, stale and infeasible development-01 cases, at most 18 free attempts, same provider and six-attempt/three-draft/600-token incident limits. Default model reasoning and the prompt/schema are unchanged. All older cohorts remain preserved; no held-out tuning or additional feature is introduced.
+A correction retest phase was planned for normal, stale and infeasible development-01 cases, at most 18 free attempts, same provider and six-attempt/three-draft/600-token incident limits. Default model reasoning and the prompt/schema were unchanged. All older cohorts remain preserved; no held-out tuning or additional feature was introduced.
 
 The correction phase stopped after its normal-case retest failed in three calls: a malformed quote ID was followed by an unnecessary escalation, with no assignment and $0 observed usage delta. The [report](evidence/live-citation-feedback-cohere-north-mini-code-free-normal-development-01.json) is retained. This makes 47 prior chat attempts including the one external provider diagnostic; the rest of the cohort was not run. The user paused work for explanation, then authorized researched free-model testing and spending checks. The new shortlist/profile and money-stop controls are documented in [free-model validation](free-model-validation.md); no completed larger evaluation is implied.
+
+## Free-model comparison, October 13
+
+Same three development cases and source build 2f775ab; both candidates used required native tools, optional reasoning disabled, six attempts, three proposal drafts and 600 output tokens. The serial validation harness pinned zero-price routing and reconciled billing after every request. The existing application business checks were unchanged.
+
+| Profile / cohort | Expected outcomes | Feasible case assignments | Requests | Constraint violations |
+|---|---|---|---|---|
+| Nemotron3Ultra free, first pilot | 3/3 | 2/2 | 13 | 0/3 |
+| Nemotron3Super free, comparison | 1/3 | 0/2 | 18 | 0/3 |
+| Ultra, unchanged repeat | 3/3 | 2/2 | 10 | 0/3 |
+
+Ultra is selected for the next evaluation, supported by the pilot and unchanged repeat across three unique synthetic cases. Both stale runs committed once only after replanning and a simulated fresh approval. Ultra still made invalid proposals in both infeasible runs, then called native escalation after backend rejection. Its first normal run also required correction after submitting two terminal proposals. Super never submitted a proposal or native escalation; its infeasible passing outcome is the application's safe budget stop, not a demonstrated model decision.
+
+All **41** new HTTP requests reported $0 cost; all per-request billing observations and the closing account check remained $0. No billing pause, top-up or Cloud use occurred. The account confirms 41/50 free requests used, nine remaining; the user explicitly confirmed the top-up is not yet completed. Across all historical phases there are 88 chat attempts, including the earlier single external provider diagnostic, not 88 independently evaluated cases.
+
+The [comparison and receipts](free-model-validation.md) retain all nine case reports, failures and limitations. Optional reasoning also changed compared with the earlier Cohere configuration, so these results do not isolate model choice as the cause. They are encouraging development evidence, not a broad live reliability/security benchmark or a reliable live-web-demo claim. No held-out scenario was used. Larger evaluation awaits verified funding/allowance; the selected profile and billing guard remain validation-only.
