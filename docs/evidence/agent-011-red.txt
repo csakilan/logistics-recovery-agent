@@ -1,0 +1,22 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________ test_credit_balance_drop_stops_even_when_usage_counters_lag __________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-215/test_cre...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-215/test_credit_balance_drop_stops0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x108ce9fe0>
+repo = <logistics_recovery.repository.Repository object at 0x108a6fe00>
+
+    def test_credit_balance_drop_stops_even_when_usage_counters_lag(settings, tmp_path, valid_candidate, workflow_factory, repo):
+        from logistics_recovery.free_billing import BillingPause
+        model, guard, calls, client = guarded_model(settings, tmp_path, valid_candidate, decrease_credits=True)
+        with client:
+>           with pytest.raises(BillingPause, match="credit_balance_decreased"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE BillingPause
+
+tests/test_free_billing.py:88: Failed
+=========================== short test summary info ============================
+FAILED tests/test_free_billing.py::test_credit_balance_drop_stops_even_when_usage_counters_lag
+1 failed in 0.35s

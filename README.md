@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the current suite passed 136 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; the latest bounded three-case development check matched 2/3 expected outcomes, with one successful recovery and one unnecessary escalation. See [live results](docs/live-results.md). This project demonstrates approval and recovery engineering; live model quality remains a limitation.
+The local prototype is runnable; the current suite passed 147 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. **Live model** uses a configured OpenRouter model; two completed three-case development cohorts each matched 2/3 expected outcomes, and a later single normal-case check still failed. See [live results](docs/live-results.md). This project demonstrates approval and recovery engineering; live model quality remains a limitation.
 
 ## Run locally
 
@@ -57,6 +57,8 @@ Local replay computes a plan from the current tool results, including capacity a
 ## Live model and budget
 
 The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. No purchase or cloud usage occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
+
+The user now offers a $10 credit top-up for larger free-model testing and requires a stop on any actual inference spending. The dedicated serial evaluation harness has zero-price routing and per-request billing reconciliation with a durable pause; it is separate from the normally launched application. See [free-model selection and controls](docs/free-model-validation.md). Funding and the 1,000/day allowance remain unverified.
 
 For live mode, first verify the selected model's tool-calling support and current official input/output rates, set a provider key/account spending limit within the remaining cash budget, then privately set OPENROUTER_API_KEY and OPENROUTER_MODEL and LOGISTICS_MODE=live. Start with one incident. The estimate command sends no requests:
 

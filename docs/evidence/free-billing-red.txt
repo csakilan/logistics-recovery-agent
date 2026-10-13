@@ -1,0 +1,131 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[0.001-False-reported_charge] _
+
+cost = 0.001, increase_usage = False, reason = 'reported_charge'
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_cha...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_charge_or_unknown_cost_st0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10b666400>
+repo = <logistics_recovery.repository.Repository object at 0x10b3f3cb0>
+
+    @pytest.mark.parametrize("cost,increase_usage,reason", [(0.001, False, "reported_charge"), (0, True, "billing_increase"), (None, False, "cost_unknown")])
+    def test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request(cost, increase_usage, reason, settings, tmp_path, valid_candidate, workflow_factory, repo):
+>       from logistics_recovery.free_billing import BillingPause
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:49: ModuleNotFoundError
+_ test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[0-True-billing_increase] _
+
+cost = 0, increase_usage = True, reason = 'billing_increase'
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_cha...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_charge_or_unknown_cost_st1')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10c4d2980>
+repo = <logistics_recovery.repository.Repository object at 0x10c39f4d0>
+
+    @pytest.mark.parametrize("cost,increase_usage,reason", [(0.001, False, "reported_charge"), (0, True, "billing_increase"), (None, False, "cost_unknown")])
+    def test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request(cost, increase_usage, reason, settings, tmp_path, valid_candidate, workflow_factory, repo):
+>       from logistics_recovery.free_billing import BillingPause
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:49: ModuleNotFoundError
+_ test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[None-False-cost_unknown] _
+
+cost = None, increase_usage = False, reason = 'cost_unknown'
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_cha...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_charge_or_unknown_cost_st2')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10c4d2fb0>
+repo = <logistics_recovery.repository.Repository object at 0x10c518cd0>
+
+    @pytest.mark.parametrize("cost,increase_usage,reason", [(0.001, False, "reported_charge"), (0, True, "billing_increase"), (None, False, "cost_unknown")])
+    def test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request(cost, increase_usage, reason, settings, tmp_path, valid_candidate, workflow_factory, repo):
+>       from logistics_recovery.free_billing import BillingPause
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:49: ModuleNotFoundError
+___________ test_zero_cost_control_reaches_approval_and_commits_once ___________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_zer...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_zero_cost_control_reaches0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10c4d2770>
+repo = <logistics_recovery.repository.Repository object at 0x10c397a80>
+service = <logistics_recovery.assignments.AssignmentService object at 0x10c397bb0>
+operator = Operator(id='dispatcher')
+
+    def test_zero_cost_control_reaches_approval_and_commits_once(settings, tmp_path, valid_candidate, workflow_factory, repo, service, operator):
+>       model, guard, calls, client = guarded_model(settings, tmp_path, valid_candidate)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_free_billing.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_zer...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_zero_cost_control_reaches0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+cost = 0, increase_usage = False, limit = 1000
+
+    def guarded_model(settings, tmp_path, valid_candidate, *, cost=0, increase_usage=False, limit=1000):
+>       from logistics_recovery.free_billing import BillingSnapshot, ZeroCostTransport
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:17: ModuleNotFoundError
+_______ test_global_request_budget_stops_before_another_network_request ________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_glo...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_global_request_budget_sto0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+workflow_factory = <function workflow_factory.<locals>.factory at 0x10c4d2c40>
+repo = <logistics_recovery.repository.Repository object at 0x10c5589d0>
+
+    def test_global_request_budget_stops_before_another_network_request(settings, tmp_path, valid_candidate, workflow_factory, repo):
+>       from logistics_recovery.free_billing import BillingPause
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:83: ModuleNotFoundError
+___________ test_a_paused_session_stays_paused_after_reconstruction ____________
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_a_p...sername='dispatcher', mode='replay', model_id=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_a_paused_session_stays_pa0')
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+
+    def test_a_paused_session_stays_paused_after_reconstruction(settings, tmp_path, valid_candidate):
+>       from logistics_recovery.free_billing import BillingPause
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:93: ModuleNotFoundError
+_ test_nonfree_model_or_price_is_rejected_before_inference[test/paid-pricing0] _
+
+model_id = 'test/paid', pricing = {'prompt': '0', 'completion': '0'}
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_nonfree_model_or_price_is0')
+
+    @pytest.mark.parametrize("model_id,pricing", [("test/paid", {"prompt": "0", "completion": "0"}), (MODEL, {"prompt": "0.000001", "completion": "0"})])
+    def test_nonfree_model_or_price_is_rejected_before_inference(model_id, pricing, tmp_path):
+>       from logistics_recovery.free_billing import BillingPause, BillingSnapshot, ZeroCostTransport
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:105: ModuleNotFoundError
+_ test_nonfree_model_or_price_is_rejected_before_inference[test/verified:free-pricing1] _
+
+model_id = 'test/verified:free'
+pricing = {'prompt': '0.000001', 'completion': '0'}
+tmp_path = PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-211/test_nonfree_model_or_price_is1')
+
+    @pytest.mark.parametrize("model_id,pricing", [("test/paid", {"prompt": "0", "completion": "0"}), (MODEL, {"prompt": "0.000001", "completion": "0"})])
+    def test_nonfree_model_or_price_is_rejected_before_inference(model_id, pricing, tmp_path):
+>       from logistics_recovery.free_billing import BillingPause, BillingSnapshot, ZeroCostTransport
+E       ModuleNotFoundError: No module named 'logistics_recovery.free_billing'
+
+tests/test_free_billing.py:105: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_free_billing.py::test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[0.001-False-reported_charge]
+FAILED tests/test_free_billing.py::test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[0-True-billing_increase]
+FAILED tests/test_free_billing.py::test_charge_or_unknown_cost_stops_the_real_workflow_after_one_request[None-False-cost_unknown]
+FAILED tests/test_free_billing.py::test_zero_cost_control_reaches_approval_and_commits_once
+FAILED tests/test_free_billing.py::test_global_request_budget_stops_before_another_network_request
+FAILED tests/test_free_billing.py::test_a_paused_session_stays_paused_after_reconstruction
+FAILED tests/test_free_billing.py::test_nonfree_model_or_price_is_rejected_before_inference[test/paid-pricing0]
+FAILED tests/test_free_billing.py::test_nonfree_model_or_price_is_rejected_before_inference[test/verified:free-pricing1]
+8 failed in 0.41s

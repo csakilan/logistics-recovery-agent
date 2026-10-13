@@ -1,0 +1,56 @@
+{
+  "models": [
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "source": "https://openrouter.ai/api/v1/models/nvidia/nemotron-3-ultra-550b-a55b:free/endpoints",
+      "endpoints": [
+        {
+          "provider": "Nvidia",
+          "pricing": {
+            "prompt": "0",
+            "completion": "0",
+            "discount": 0
+          },
+          "supported_parameters": [
+            "reasoning",
+            "include_reasoning",
+            "temperature",
+            "max_tokens",
+            "seed",
+            "top_p",
+            "tools",
+            "tool_choice",
+            "reasoning_effort"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nvidia/nemotron-3-super-120b-a12b:free",
+      "source": "https://openrouter.ai/api/v1/models/nvidia/nemotron-3-super-120b-a12b:free/endpoints",
+      "endpoints": [
+        {
+          "provider": "Nvidia",
+          "pricing": {
+            "prompt": "0",
+            "completion": "0",
+            "discount": 0
+          },
+          "supported_parameters": [
+            "reasoning",
+            "include_reasoning",
+            "temperature",
+            "max_tokens",
+            "seed",
+            "top_p",
+            "tools",
+            "tool_choice",
+            "structured_outputs",
+            "response_format",
+            "reasoning_effort"
+          ]
+        }
+      ]
+    }
+  ]
+}
