@@ -12,7 +12,7 @@ import httpx
 import logistics_recovery.evaluation as evaluation
 from logistics_recovery.config import Settings
 from logistics_recovery.evaluation import evaluate_case, load_scenarios, summarize
-from logistics_recovery.free_billing import BillingPause
+from logistics_recovery.free_billing import BillingPause, amount
 from logistics_recovery.live import FreeLiveModel, FREE_MODEL, safe_pause_reason
 from logistics_recovery.workflow import Workflow
 
@@ -254,9 +254,9 @@ def main():
               'summary':summarize(results),'cases':[r.model_dump(mode='json')for r in results],
               'observations':observations,'provider_trace':trace.trace,
               'new_request_attempts':ledger_after['requests']-ledger_before['requests'],
-              'response_count':len(events),'zero_cost_receipts':sum(e['reported_cost_usd']=='0'for e in events),
+              'response_count':len(events),'zero_cost_receipts':sum(e['reported_cost_usd'] is not None and amount(e['reported_cost_usd']) == 0 for e in events),
               'unknown_cost_receipts':sum(e['reported_cost_usd']is None for e in events),
-              'response_receipt_cost_usd': None if any(e['reported_cost_usd']is None for e in events)else str(sum(float(e['reported_cost_usd'])for e in events)),
+              'response_receipt_cost_usd': None if any(e['reported_cost_usd']is None for e in events)else str(sum(amount(e['reported_cost_usd']) for e in events)),
               'billing_before':before.safe_dict()if before else None,'billing_after':after,'closing_key':closing_key,
               'session_requests_after':ledger_after['requests'],'ledger_status':ledger_after['status'],
               'limitations':['12 small fresh project-reserved parameter variants, not broad generalization or real company traffic.',
