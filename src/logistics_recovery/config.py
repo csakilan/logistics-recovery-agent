@@ -17,6 +17,7 @@ class Settings(BaseModel):
     mode: Literal["replay", "live"] = "replay"
     provider_key: SecretStr | None = Field(default=None, repr=False)
     model_id: str | None = None
+    billing_state_path: Path | None = None
     timeout_seconds: int = Field(default=30, gt=0, le=30)
     max_context_chars: int = Field(default=24000, gt=0, le=24000)
     max_output_tokens: int = Field(default=600, gt=0, le=600)
@@ -36,4 +37,4 @@ class Settings(BaseModel):
     def from_env(cls) -> "Settings":
         needed = {name: os.environ.get(name) for name in ("LOGISTICS_DATA_DIR", "LOGISTICS_USERNAME", "LOGISTICS_PASSWORD")}
         if not all(needed.values()): raise DomainError("configuration_missing", "Set private application configuration")
-        return cls(data_dir=needed["LOGISTICS_DATA_DIR"], dispatcher_username=needed["LOGISTICS_USERNAME"], dispatcher_password=needed["LOGISTICS_PASSWORD"], origin=os.environ.get("LOGISTICS_ORIGIN", "http://127.0.0.1:8000"), mode=os.environ.get("LOGISTICS_MODE", "replay"), provider_key=os.environ.get("OPENROUTER_API_KEY") or None, model_id=os.environ.get("OPENROUTER_MODEL") or None)
+        return cls(data_dir=needed["LOGISTICS_DATA_DIR"], dispatcher_username=needed["LOGISTICS_USERNAME"], dispatcher_password=needed["LOGISTICS_PASSWORD"], origin=os.environ.get("LOGISTICS_ORIGIN", "http://127.0.0.1:8000"), mode=os.environ.get("LOGISTICS_MODE", "replay"), provider_key=os.environ.get("OPENROUTER_API_KEY") or None, model_id=os.environ.get("OPENROUTER_MODEL") or None, billing_state_path=os.environ.get("LOGISTICS_BILLING_STATE") or None)

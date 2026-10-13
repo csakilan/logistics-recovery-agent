@@ -1,6 +1,6 @@
-"""Zero-cost transport for explicitly authorized, serial evaluation runs.
+"""Zero-cost transport for explicitly authorized, serial live model requests.
 
-This is a validation harness component, not the normal application's transport.
+Used by the local application and the evaluation harness.
 BillingPause deliberately bypasses the workflow's retryable DomainError handler.
 """
 import json

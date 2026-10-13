@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the current suite passed 152 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected profile is still validation-only and a reliable live web demo remains unverified.
+The local prototype is runnable; the latest integration suite is recorded in [web integration verification](docs/live-web-integration.md). **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected free profile and spending protections are now connected to the web app. Browser validation is tracked separately in [web integration verification](docs/live-web-integration.md).
 
 ## Run locally
 
@@ -58,15 +58,28 @@ Local replay computes a plan from the current tool results, including capacity a
 
 The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The full $10 balance remains available and no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
 
-The user requires free models and a stop on actual inference spending. The serial evaluation harness has zero-price routing, billing reconciliation and a durable pause; it is separate from the normally launched application. See [free-model selection and controls](docs/free-model-validation.md). After an unknown receipt paused testing, the user authorized continuation below the 1,000/day request allowance while retaining billing checks; missing costs remain unknown. The completed pilot and larger run total 223 local attempts; provider quota reports 198/1,000 used with $0 billed usage. The $1 monthly key cap is verified and retained.
+The user requires free models and a stop on detected inference spending. Both the web app and live CLI use the tested `nvidia/nemotron-3-ultra-550b-a55b:free` profile with current zero-price/capability verification, required native tools, disabled optional reasoning, zero provider price ceilings and no fallback. Before/after billing checks stop requests on a reported charge, increasing billed usage, declining balance, missing billing verification, or an exhausted allowance. Keep the provider key spending limit at $1 or less; the user's existing $1 monthly cap is retained, never changed by the app. Missing response costs stay unknown under the user's authorized policy.
 
-For live mode, first verify the selected model's tool-calling support and current official input/output rates, set a provider key/account spending limit within the remaining cash budget, then privately set OPENROUTER_API_KEY and OPENROUTER_MODEL and LOGISTICS_MODE=live. Start with one incident. The estimate command sends no requests:
+To switch the same local setup to live mode, privately load your key, keep the existing runtime directory, and restart:
 
 ```sh
-logistics-recovery estimate --cases 1 --input-rate INPUT_USD_PER_MILLION --output-rate OUTPUT_USD_PER_MILLION
+export OPENROUTER_API_KEY="$(python -c 'import getpass; print(getpass.getpass("Private OpenRouter key: "))')"
+export OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+export LOGISTICS_MODE=live
+python -m uvicorn logistics_recovery.web:build_application --factory --host 127.0.0.1 --port 8000 --workers 1
 ```
 
-Deterministic protocol fault cases are excluded from live model-quality comparison and reported as skipped; client enforcement is tested offline. A live batch additionally requires --confirmed-provider-settings, --live-budget-usd, --input-rate and --output-rate. The estimate assumes 12,000 input tokens per attempt; it is not a guaranteed bill. The provider spending limit is the hard monetary boundary. Failed requests count against the six-attempt incident budget; absent usage remains unknown. Do not use free-tier availability as a reliability assumption.
+The private request record defaults to `LOGISTICS_DATA_DIR/free-model-requests.json`. If continuing an existing evaluation session, set `LOGISTICS_BILLING_STATE` to that session's private ledger before launch. Counts and pauses persist across restarts. The local 1,000-request session cap never resets automatically; the provider daily allowance is checked separately. Use one worker and one active app/evaluator per ledger. Opening pages sends no model or billing request; the displayed balance/allowance is explicitly the last verified snapshot. Pauses require review and are never cleared by changing the model or restarting. Keep the record when changing business demo data.
+
+The [full evaluation](docs/full-live-results.md) retains its original43/46 outcomes. A later, separate [replanning check](docs/replanning-correction.md) reached6/6 observations across4 unique development cases using29 free requests; it is not a new held-out benchmark. After it the local cumulative ledger was252 and the provider counter224/1,000, with $0 observed billed usage and $10 balance. These counters measure different scopes and remain separately reported.
+
+The estimate command sends no requests:
+
+```sh
+logistics-recovery estimate --cases 1 --input-rate 0 --output-rate 0
+```
+
+Live CLI evaluation retains explicit `--confirmed-provider-settings`, `--live-budget-usd`, `--input-rate` and `--output-rate` planning flags and now uses the same guarded free runtime. On a billing/quota pause it saves completed cases, marks the active case ungraded, and stops. Completed-case usage excludes the interrupted attempt; the private request ledger retains all reserved provider attempts. Protocol-only cases are explicitly skipped in live grading. Failed or malformed provider responses can still consume the six-attempt incident budget; free-tier availability is not a reliability guarantee.
 
 ## Portfolio evidence
 

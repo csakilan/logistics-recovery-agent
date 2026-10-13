@@ -5,12 +5,11 @@ import os
 from pathlib import Path
 import subprocess
 
-import httpx
-
 from .config import Settings
 from .domain import DomainError, Snapshot
 from .evaluation import evaluate_case, load_scenarios, summarize
-from .model import OpenRouterModel
+from .free_billing import BillingPause
+from .live import FreeLiveModel, safe_pause_reason
 from .repository import Repository
 
 
@@ -60,7 +59,7 @@ def main(argv=None):
         settings = Settings.from_env(); seed_demo(Repository(settings.data_dir/"business.sqlite"), args.fixtures)
         print("Synthetic demo incidents seeded; existing incidents retained."); return
     cases = [c for c in load_scenarios(args.fixtures) if args.split == "all" or c.split == args.split]
-    settings = None; client = None; model = None
+    settings = None; live = None; model = None
     try:
         if args.mode == "live":
             if not args.confirmed_provider_settings or args.live_budget_usd is None or not 0 < args.live_budget_usd <= 35 or args.input_rate is None or args.output_rate is None or min(args.input_rate, args.output_rate) < 0:
@@ -70,20 +69,27 @@ def main(argv=None):
             try: settings = Settings.from_env()
             except (DomainError, ValueError): parser.error("Private live model configuration is missing or invalid")
             if settings.mode != "live": parser.error("Explicitly set LOGISTICS_MODE=live")
-            client = httpx.Client(); model = OpenRouterModel(settings, client)
-        results = [evaluate_case(case, args.mode, model) for case in cases]
+            live = FreeLiveModel(settings); model = live
+        results = []; pause = None; interrupted_case = None
+        for case in cases:
+            try:
+                results.append(evaluate_case(case, args.mode, model))
+            except BillingPause as error:
+                pause = safe_pause_reason(error.reason)
+                interrupted_case = case.id
+                break
         try:
             build = subprocess.check_output(["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL, text=True).strip()
             dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], text=True).strip())
         except (OSError, subprocess.CalledProcessError): build, dirty = "unknown", None
         source_root = Path(__file__).parent
         source_hash = hashlib.sha256(b"".join(p.name.encode()+p.read_bytes() for p in sorted(source_root.glob("*.py")))).hexdigest()
-        report = {"build_ref": build, "working_tree_dirty": dirty, "source_sha256": source_hash, "manifest": json.loads((args.fixtures/"manifest.json").read_text()), "split": args.split, "model_config": {"mode": args.mode, "model_id": settings.model_id if settings else None, "max_attempts": 6, "max_drafts": 3, "max_output_tokens": 600}, "summary": summarize(results), "cases": [r.model_dump(mode="json") for r in results]}
+        report = {"status": "paused" if pause else "completed", "pause_reason": pause, "interrupted_case_id": interrupted_case, "scheduled_cases": len(cases), "build_ref": build, "working_tree_dirty": dirty, "source_sha256": source_hash, "manifest": json.loads((args.fixtures/"manifest.json").read_text()), "split": args.split, "model_config": {"mode": args.mode, "model_id": settings.model_id if settings else None, "max_attempts": 6, "max_drafts": 3, "max_output_tokens": 600, "guarded_free_profile": bool(live)}, "summary": summarize(results), "cases": [r.model_dump(mode="json") for r in results], "live_budget": live.status() if live else None, "usage_scope": "Completed-case usage only; interrupted attempts are ungraded and retained in the persistent private request ledger."}
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2)+"\n")
-        print(json.dumps({"output": str(args.output), **report["summary"]}, indent=2))
+        print(json.dumps({"output": str(args.output), "status": report["status"], "pause_reason": pause, **report["summary"]}, indent=2))
     finally:
-        if client: client.close()
+        if live: live.close()
 
 
 if __name__ == "__main__": main()

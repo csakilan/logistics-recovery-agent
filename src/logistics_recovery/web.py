@@ -1,7 +1,7 @@
 import json
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Literal
+from typing import Callable, Literal
 from urllib.parse import parse_qsl
 from uuid import uuid4
 
@@ -16,6 +16,8 @@ from .assignments import AssignmentService
 from .auth import authenticate
 from .config import Settings
 from .domain import DomainError, Identifier, Nonnegative, Operator, Record, WorkflowRunner
+from .free_billing import BillingPause
+from .live import PAUSE_MESSAGES, safe_pause_reason
 
 
 class DecisionRequest(Record):
@@ -57,7 +59,7 @@ async def read_input(request: Request, record_type):
         raise HTTPException(422, "Invalid request") from None
 
 
-def create_app(settings: Settings, service: AssignmentService, workflow: WorkflowRunner | None = None) -> FastAPI:
+def create_app(settings: Settings, service: AssignmentService, workflow: WorkflowRunner | None = None, *, live_budget_status: Callable[[], dict] | None = None) -> FastAPI:
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
     repository = service.repository
     templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
@@ -79,6 +81,13 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
         status = 404 if error.code.endswith("not_found") else 403 if error.code == "operator_mismatch" else 503 if error.code == "workflow_unavailable" else 409
         return JSONResponse({"code": error.code}, status_code=status)
 
+    @app.exception_handler(BillingPause)
+    async def billing_pause(request: Request, error: BillingPause):
+        reason = safe_pause_reason(error.reason)
+        if request.headers.get("content-type", "").startswith("application/x-www-form-urlencoded") and "incident_id" in request.path_params:
+            return RedirectResponse(f"/incidents/{request.path_params['incident_id']}", status_code=303)
+        return JSONResponse({"status": "paused", "code": reason, "detail": PAUSE_MESSAGES[reason]}, status_code=503)
+
     @app.middleware("http")
     async def private_headers(request: Request, call_next):
         response = await call_next(request)
@@ -97,7 +106,7 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
         return JSONResponse(result)
 
     def context():
-        return {"mode_label": "Scripted replay" if settings.mode == "replay" else "Live model"}
+        return {"mode_label": "Scripted replay" if settings.mode == "replay" else "Live model", "live_budget": live_budget_status() if live_budget_status else None}
 
     @app.get("/")
     def incident_list(request: Request, operator: Operator = Depends(operator_dependency)):
@@ -113,6 +122,9 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
     async def investigate(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency), origin: None = Depends(origin_dependency)):
         repository.snapshot(incident_id)
         if workflow is None: raise DomainError("workflow_unavailable")
+        if live_budget_status and not repository.assignment(incident_id) and repository.terminal_status(incident_id) not in {"rejected", "escalated"}:
+            budget = live_budget_status()
+            if budget["paused"]: raise BillingPause(budget["reason"])
         result = await run_in_threadpool(workflow.start, incident_id)
         return action_response(request, incident_id, result.model_dump(mode="json"))
 
@@ -144,8 +156,7 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
 
 
 def build_application(settings: Settings | None = None) -> FastAPI:
-    import httpx
-    from .model import OpenRouterModel
+    from .live import FreeLiveModel
     from .replay import CurrentReplayModel
     from .repository import Repository
     from .workflow import Workflow
@@ -153,17 +164,17 @@ def build_application(settings: Settings | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
     repository = Repository(settings.data_dir / "business.sqlite")
     service = AssignmentService(repository)
-    client = httpx.Client() if settings.mode == "live" else None
-    model = OpenRouterModel(settings, client) if client else CurrentReplayModel()
+    live = FreeLiveModel(settings) if settings.mode == "live" else None
+    model = live if live else CurrentReplayModel()
     workflow = Workflow(repository, service, model, settings.data_dir / "checkpoints.sqlite")
-    app = create_app(settings, service, workflow)
+    app = create_app(settings, service, workflow, live_budget_status=live.status if live else None)
 
     @asynccontextmanager
     async def lifespan(app):
         try: yield
         finally:
             workflow.close()
-            if client: client.close()
+            if live: live.close()
 
     app.router.lifespan_context = lifespan
     return app

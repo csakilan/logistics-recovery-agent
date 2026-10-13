@@ -1,0 +1,66 @@
+{
+  "base_ref": "255be7f",
+  "source_sha256": "f330a2d5701f0d7bdd5f78324062b492972a2aff31839c93b47e09e1ffdd072f",
+  "feature_red": {
+    "result": "14 failed before implementation; shared/default ledger cap variants also failed before implementation",
+    "cause": "Factory lacked persistent guard, free profile validation and pause response"
+  },
+  "natural_defect_red": [
+    {
+      "id": "AGENT-013",
+      "result": "AttributeError for controlled reasoning:null metadata; no safe persisted pause",
+      "command": "python -m pytest tests/test_live_web.py -k malformed_profile -q --tb=short"
+    },
+    {
+      "id": "AGENT-014",
+      "result": "2 failed: repeated quota/charge pause consumed2 attempts rather than preserving1",
+      "command": "python -m pytest tests/test_live_web.py -k \"quota or reported_charge\" -q --tb=short"
+    }
+  ],
+  "full_suite": [
+    {
+      "environment": "development",
+      "result": "170 passed in11.87s",
+      "exit_code": 0
+    },
+    {
+      "environment": "clean locked",
+      "result": "170 passed in11.83s",
+      "exit_code": 0
+    }
+  ],
+  "test_method": "Actual factory, adapter, graph, business SQLite, checkpoints and guard; only provider/billing HTTP responses controlled. No real spend or model-quality outcome inferred. Empty form test explicitly supplies browser Content-Type; correcting that test did not change product behavior.",
+  "review": "pending",
+  "browser": "pending",
+  "full_suite_after_cli_fix": [
+    {
+      "environment": "development",
+      "result": "174 passed in29.22s",
+      "exit_code": 0
+    },
+    {
+      "environment": "clean locked",
+      "result": "174 passed in29.22s",
+      "exit_code": 0
+    }
+  ],
+  "independent_review": {
+    "focused_checks_passed": 45,
+    "important_findings": [
+      {
+        "id": "AGENT-015",
+        "issue": "Advertised CLI live path bypassed free profile and guard",
+        "reproduction": "Controlled paid model request had no price ceiling/reasoning setting and accepted reported cost0.001; no real network/spend",
+        "resolution": "Four new CLI tests failed first; CLI now uses FreeLiveModel, persists stop and completed cases;174 full checks pass in both environments",
+        "re_review_performed": false
+      }
+    ],
+    "other_web_findings": [],
+    "scope_rulings": [
+      "Single worker and one app/evaluator per ledger; distributed coordination remains excluded.",
+      "No automatic resume/reset; durable pause remains intentional.",
+      "Existing monthly key cap retained; not converted to lifetime.",
+      "Actual browser/provider/billing validation is a separate pending check."
+    ]
+  }
+}
