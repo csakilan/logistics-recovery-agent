@@ -1,0 +1,22 @@
+{
+  "recorded_at_utc": "2026-10-13T19:01:19.449064+00:00",
+  "committed_code_and_evidence": "7dc17c97f60f62acfdfd6566942ca7b01dd84356",
+  "source_and_templates_sha256": "5542c466b46c77325fb96afc003f6105aff5fa490b1e9d91f0d2f6162a96850b",
+  "matches_browser_and_suite_snapshot": true,
+  "observation_metadata_preserved": "The browser and evaluator observations were made on the working tree based at391376c, before this commit. Their original build/dirty metadata is retained; file fingerprints map them to the committed code.",
+  "development_suite": "190 passed in27.08s",
+  "existing_clean_locked_suite": "190 passed in27.07s",
+  "live_model_requests_this_checkpoint": 0,
+  "remaining": [
+    "Fresh reserved final validation",
+    "Builder own attributed review",
+    "Actual narrated walkthrough recording",
+    "Repository destination/visibility and publication"
+  ],
+  "evidence_files_sha256": {
+    "docs/evidence/dispatcher-final-dev.txt": "9523026b822bca8b64e1f6403bab206aedf0f3dfe3009353a6237ab5b4021767",
+    "docs/evidence/dispatcher-final-clean.txt": "82ac204d646299dc95d6af82e1b5cae276c362e1c816778bb8e8be5cde2e9fee",
+    "docs/evidence/dispatcher-offline-baseline.json": "c87f7c7bf3cae9d89c12d3f3c6eb5c0a4d1ff0d1cba94f586872ea7bd55b4a59",
+    "docs/evidence/dispatcher-offline-replay.json": "69a6c7acc8df9f022a4939bdd0a952c8956cae008c48ac0744a3b7a86e30453f"
+  }
+}
