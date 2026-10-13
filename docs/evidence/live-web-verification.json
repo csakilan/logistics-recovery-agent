@@ -31,7 +31,15 @@
   ],
   "test_method": "Actual factory, adapter, graph, business SQLite, checkpoints and guard; only provider/billing HTTP responses controlled. No real spend or model-quality outcome inferred. Empty form test explicitly supplies browser Content-Type; correcting that test did not change product behavior.",
   "review": "pending",
-  "browser": "pending",
+  "browser": {
+    "status": "completed",
+    "evidence": "live-web-browser-run-1/summary.json",
+    "new_requests": 10,
+    "balance": 10,
+    "billed_usage": 0,
+    "infeasible_native_escalation": false,
+    "scope": "Actual Chrome/server/restart/approval/repeat/simulated events;2 synthetic incidents; no broader benchmark"
+  },
   "full_suite_after_cli_fix": [
     {
       "environment": "development",

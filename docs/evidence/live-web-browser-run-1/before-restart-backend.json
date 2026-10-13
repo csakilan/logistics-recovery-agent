@@ -1,0 +1,19 @@
+{
+  "stage": "before-server-restart",
+  "ledger_requests": 256,
+  "ledger_status": "active",
+  "assignment": {
+    "id": "49b10ae260b84497911a3281c3fbda37",
+    "incident_id": "demo-1",
+    "proposal_id": "92c4c171b172445db67aac29b1d7d7ef",
+    "courier_id": "c1",
+    "operation_id": "demo-1",
+    "status": "assigned"
+  },
+  "stats": {
+    "model_calls": 4,
+    "proposal_attempts": 1,
+    "assignments": 1,
+    "commit_events": 1
+  }
+}

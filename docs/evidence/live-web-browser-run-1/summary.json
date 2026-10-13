@@ -1,0 +1,340 @@
+{
+  "checked_at_utc": "2026-10-13T16:57:04.837847+00:00",
+  "status": "completed",
+  "build_ref": "e6ff4add21ca20006b40c70538f92272518e01f6",
+  "source_sha256": "4550b57371a301bf6056c4ecd6c4abd271c41e53581e6fc1ca30ea54935155c5",
+  "model_config": {
+    "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "tool_choice": "required",
+    "reasoning_enabled": false,
+    "max_output_tokens": 600,
+    "total_attempts_per_incident": 6,
+    "total_drafts_per_incident": 3,
+    "provider_max_price": {
+      "prompt": 0,
+      "completion": 0,
+      "request": 0
+    },
+    "allow_fallbacks": false,
+    "pause_on_unknown_cost": false
+  },
+  "browser_method": "Isolated local Chrome, real local HTTP server and process restart; real free-model inference; dispatcher approval and courier events simulated.",
+  "incidents": {
+    "demo-1": {
+      "stats": {
+        "model_calls": 4,
+        "proposal_attempts": 1,
+        "assignments": 1,
+        "commit_events": 1
+      },
+      "assignment": {
+        "id": "49b10ae260b84497911a3281c3fbda37",
+        "incident_id": "demo-1",
+        "proposal_id": "92c4c171b172445db67aac29b1d7d7ef",
+        "courier_id": "c1",
+        "operation_id": "demo-1",
+        "status": "delivered"
+      },
+      "terminal": "assigned",
+      "model_turns": [
+        {
+          "attempt": 2,
+          "kind": "tools"
+        },
+        {
+          "attempt": 3,
+          "kind": "tools"
+        },
+        {
+          "attempt": 4,
+          "kind": "proposal"
+        }
+      ],
+      "model_errors": [
+        {
+          "attempt": 1,
+          "code": "invalid_model_response"
+        }
+      ],
+      "native_escalation": false,
+      "history_counts": {
+        "proposal_approved": 1,
+        "assignment_committed": 1,
+        "simulated_pickup": 1,
+        "simulated_delivery": 1
+      },
+      "couriers": [
+        {
+          "id": "c1",
+          "free_capacity": 3
+        },
+        {
+          "id": "c2",
+          "free_capacity": 3
+        }
+      ]
+    },
+    "demo-2": {
+      "stats": {
+        "model_calls": 6,
+        "proposal_attempts": 0,
+        "assignments": 0,
+        "commit_events": 0
+      },
+      "assignment": null,
+      "terminal": "escalated",
+      "model_turns": [
+        {
+          "attempt": 1,
+          "kind": "tools"
+        },
+        {
+          "attempt": 6,
+          "kind": "tools"
+        }
+      ],
+      "model_errors": [
+        {
+          "attempt": 2,
+          "code": "invalid_model_response"
+        },
+        {
+          "attempt": 3,
+          "code": "invalid_model_response"
+        },
+        {
+          "attempt": 4,
+          "code": "invalid_model_response"
+        },
+        {
+          "attempt": 5,
+          "code": "invalid_model_response"
+        }
+      ],
+      "native_escalation": false,
+      "history_counts": {
+        "proposal_approved": 0,
+        "assignment_committed": 0,
+        "simulated_pickup": 0,
+        "simulated_delivery": 0
+      },
+      "couriers": [
+        {
+          "id": "c1",
+          "free_capacity": 3
+        },
+        {
+          "id": "c2",
+          "free_capacity": 3
+        }
+      ]
+    }
+  },
+  "new_http_attempts": 10,
+  "request_receipts": [
+    {
+      "request": 253,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": null,
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      }
+    },
+    {
+      "request": 254,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      }
+    },
+    {
+      "request": 255,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      }
+    },
+    {
+      "request": 256,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 774
+      }
+    },
+    {
+      "request": 257,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      }
+    },
+    {
+      "request": 258,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": null,
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      }
+    },
+    {
+      "request": 259,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 771
+      }
+    },
+    {
+      "request": 260,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      }
+    },
+    {
+      "request": 261,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      }
+    },
+    {
+      "request": 262,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "http_status": 200,
+      "reported_cost_usd": "0",
+      "before": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      },
+      "after": {
+        "key_usage_usd": "0",
+        "account_usage_usd": "0",
+        "credit_balance_usd": "10",
+        "free_remaining": 770
+      }
+    }
+  ],
+  "response_costs": {
+    "reported_zero": 8,
+    "unknown": 2,
+    "total_reported_cost_usd": null
+  },
+  "cumulative_session_requests": 262,
+  "closing_billing": {
+    "checked_at_utc": "2026-10-13T16:57:04.811701+00:00",
+    "key_usage_usd": 0,
+    "account_usage_usd": 0,
+    "available_balance_usd": 10,
+    "key_limit_usd": 1,
+    "key_limit_reset": "monthly",
+    "provider_daily_limit": 1000,
+    "provider_remaining": 766,
+    "provider_used": 234
+  },
+  "limitations": [
+    "Two synthetic demo incidents, not a held-out/generalization benchmark.",
+    "Infeasible incident was safely escalated by application budget exhaustion after unusable responses; no native model escalation was observed.",
+    "Header bug and failed initial browser run retained; no inferred personal user diagnosis.",
+    "No broad security guarantee or model superiority/savings claim; missing response costs remain unknown.",
+    "Original full43/46 evaluation unchanged."
+  ]
+}

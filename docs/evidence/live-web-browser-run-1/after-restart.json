@@ -1,0 +1,15 @@
+{
+  "stage": "after-restart",
+  "status": "completed",
+  "checked_at_utc": "2026-10-13T16:52:53.474Z",
+  "checks": [
+    "Live mode shown",
+    "Assignment survives server restart",
+    "Repeat investigation retains assignment",
+    "Pickup distinct from assignment",
+    "Simulated delivery recorded",
+    "No spending/quota pause during after-restart",
+    "Infeasible incident escalated"
+  ],
+  "method": "Actual isolated Chrome, local application, real free-model investigations; assignments and courier events simulated. Separate backend evidence verifies IDs, event counts and billing."
+}
