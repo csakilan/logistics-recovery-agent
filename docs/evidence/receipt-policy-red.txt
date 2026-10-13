@@ -1,0 +1,4 @@
+Observed command: python -m pytest -q tests/test_free_billing.py -k missing_receipt
+Before implementing the parameter: 5 failed, 9 deselected in0.36s.
+All five failed with TypeError: ZeroCostTransport.__init__() got an unexpected keyword argument pause_on_unknown_cost.
+These are new feature/control tests, not naturally occurring implementation defects.

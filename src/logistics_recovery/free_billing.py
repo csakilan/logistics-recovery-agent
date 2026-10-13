@@ -53,10 +53,12 @@ class ZeroCostTransport(httpx.BaseTransport):
                  billing_reader: Callable[[], BillingSnapshot], state_path: Path,
                  pricing: dict, *, request_limit: int = 1000,
                  minimum_interval_seconds: float = 3.1,
-                 disable_reasoning: bool = False):
+                 disable_reasoning: bool = False,
+                 pause_on_unknown_cost: bool = True):
         self.model_id, self.transport, self.billing_reader = model_id, transport, billing_reader
         self.path = Path(state_path)
         self.interval, self.disable_reasoning = minimum_interval_seconds, disable_reasoning
+        self.pause_on_unknown_cost = pause_on_unknown_cost
         self.lock = threading.Lock()
         self.last_started = 0.0
         self.state = {"status": "active", "reason": "", "requests": 0, "request_limit": request_limit, "events": []}
@@ -148,7 +150,7 @@ class ZeroCostTransport(httpx.BaseTransport):
             if cost is not None and cost > 0: self._pause("reported_charge")
             if after.key_usage > before.key_usage or after.account_usage > before.account_usage: self._pause("billing_increase")
             if after.credits < before.credits: self._pause("credit_balance_decreased")
-            if cost is None: self._pause("cost_unknown")
+            if cost is None and self.pause_on_unknown_cost: self._pause("cost_unknown")
             return response
 
     def close(self):

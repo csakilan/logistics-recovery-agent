@@ -13,7 +13,7 @@ MODEL = "test/verified:free"
 CHAT = "https://openrouter.ai/api/v1/chat/completions"
 
 
-def guarded_model(settings, tmp_path, valid_candidate, *, cost=0, increase_usage=False, decrease_credits=False, limit=1000):
+def guarded_model(settings, tmp_path, valid_candidate, *, cost=0, increase_usage=False, decrease_credits=False, limit=1000, **guard_options):
     from logistics_recovery.free_billing import BillingSnapshot, ZeroCostTransport
 
     calls = []
@@ -40,7 +40,7 @@ def guarded_model(settings, tmp_path, valid_candidate, *, cost=0, increase_usage
         if returned_cost is not None: usage["cost"] = returned_cost
         return httpx.Response(200, json={"id": "test-generation", "object": "chat.completion", "created": 0, "model": MODEL, "choices": [{"index": 0, "message": {"role": "assistant", "content": None, "tool_calls": tools}, "finish_reason": "tool_calls"}], "usage": usage})
 
-    guard = ZeroCostTransport(MODEL, httpx.MockTransport(provider), billing, tmp_path / "billing-state.json", {"prompt": "0", "completion": "0"}, request_limit=limit, minimum_interval_seconds=0)
+    guard = ZeroCostTransport(MODEL, httpx.MockTransport(provider), billing, tmp_path / "billing-state.json", {"prompt": "0", "completion": "0"}, request_limit=limit, minimum_interval_seconds=0, **guard_options)
     client = httpx.Client(transport=guard)
     config = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": MODEL})
     return OpenRouterModel(config, client), guard, calls, client
@@ -120,3 +120,47 @@ def test_nonfree_model_or_price_is_rejected_before_inference(model_id, pricing, 
     def never_send(request): pytest.fail("Unsafe request reached provider")
     with pytest.raises(BillingPause):
         ZeroCostTransport(model_id, httpx.MockTransport(never_send), lambda: BillingSnapshot(Decimal(0), Decimal(0), Decimal(10), 1000), tmp_path / "state.json", pricing, minimum_interval_seconds=0)
+
+
+def test_missing_receipt_policy_can_reach_approval_without_inventing_cost(settings, tmp_path, valid_candidate, workflow_factory, repo, service, operator):
+    model, guard, calls, client = guarded_model(settings, tmp_path, valid_candidate, cost=None, pause_on_unknown_cost=False)
+    with client:
+        workflow = workflow_factory(model)
+        view = workflow.start("i1")
+        assert view.status == "awaiting_approval"
+        assert repo.assignment("i1") is None
+        service.approve(view.proposal.id, view.proposal.incident_version, operator)
+        assert workflow.resume("i1", view.proposal.id).status == "assigned"
+        assert repo.stats("i1")["commit_events"] == 1
+        assert len(calls) == 2
+        assert guard.state["status"] == "active"
+        assert [e["reported_cost_usd"] for e in guard.state["events"]] == [None, None]
+
+
+@pytest.mark.parametrize("cost,increase_usage,decrease_credits,reason", [
+    (0.001, False, False, "reported_charge"),
+    (None, True, False, "billing_increase"),
+    (None, False, True, "credit_balance_decreased"),
+])
+def test_missing_receipt_policy_still_stops_real_spending(cost, increase_usage, decrease_credits, reason, settings, tmp_path, valid_candidate, workflow_factory, repo):
+    from logistics_recovery.free_billing import BillingPause
+    model, guard, calls, client = guarded_model(settings, tmp_path, valid_candidate, cost=cost, increase_usage=increase_usage, decrease_credits=decrease_credits, pause_on_unknown_cost=False)
+    with client:
+        with pytest.raises(BillingPause, match=reason):
+            workflow_factory(model).start("i1")
+        assert len(calls) == 1
+        assert repo.assignment("i1") is None
+        assert guard.state["status"] == "paused"
+        with pytest.raises(BillingPause):
+            client.post(CHAT, json=calls[0])
+        assert len(calls) == 1
+
+
+def test_missing_receipt_policy_preserves_request_ceiling(settings, tmp_path, valid_candidate, workflow_factory, repo):
+    from logistics_recovery.free_billing import BillingPause
+    model, guard, calls, client = guarded_model(settings, tmp_path, valid_candidate, cost=None, limit=1, pause_on_unknown_cost=False)
+    with client:
+        with pytest.raises(BillingPause, match="request_budget_exhausted"):
+            workflow_factory(model).start("i1")
+        assert len(calls) == 1
+        assert repo.assignment("i1") is None

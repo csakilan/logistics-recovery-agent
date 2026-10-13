@@ -1,0 +1,3 @@
+Development full suite: 152 passed in2.89s.
+Includes default strict receipt behavior, relaxed unknown-receipt authorized control, reported charge/billing increase/balance decrease stops, and preserved request ceiling.
+All monetary fault inputs deliberately injected; no actual inference purchase.
