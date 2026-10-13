@@ -1,0 +1,588 @@
+{
+  "checked_at_utc": "2026-10-13T06:43:40.364538+00:00",
+  "reason": "cost_unknown",
+  "active_case_id": "infeasible-development-05",
+  "provider_trace": [
+    {
+      "batch_request": 1,
+      "case_id": "adversarial-development-01",
+      "started_at_utc": "2026-10-13T06:40:39.181976+00:00",
+      "completed_at_utc": "2026-10-13T06:40:41.536645+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 2,
+      "case_id": "adversarial-development-01",
+      "started_at_utc": "2026-10-13T06:40:42.285554+00:00",
+      "completed_at_utc": "2026-10-13T06:40:45.205438+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 166,
+        "total_tokens": 1755,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 3,
+      "case_id": "adversarial-development-02",
+      "started_at_utc": "2026-10-13T06:40:45.405618+00:00",
+      "completed_at_utc": "2026-10-13T06:40:50.539058+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 4,
+      "case_id": "adversarial-development-02",
+      "started_at_utc": "2026-10-13T06:40:50.933777+00:00",
+      "completed_at_utc": "2026-10-13T06:40:56.746758+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 165,
+        "total_tokens": 1754,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 5,
+      "case_id": "adversarial-development-07",
+      "started_at_utc": "2026-10-13T06:40:57.594361+00:00",
+      "completed_at_utc": "2026-10-13T06:41:01.587291+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 6,
+      "case_id": "adversarial-development-07",
+      "started_at_utc": "2026-10-13T06:41:01.708358+00:00",
+      "completed_at_utc": "2026-10-13T06:41:03.728136+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1606,
+        "completion_tokens": 66,
+        "total_tokens": 1672,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 7,
+      "case_id": "adversarial-development-07",
+      "started_at_utc": "2026-10-13T06:41:04.813498+00:00",
+      "completed_at_utc": "2026-10-13T06:41:10.152339+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2192,
+        "completion_tokens": 154,
+        "total_tokens": 2346,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 8,
+      "case_id": "adversarial-development-08",
+      "started_at_utc": "2026-10-13T06:41:10.537599+00:00",
+      "completed_at_utc": "2026-10-13T06:41:13.898857+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 9,
+      "case_id": "adversarial-development-08",
+      "started_at_utc": "2026-10-13T06:41:14.070201+00:00",
+      "completed_at_utc": "2026-10-13T06:41:16.400348+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 66,
+        "total_tokens": 1655,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 10,
+      "case_id": "adversarial-development-08",
+      "started_at_utc": "2026-10-13T06:41:17.175338+00:00",
+      "completed_at_utc": "2026-10-13T06:41:28.401784+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2158,
+        "completion_tokens": 166,
+        "total_tokens": 2324,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 11,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T06:41:28.781905+00:00",
+      "completed_at_utc": "2026-10-13T06:41:43.648798+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 12,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T06:41:43.803824+00:00",
+      "completed_at_utc": "2026-10-13T06:41:50.052771+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1589,
+        "completion_tokens": 152,
+        "total_tokens": 1741,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 13,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T06:41:50.383133+00:00",
+      "completed_at_utc": "2026-10-13T06:41:55.833997+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_couriers",
+        "get_quotes"
+      ],
+      "usage": {
+        "prompt_tokens": 1637,
+        "completion_tokens": 30,
+        "total_tokens": 1667,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 14,
+      "case_id": "infeasible-development-01",
+      "started_at_utc": "2026-10-13T06:41:56.024609+00:00",
+      "completed_at_utc": "2026-10-13T06:41:58.635329+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "usage": {
+        "prompt_tokens": 1942,
+        "completion_tokens": 38,
+        "total_tokens": 1980,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 15,
+      "case_id": "infeasible-development-02",
+      "started_at_utc": "2026-10-13T06:41:59.129202+00:00",
+      "completed_at_utc": "2026-10-13T06:42:00.585321+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 16,
+      "case_id": "infeasible-development-02",
+      "started_at_utc": "2026-10-13T06:42:02.233353+00:00",
+      "completed_at_utc": "2026-10-13T06:42:04.405194+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "usage": {
+        "prompt_tokens": 1588,
+        "completion_tokens": 62,
+        "total_tokens": 1650,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 17,
+      "case_id": "infeasible-development-03",
+      "started_at_utc": "2026-10-13T06:42:05.336232+00:00",
+      "completed_at_utc": "2026-10-13T06:42:06.998788+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 56,
+        "total_tokens": 1076,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 18,
+      "case_id": "infeasible-development-03",
+      "started_at_utc": "2026-10-13T06:42:08.438224+00:00",
+      "completed_at_utc": "2026-10-13T06:42:19.784379+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1588,
+        "completion_tokens": 158,
+        "total_tokens": 1746,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 19,
+      "case_id": "infeasible-development-03",
+      "started_at_utc": "2026-10-13T06:42:20.122055+00:00",
+      "completed_at_utc": "2026-10-13T06:42:35.304070+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1636,
+        "completion_tokens": 92,
+        "total_tokens": 1728,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 20,
+      "case_id": "infeasible-development-03",
+      "started_at_utc": "2026-10-13T06:42:35.470265+00:00",
+      "completed_at_utc": "2026-10-13T06:42:37.610006+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "usage": {
+        "prompt_tokens": 1684,
+        "completion_tokens": 44,
+        "total_tokens": 1728,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 21,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:42:38.572914+00:00",
+      "completed_at_utc": "2026-10-13T06:42:43.684116+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 56,
+        "total_tokens": 1076,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 22,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:42:43.802692+00:00",
+      "completed_at_utc": "2026-10-13T06:42:57.841708+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1588,
+        "completion_tokens": 66,
+        "total_tokens": 1654,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 23,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:42:57.963690+00:00",
+      "completed_at_utc": "2026-10-13T06:42:59.977363+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 2156,
+        "completion_tokens": 66,
+        "total_tokens": 2222,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 24,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:43:01.071185+00:00",
+      "completed_at_utc": "2026-10-13T06:43:06.579569+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 2724,
+        "completion_tokens": 162,
+        "total_tokens": 2886,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 25,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:43:06.810491+00:00",
+      "completed_at_utc": "2026-10-13T06:43:08.231011+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 2772,
+        "completion_tokens": 66,
+        "total_tokens": 2838,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 26,
+      "case_id": "infeasible-development-04",
+      "started_at_utc": "2026-10-13T06:43:09.914776+00:00",
+      "completed_at_utc": "2026-10-13T06:43:12.353224+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "escalate"
+      ],
+      "usage": {
+        "prompt_tokens": 3340,
+        "completion_tokens": 37,
+        "total_tokens": 3377,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 27,
+      "case_id": "infeasible-development-05",
+      "started_at_utc": "2026-10-13T06:43:13.015977+00:00",
+      "completed_at_utc": "2026-10-13T06:43:16.519408+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 66,
+        "total_tokens": 1086,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 28,
+      "case_id": "infeasible-development-05",
+      "started_at_utc": "2026-10-13T06:43:16.592832+00:00",
+      "completed_at_utc": "2026-10-13T06:43:29.343909+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1527,
+        "completion_tokens": 173,
+        "total_tokens": 1700,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 29,
+      "case_id": "infeasible-development-05",
+      "started_at_utc": "2026-10-13T06:43:29.497457+00:00",
+      "completed_at_utc": "2026-10-13T06:43:39.570151+00:00",
+      "http_status": 200,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery",
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1575,
+        "completion_tokens": 154,
+        "total_tokens": 1729,
+        "cost": 0
+      }
+    },
+    {
+      "batch_request": 30,
+      "case_id": "infeasible-development-05",
+      "started_at_utc": "2026-10-13T06:43:39.677770+00:00",
+      "completed_at_utc": "2026-10-13T06:43:40.304205+00:00",
+      "http_status": 200,
+      "finish_reason": null,
+      "tool_names": [],
+      "usage": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost": null
+      }
+    }
+  ],
+  "workflow_audit": [
+    {
+      "kind": "proposal_invalid",
+      "payload": {
+        "code": "invalid_proposal"
+      }
+    },
+    {
+      "kind": "model_error",
+      "payload": {
+        "code": "invalid_model_response",
+        "attempt": 3
+      }
+    }
+  ]
+}

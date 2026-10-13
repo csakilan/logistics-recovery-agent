@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-13T06:56:16.901492+00:00",
+  "authorization": "User: check request amount and pause above1000; user reconfirms provider cap1/month. Earlier free-only and actual-charge pause retained.",
+  "key_usage_usd": "0",
+  "account_usage_usd": "0",
+  "credit_balance_usd": "10",
+  "key_limit_usd": 1,
+  "key_limit_reset": "monthly",
+  "free_model_daily_requests": {
+    "used": 70,
+    "limit": 1000,
+    "remaining": 930
+  },
+  "session_requests_retained": 71,
+  "previous_pause_reason": "cost_unknown",
+  "previous_ledger_sha256": "40c979485bbaaf14b35ef3a687d8274de0aa3eeea787191d906d1d4d2c4d210b",
+  "new_policy_pause_on_unknown_cost": false,
+  "inference_requests_sent": 0
+}

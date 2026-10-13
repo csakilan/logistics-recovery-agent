@@ -1,0 +1,17 @@
+{
+  "checked_at_utc": "2026-10-13T07:14:18.522680+00:00",
+  "key_usage_usd": "0",
+  "account_usage_usd": "0",
+  "credit_balance_usd": "10",
+  "key_limit_usd": 1,
+  "key_limit_reset": "monthly",
+  "free_model_daily_requests": {
+    "used": 198,
+    "limit": 1000,
+    "remaining": 802
+  },
+  "local_session_attempts": 223,
+  "inference_requests_sent": 0,
+  "purchase_performed": false,
+  "limitation": "Local counter includes all attempted requests. API daily counter is separately observed; unknown response receipts remain unknown."
+}

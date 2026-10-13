@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the current suite passed 147 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. A new free-model comparison selected Nemotron3Ultra's tested profile: it matched 3/3 expected outcomes and repeated 3/3 unchanged; Super matched 1/3 through a safe application stop. These are three reused synthetic development cases, with simulated approval. See [live results](docs/live-results.md). The selected profile is still validation-only; broader live quality and a reliable live web demo remain unverified.
+The local prototype is runnable; the current suite passed 152 checks in both verified environments. **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected profile is still validation-only and a reliable live web demo remains unverified.
 
 ## Run locally
 
@@ -56,9 +56,9 @@ Local replay computes a plan from the current tool results, including capacity a
 
 ## Live model and budget
 
-The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. No purchase or cloud usage occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
+The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The full $10 balance remains available and no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
 
-The user offers a $10 credit top-up for larger free-model testing and requires a stop on any actual inference spending. The dedicated serial evaluation harness has zero-price routing and per-request billing reconciliation with a durable pause; it is separate from the normally launched application. See [free-model selection and controls](docs/free-model-validation.md). The small pilot and repeat used 41 requests at $0 observed inference cost. The user confirms the top-up is not yet completed; the closing account check shows a 50/day allowance with nine remaining. Larger evaluation waits for verified funding and the higher allowance.
+The user requires free models and a stop on actual inference spending. The serial evaluation harness has zero-price routing, billing reconciliation and a durable pause; it is separate from the normally launched application. See [free-model selection and controls](docs/free-model-validation.md). After an unknown receipt paused testing, the user authorized continuation below the 1,000/day request allowance while retaining billing checks; missing costs remain unknown. The completed pilot and larger run total 223 local attempts; provider quota reports 198/1,000 used with $0 billed usage. The $1 monthly key cap is verified and retained.
 
 For live mode, first verify the selected model's tool-calling support and current official input/output rates, set a provider key/account spending limit within the remaining cash budget, then privately set OPENROUTER_API_KEY and OPENROUTER_MODEL and LOGISTICS_MODE=live. Start with one incident. The estimate command sends no requests:
 
