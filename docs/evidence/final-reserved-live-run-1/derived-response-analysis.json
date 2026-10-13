@@ -1,0 +1,25 @@
+{
+  "source_summary_sha256": "9fb083f3dfdb8316c5dea7fa484967a4e965fea2e4159c13e019f13e4e0a2456",
+  "explicit_provider_errors": 10,
+  "http200_with_embedded_503": 9,
+  "http502_errors": 1,
+  "multiple_terminal_responses": 3,
+  "error_requests": [
+    3,
+    5,
+    6,
+    15,
+    21,
+    24,
+    28,
+    34,
+    36,
+    40
+  ],
+  "multiple_terminal_requests": [
+    8,
+    27,
+    38
+  ],
+  "attribution": "Read-only post-run analysis by assistant; original reports and frozen results unchanged. Failures describe the integrated free-model/provider workflow, not an isolated model reasoning benchmark."
+}

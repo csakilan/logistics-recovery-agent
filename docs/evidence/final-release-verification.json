@@ -1,0 +1,21 @@
+{
+  "source_and_templates_sha256": "5542c466b46c77325fb96afc003f6105aff5fa490b1e9d91f0d2f6162a96850b",
+  "case_manifest_verified": true,
+  "frozen_source_unchanged": true,
+  "baseline_replay_expected": 12,
+  "live_expected": 10,
+  "scheduled_live": 12,
+  "fresh_test_suite": "190 passed in27.95s",
+  "files_secret_scanned": 322,
+  "reachable_git_objects_secret_scanned": 629,
+  "actual_private_values_and_provider_key_patterns_absent": true,
+  "tracking_mirrors_match": true,
+  "csv_shape_lf_verified": true,
+  "live_model_requests": 45,
+  "observed_billed_usage_usd": "0",
+  "provider_daily_requests_used": 268,
+  "local_cumulative_requests": 307,
+  "video_seconds": 180,
+  "personal_review": "explicitly deferred; draft assistant-written",
+  "publication": "not yet authorized/configured"
+}

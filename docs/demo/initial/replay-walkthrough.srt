@@ -1,0 +1,54 @@
+1
+00:00:00,000 --> 00:00:12,000
+Automated replay walkthrough. Synthetic deliveries and simulated dispatcher actions.
+This captioned recording is silent; live model results are reported separately.
+
+2
+00:00:12,000 --> 00:00:22,000
+A driver cancelled before pickup. The parcel is still at the depot.
+No replacement courier is assigned yet.
+
+3
+00:00:22,000 --> 00:00:42,000
+Investigation retrieves order, couriers, quotes, policy and events.
+Review the recorded courier, price, arrival estimate and quote expiry.
+
+4
+00:00:42,000 --> 00:01:02,000
+The explanation cannot grant authority. Versioned records support the proposal.
+The dispatcher must approve this specific plan before assignment.
+
+5
+00:01:02,000 --> 00:01:12,000
+A direct backend commit without approval is rejected.
+The screen still awaits approval; no assignment exists.
+
+6
+00:01:12,000 --> 00:01:32,000
+Approval creates one simulated courier assignment.
+Assignment is distinct from pickup and delivery.
+
+7
+00:01:32,000 --> 00:01:47,000
+The server restarts with the same private runtime storage.
+The same assignment survives; a repeated request does not book again.
+
+8
+00:01:47,000 --> 00:02:02,000
+Simulated pickup changes custody to in transit.
+The delivery is still incomplete.
+
+9
+00:02:02,000 --> 00:02:17,000
+Simulated delivery releases reserved capacity.
+History separates proposal, approval, assignment, pickup and delivery.
+
+10
+00:02:17,000 --> 00:02:37,000
+The second incident has no quote within its spending limit.
+Replay escalates for manual review; it does not force a booking.
+
+11
+00:02:37,000 --> 00:03:00,000
+Replay is deterministic. Actual free-model results retain their failures.
+Tests, source hashes and evidence are saved; personal builder review remains separate.

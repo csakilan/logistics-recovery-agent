@@ -2,15 +2,17 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the latest dispatcher version passed190 checks in both verified environments; [interface and browser evidence](docs/dispatcher-interface.md) records the usable screens, stale-approval checks and independent-review correction. **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected free profile and spending protections are now connected to the web app. Browser validation is tracked separately in [web integration verification](docs/live-web-integration.md).
+The local prototype is runnable and passed **190 automated checks from a fresh installation**. On 12 fresh synthetic cases, the protected free Nemotron model matched **10/12 expected outcomes**; the baseline and scripted replay each matched 12/12. Both live failures remain visible, including an approval-check case that never reached its denial attempt. [Final validation and limits](docs/final-validation-results.md) preserve raw counts, traces and billing observations. The earlier 43/46 live report remains separate historical evidence.
+
+**[Watch the three-minute captioned replay walkthrough](docs/demo/final/replay-walkthrough.mp4).** It is an actual silent automated browser recording of synthetic investigations, simulated dispatcher approval, restart/repeat behavior, pickup/delivery and safe escalation. Replay needs no provider key. [Local handoff](docs/portfolio-handoff.md) explains what to inspect, run and review. [Dispatcher and browser evidence](docs/dispatcher-interface.md) records the usable screens and regression-backed review corrections.
 
 ## Run locally
 
 Use Python 3.14 (verified on 3.14.8), from this repository's root:
 
 ```sh
-python3.14 -m venv ../../work/venvs/my-logistics-demo
-source ../../work/venvs/my-logistics-demo/bin/activate
+python3.14 -m venv .venv
+source .venv/bin/activate
 python -m pip install -r requirements.lock
 python -m pip install -e . --no-deps
 export LOGISTICS_DATA_DIR="$(mktemp -d)"
@@ -56,7 +58,7 @@ Local replay computes a plan from the current tool results, including capacity a
 
 ## Live model and budget
 
-The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The last verified provider snapshot showed the full $10 balance and zero billed usage; no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
+The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The final live checkpoint used 45 requests with observed billed usage $0 and unchanged balance $10; 10 receipts omitted cost, so aggregate response cost is unknown. The last verified provider snapshot showed the full $10 balance and zero billed usage; no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
 
 The user requires free models and a stop on detected inference spending. Both the web app and live CLI use the tested `nvidia/nemotron-3-ultra-550b-a55b:free` profile with current zero-price/capability verification, required native tools, disabled optional reasoning, zero provider price ceilings and no fallback. Before/after billing checks stop requests on a reported charge, increasing billed usage, declining balance, missing billing verification, or an exhausted allowance. Keep the provider key spending limit at $1 or less; the user's existing $1 monthly cap is retained, never changed by the app. Missing response costs stay unknown under the user's authorized policy.
 
@@ -71,7 +73,7 @@ python -m uvicorn logistics_recovery.web:build_application --factory --host 127.
 
 The private request record defaults to `LOGISTICS_DATA_DIR/free-model-requests.json`. If continuing an existing evaluation session, set `LOGISTICS_BILLING_STATE` to that session's private ledger before launch. Counts and pauses persist across restarts. The local 1,000-request session cap never resets automatically; the provider daily allowance is checked separately. Use one worker and one active app/evaluator per ledger. Opening pages sends no model or billing request; the displayed balance/allowance is explicitly the last verified snapshot. Pauses require review and are never cleared by changing the model or restarting. Keep the record when changing business demo data.
 
-The [full evaluation](docs/full-live-results.md) retains its original43/46 outcomes. A later, separate [replanning check](docs/replanning-correction.md) reached6/6 observations across4 unique development cases using29 free requests; it is not a new held-out benchmark. After it the local cumulative ledger was252 and the provider counter224/1,000, with $0 observed billed usage and $10 balance. These counters measure different scopes and remain separately reported.
+The [full evaluation](docs/full-live-results.md) retains its original 43/46 outcomes. A later, separate [replanning check](docs/replanning-correction.md) reached 6/6 observations across 4 unique development cases using 29 free requests; it is not a new held-out benchmark. After it the local cumulative ledger was 252 and the provider counter 224/1,000, with $0 observed billed usage and $10 balance. Those historical counters measure different scopes. At the final checkpoint, local cumulative requests were307 and provider daily usage268/1,000, with732 remaining; the separate measured counters are retained in the final report.
 
 The estimate command sends no requests:
 
@@ -83,7 +85,7 @@ Live CLI evaluation retains explicit `--confirmed-provider-settings`, `--live-bu
 
 ## Portfolio evidence
 
-[Case studies](docs/case-studies.md) explain a lost-response recovery, ambiguous custody correction and approval boundary. [Demo script](docs/demo-script.md) gives a three-minute walkthrough. [Employer principles](docs/employer-principles.md) ties the review priorities to published engineering expectations. [Judgment tracker](outputs/engineering-judgment-tracker.md) separates agent findings, deliberate fault tests and the builder's own confirmed contributions. Agent-made corrections cannot be claimed as personally diagnosed until the builder does and records their own review.
+[Case studies](docs/case-studies.md) explain a lost-response recovery, ambiguous custody correction and approval boundary. [Demo script](docs/demo-script.md) accompanies the actual captioned replay video. [Résumé draft](docs/portfolio-resume-draft.md) offers evidence-supported project wording without invented personal diagnoses. [Employer principles](docs/employer-principles.md) ties the review priorities to published engineering expectations. [Judgment tracker](outputs/engineering-judgment-tracker.md) separates agent findings, deliberate fault tests and the builder's own confirmed contributions. Agent-made corrections cannot be claimed as personally diagnosed until the builder does and records their own review.
 
 [Interview preparation](docs/interview-answer.md) explains the response-contract diagnosis, bounded revisions and verification strategy. It is an assistant-written draft, with attribution kept separate from the builder's own review.
 

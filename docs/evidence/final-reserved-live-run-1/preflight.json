@@ -1,0 +1,13 @@
+{
+  "checked_at_utc": "2026-10-13T19:11:45.789270+00:00",
+  "profile_verified": true,
+  "billing": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 766
+  },
+  "key_limit": 1,
+  "key_limit_reset": "monthly",
+  "provider_daily_limit": 1000
+}

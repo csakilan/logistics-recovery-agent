@@ -10,4 +10,6 @@
 
 2:20–3:00 — Open results and the custody case study. Report 0 duplicate commits in 10 replay cases and 7/7 injected recoveries per mode, with a successful authorized control. Both the rules baseline and replay matched the 50 synthetic outcomes. Explain the custody root cause and failing/passing evidence. Attribute the assistant's diagnosis accurately; add your own recorded reasoning only after personally reviewing it.
 
-If displaying commands, use the private runtime and credentials from the README. Do not record passwords, provider keys or private environment files. Screenshots and browser checks are saved in dispatcher-interface.md; no actual narrated recording has been created.
+If displaying commands, use the private runtime and credentials from the README. Do not record passwords, provider keys or private environment files. Screenshots and browser checks are saved in dispatcher-interface.md; a three-minute silent captioned automated replay recording is now saved at demo/final/replay-walkthrough.mp4. A narrated builder recording has not been created.
+
+The recorded walkthrough uses the current deterministic replay application and a fresh environment. Its8 behavior checks and actual restart are saved in demo/final/recording-evidence.json; media inspection is saved beside it. The initial caption layout is retained in demo/initial. Live validation is a separate10/12 frozen-case report; the recording is not a live-model quality result or a personal review.

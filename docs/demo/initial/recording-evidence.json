@@ -1,0 +1,133 @@
+{
+  "status": "completed",
+  "recorded_at_utc": "2026-10-13T19:21:39.696Z",
+  "mode": "replay",
+  "synthetic": true,
+  "silent": true,
+  "caption_author": "assistant",
+  "operator_actions": "automated browser simulation, not a personal builder review",
+  "duration_seconds": 180,
+  "captured_frames": 360,
+  "capture_fps": 2,
+  "encoded_fps": 10,
+  "chapters": [
+    {
+      "name": "Dispatch desk",
+      "seconds": 12,
+      "text": "Automated replay walkthrough. Synthetic deliveries and simulated dispatcher actions.\nThis captioned recording is silent; live model results are reported separately.",
+      "start_seconds": 0
+    },
+    {
+      "name": "Review cancellation",
+      "seconds": 10,
+      "text": "A driver cancelled before pickup. The parcel is still at the depot.\nNo replacement courier is assigned yet.",
+      "start_seconds": 12
+    },
+    {
+      "name": "Investigate and inspect facts",
+      "seconds": 20,
+      "text": "Investigation retrieves order, couriers, quotes, policy and events.\nReview the recorded courier, price, arrival estimate and quote expiry.",
+      "start_seconds": 22
+    },
+    {
+      "name": "Evidence and approval boundary",
+      "seconds": 20,
+      "text": "The explanation cannot grant authority. Versioned records support the proposal.\nThe dispatcher must approve this specific plan before assignment.",
+      "start_seconds": 42
+    },
+    {
+      "name": "Unapproved commit blocked",
+      "seconds": 10,
+      "text": "A direct backend commit without approval is rejected.\nThe screen still awaits approval; no assignment exists.",
+      "start_seconds": 62
+    },
+    {
+      "name": "Approve one assignment",
+      "seconds": 20,
+      "text": "Approval creates one simulated courier assignment.\nAssignment is distinct from pickup and delivery.",
+      "start_seconds": 72
+    },
+    {
+      "name": "Restart and repeat",
+      "seconds": 15,
+      "text": "The server restarts with the same private runtime storage.\nThe same assignment survives; a repeated request does not book again.",
+      "start_seconds": 92
+    },
+    {
+      "name": "Simulated pickup",
+      "seconds": 15,
+      "text": "Simulated pickup changes custody to in transit.\nThe delivery is still incomplete.",
+      "start_seconds": 107
+    },
+    {
+      "name": "Simulated delivery and history",
+      "seconds": 15,
+      "text": "Simulated delivery releases reserved capacity.\nHistory separates proposal, approval, assignment, pickup and delivery.",
+      "start_seconds": 122
+    },
+    {
+      "name": "Safe infeasible escalation",
+      "seconds": 20,
+      "text": "The second incident has no quote within its spending limit.\nReplay escalates for manual review; it does not force a booking.",
+      "start_seconds": 137
+    },
+    {
+      "name": "Portfolio evidence",
+      "seconds": 23,
+      "text": "Replay is deterministic. Actual free-model results retain their failures.\nTests, source hashes and evidence are saved; personal builder review remains separate.",
+      "start_seconds": 157
+    }
+  ],
+  "checks": [
+    "Initial state has no assignment",
+    "Proposal waits for approval",
+    "Unapproved commit denied with valid authenticated request",
+    "Approved assignment created once",
+    "Restart and repeat preserve identity and counts",
+    "Pickup custody is in transit",
+    "Delivery releases capacity once",
+    "Infeasible replay incident escalates"
+  ],
+  "before_restart": {
+    "assignment": {
+      "id": "2ffebc0b8df849cdb6455d20b49d360d",
+      "incident_id": "demo-1",
+      "proposal_id": "d13f0f5c3b574aa49b24af7de7d811ef",
+      "courier_id": "c1",
+      "operation_id": "demo-1",
+      "status": "assigned"
+    },
+    "stats": {
+      "model_calls": 2,
+      "proposal_attempts": 1,
+      "assignments": 1,
+      "commit_events": 1
+    },
+    "custody": "depot",
+    "capacity": 2
+  },
+  "after": {
+    "assignment": {
+      "id": "2ffebc0b8df849cdb6455d20b49d360d",
+      "incident_id": "demo-1",
+      "proposal_id": "d13f0f5c3b574aa49b24af7de7d811ef",
+      "courier_id": "c1",
+      "operation_id": "demo-1",
+      "status": "delivered"
+    },
+    "stats": {
+      "model_calls": 2,
+      "proposal_attempts": 1,
+      "assignments": 1,
+      "commit_events": 1
+    },
+    "custody": "delivered",
+    "capacity": 3
+  },
+  "live_model_requests": 0,
+  "limitations": [
+    "Paced actual local-browser screen recording; action/setup gaps excluded from chapter pacing, not a latency benchmark.",
+    "No narrated builder voice or personal engineering-review attribution.",
+    "Replay outcome is separate from real-model performance and its preserved failures."
+  ]
+}

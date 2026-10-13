@@ -1,0 +1,17 @@
+Obtaining file:///Users/ak/Documents/Codex/2026-10-09/a-lot-of-companies-are-now/outputs/logistics-recovery
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: logistics-recovery
+  Building editable for logistics-recovery (pyproject.toml): started
+  Building editable for logistics-recovery (pyproject.toml): finished with status 'done'
+  Created wheel for logistics-recovery: filename=logistics_recovery-0.1.0-0.editable-py3-none-any.whl size=1803 sha256=06035829ced134ec34c4f5a386a03f95aa0955ac778c72113f5a19f7a665aecc
+  Stored in directory: /private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pip-ephem-wheel-cache-95gm956e/wheels/ea/1b/b9/cbe15e509eabb53d55ca78579cd1ea4c3d3ce8c70d39f52bad
+Successfully built logistics-recovery
+Installing collected packages: logistics-recovery
+Successfully installed logistics-recovery-0.1.0

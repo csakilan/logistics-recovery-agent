@@ -1,0 +1,64 @@
+{
+  "started_at_utc": "2026-10-13T19:11:45.384897+00:00",
+  "build_ref": "bfea96e086b0436e81b61b761df65457713d8a9e",
+  "source_and_templates_sha256": "5542c466b46c77325fb96afc003f6105aff5fa490b1e9d91f0d2f6162a96850b",
+  "manifest": {
+    "version": "final-reserved-1.0",
+    "date": "2026-10-13",
+    "workflow_freeze_ref": "40364e09ff38ad52aa7d271a5035de32d29689ee",
+    "definition": "12 fresh project-reserved synthetic parameter variants, hand-labelled before any run. Same workflow, not broad generalization or independent real-world traffic. No tuning/repeats/replacements on their outcomes. All evaluator-only expectations stay outside model inputs.",
+    "sha256": {
+      "held-out.jsonl": "ccb9478f0aa2302ea902dc0b4be806db53b8de0ab42fc66902eb279a6ba671aa"
+    },
+    "maximum_new_live_requests": 72,
+    "case_order": [
+      "final-fr01",
+      "final-fr02",
+      "final-fr03",
+      "final-fr04",
+      "final-fr05",
+      "final-fr06",
+      "final-fr07",
+      "final-fr08",
+      "final-fr09",
+      "final-fr10",
+      "final-fr11",
+      "final-fr12"
+    ]
+  },
+  "case_order": [
+    "final-fr01",
+    "final-fr02",
+    "final-fr03",
+    "final-fr04",
+    "final-fr05",
+    "final-fr06",
+    "final-fr07",
+    "final-fr08",
+    "final-fr09",
+    "final-fr10",
+    "final-fr11",
+    "final-fr12"
+  ],
+  "runner_sha256": "76e2d4961b47cde78201739c836ce7d17a482aaa7d9a1e9293f0bd8a4bab5ced",
+  "session_requests_before": 262,
+  "model_config": {
+    "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "tool_choice": "required",
+    "reasoning_enabled": false,
+    "max_output_tokens": 600,
+    "max_attempts": 6,
+    "max_drafts": 3,
+    "maximum_new_requests": 72,
+    "session_request_limit": 1000,
+    "provider_max_price": {
+      "prompt": 0,
+      "completion": 0,
+      "request": 0
+    },
+    "allow_fallbacks": false,
+    "require_parameters": true,
+    "pause_on_unknown_cost": false,
+    "runtime": "FreeLiveModel"
+  }
+}

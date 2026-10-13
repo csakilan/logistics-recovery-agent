@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-10-13T19:08:50.398406+00:00",
+  "status": "verified",
+  "model_id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "current_profile_verified": true,
+  "billing": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 766
+  },
+  "key_limit": 1,
+  "key_limit_reset": "monthly",
+  "provider_daily_limit": 1000,
+  "provider_daily_requests_used": 234,
+  "session_requests_before": 262,
+  "maximum_new_live_requests": 72,
+  "inference_requests_sent": 0,
+  "runner_sha256": "a92ee05b75ed6979c5734bda7de6d432a95af4690806e810cd9cb98584cb1052"
+}

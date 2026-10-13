@@ -1,0 +1,615 @@
+{
+  "case": {
+    "case_id": "final-fr05",
+    "category": "stale",
+    "split": "held-out",
+    "mode": "live",
+    "expected_outcome": "assigned",
+    "actual_outcome": "assigned",
+    "passed": true,
+    "applicable": true,
+    "skip_reason": "",
+    "assignment_count": 1,
+    "commit_events": 1,
+    "constraint_violations": 0,
+    "unauthorized_attempts": 0,
+    "unauthorized_commits": 0,
+    "valid_attempts": 1,
+    "valid_successes": 1,
+    "recovery_eligible": 0,
+    "recovery_successes": 0,
+    "replay_eligible": 0,
+    "duplicates": 0,
+    "fault_witnessed": false,
+    "model_calls": 5,
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "cost_usd": null,
+    "latency_ms": 31813.681
+  },
+  "checked_at_utc": "2026-10-13T19:13:59.104231+00:00",
+  "provider_trace": [
+    {
+      "request": 14,
+      "case_id": "final-fr05",
+      "started_at_utc": "2026-10-13T19:13:27.438668+00:00",
+      "completed_at_utc": "2026-10-13T19:13:31.506253+00:00",
+      "http_status": 200,
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1022,
+        "completion_tokens": 66,
+        "total_tokens": 1088,
+        "cost": 0
+      }
+    },
+    {
+      "request": 15,
+      "case_id": "final-fr05",
+      "started_at_utc": "2026-10-13T19:13:31.710449+00:00",
+      "completed_at_utc": "2026-10-13T19:13:31.844593+00:00",
+      "http_status": 502,
+      "choices_count": 0,
+      "has_error": true,
+      "safe_error_code": 502,
+      "finish_reason": null,
+      "tool_names": [],
+      "usage": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost": null
+      }
+    },
+    {
+      "request": 16,
+      "case_id": "final-fr05",
+      "started_at_utc": "2026-10-13T19:13:34.817347+00:00",
+      "completed_at_utc": "2026-10-13T19:13:43.566903+00:00",
+      "http_status": 200,
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1656,
+        "completion_tokens": 226,
+        "total_tokens": 1882,
+        "cost": 0
+      }
+    },
+    {
+      "request": 17,
+      "case_id": "final-fr05",
+      "started_at_utc": "2026-10-13T19:13:43.734732+00:00",
+      "completed_at_utc": "2026-10-13T19:13:48.301439+00:00",
+      "http_status": 200,
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "get_order",
+        "get_couriers",
+        "get_quotes",
+        "get_policy",
+        "get_events"
+      ],
+      "usage": {
+        "prompt_tokens": 1091,
+        "completion_tokens": 66,
+        "total_tokens": 1157,
+        "cost": 0
+      }
+    },
+    {
+      "request": 18,
+      "case_id": "final-fr05",
+      "started_at_utc": "2026-10-13T19:13:48.936668+00:00",
+      "completed_at_utc": "2026-10-13T19:13:58.816389+00:00",
+      "http_status": 200,
+      "choices_count": 1,
+      "has_error": false,
+      "safe_error_code": null,
+      "finish_reason": "tool_calls",
+      "tool_names": [
+        "propose_recovery"
+      ],
+      "usage": {
+        "prompt_tokens": 1725,
+        "completion_tokens": 205,
+        "total_tokens": 1930,
+        "cost": 0
+      }
+    }
+  ],
+  "business_evidence": {
+    "history": [
+      {
+        "kind": "source_event",
+        "payload": {
+          "id": "fr05-cancel",
+          "job_id": "fr05-job",
+          "kind": "cancellation",
+          "at_min": 3,
+          "custody": "depot",
+          "version": 1,
+          "note": "Courier cancelled before pickup; all parcels remain at the depot."
+        }
+      },
+      {
+        "kind": "model_turn",
+        "payload": {
+          "attempt": 1,
+          "kind": "tools",
+          "usage": {
+            "prompt_tokens": 1022,
+            "completion_tokens": 66,
+            "cost_usd": "0"
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_order",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-job",
+                "parcel_count": 3,
+                "deadline_min": 45,
+                "custody": "depot",
+                "version": 4
+              }
+            ],
+            "evidence_ids": [
+              "job:fr05-job@4"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_couriers",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-a",
+                "free_capacity": 3,
+                "available": true,
+                "version": 5
+              },
+              {
+                "id": "fr05-b",
+                "free_capacity": 3,
+                "available": true,
+                "version": 7
+              }
+            ],
+            "evidence_ids": [
+              "courier:fr05-a@5",
+              "courier:fr05-b@7"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_quotes",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-quote-a",
+                "job_id": "fr05-job",
+                "courier_id": "fr05-a",
+                "cost_cents": 990,
+                "travel_min": 25,
+                "expires_at_min": 13,
+                "version": 3
+              },
+              {
+                "id": "fr05-quote-b",
+                "job_id": "fr05-job",
+                "courier_id": "fr05-b",
+                "cost_cents": 1335,
+                "travel_min": 22,
+                "expires_at_min": 15,
+                "version": 2
+              }
+            ],
+            "evidence_ids": [
+              "quote:fr05-quote-a@3",
+              "quote:fr05-quote-b@2"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_policy",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-policy",
+                "max_cost_cents": 1500,
+                "version": 2
+              }
+            ],
+            "evidence_ids": [
+              "policy:fr05-policy@2"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_events",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-cancel",
+                "job_id": "fr05-job",
+                "kind": "cancellation",
+                "at_min": 3,
+                "custody": "depot",
+                "version": 1,
+                "note": "Courier cancelled before pickup; all parcels remain at the depot."
+              }
+            ],
+            "evidence_ids": [
+              "event:fr05-cancel@1"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "model_error",
+        "payload": {
+          "attempt": 2,
+          "code": "provider_unavailable"
+        }
+      },
+      {
+        "kind": "model_turn",
+        "payload": {
+          "attempt": 3,
+          "kind": "proposal",
+          "usage": {
+            "prompt_tokens": 1656,
+            "completion_tokens": 226,
+            "cost_usd": "0"
+          }
+        }
+      },
+      {
+        "kind": "proposal_created",
+        "payload": {
+          "proposal_id": "ee0ebb163f1147e0aba459ec0454e94e",
+          "quote_id": "fr05-quote-a"
+        }
+      },
+      {
+        "kind": "proposal_approved",
+        "payload": {
+          "proposal_id": "ee0ebb163f1147e0aba459ec0454e94e",
+          "operator_id": "dispatcher"
+        }
+      },
+      {
+        "kind": "replanning_required",
+        "payload": {
+          "code": "stale_proposal"
+        }
+      },
+      {
+        "kind": "model_turn",
+        "payload": {
+          "attempt": 4,
+          "kind": "tools",
+          "usage": {
+            "prompt_tokens": 1091,
+            "completion_tokens": 66,
+            "cost_usd": "0"
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_order",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-job",
+                "parcel_count": 3,
+                "deadline_min": 45,
+                "custody": "depot",
+                "version": 4
+              }
+            ],
+            "evidence_ids": [
+              "job:fr05-job@4"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_couriers",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-a",
+                "free_capacity": 3,
+                "available": false,
+                "version": 6
+              },
+              {
+                "id": "fr05-b",
+                "free_capacity": 3,
+                "available": true,
+                "version": 7
+              }
+            ],
+            "evidence_ids": [
+              "courier:fr05-a@6",
+              "courier:fr05-b@7"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_quotes",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-quote-a",
+                "job_id": "fr05-job",
+                "courier_id": "fr05-a",
+                "cost_cents": 990,
+                "travel_min": 25,
+                "expires_at_min": 13,
+                "version": 3
+              },
+              {
+                "id": "fr05-quote-b",
+                "job_id": "fr05-job",
+                "courier_id": "fr05-b",
+                "cost_cents": 1335,
+                "travel_min": 22,
+                "expires_at_min": 15,
+                "version": 2
+              }
+            ],
+            "evidence_ids": [
+              "quote:fr05-quote-a@3",
+              "quote:fr05-quote-b@2"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_policy",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-policy",
+                "max_cost_cents": 1500,
+                "version": 2
+              }
+            ],
+            "evidence_ids": [
+              "policy:fr05-policy@2"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "tool_result",
+        "payload": {
+          "tool": "get_events",
+          "result": {
+            "records": [
+              {
+                "id": "fr05-cancel",
+                "job_id": "fr05-job",
+                "kind": "cancellation",
+                "at_min": 3,
+                "custody": "depot",
+                "version": 1,
+                "note": "Courier cancelled before pickup; all parcels remain at the depot."
+              }
+            ],
+            "evidence_ids": [
+              "event:fr05-cancel@1"
+            ],
+            "incident_version": 1,
+            "now_min": 3
+          }
+        }
+      },
+      {
+        "kind": "model_turn",
+        "payload": {
+          "attempt": 5,
+          "kind": "proposal",
+          "usage": {
+            "prompt_tokens": 1725,
+            "completion_tokens": 205,
+            "cost_usd": "0"
+          }
+        }
+      },
+      {
+        "kind": "proposal_created",
+        "payload": {
+          "proposal_id": "af7d196ac28e43b6ae1de4f8c1cdcf1b",
+          "quote_id": "fr05-quote-b"
+        }
+      },
+      {
+        "kind": "proposal_approved",
+        "payload": {
+          "proposal_id": "af7d196ac28e43b6ae1de4f8c1cdcf1b",
+          "operator_id": "dispatcher"
+        }
+      },
+      {
+        "kind": "assignment_committed",
+        "payload": {
+          "id": "315bbf22653c4fc7ab06cdc795cc969d",
+          "incident_id": "final-fr05",
+          "proposal_id": "af7d196ac28e43b6ae1de4f8c1cdcf1b",
+          "courier_id": "fr05-b",
+          "operation_id": "final-fr05",
+          "status": "assigned"
+        }
+      }
+    ],
+    "snapshot_after": {
+      "incident_id": "final-fr05",
+      "incident_version": 2,
+      "now_min": 3,
+      "job": {
+        "id": "fr05-job",
+        "parcel_count": 3,
+        "deadline_min": 45,
+        "custody": "depot",
+        "version": 4
+      },
+      "couriers": [
+        {
+          "id": "fr05-a",
+          "free_capacity": 3,
+          "available": false,
+          "version": 6
+        },
+        {
+          "id": "fr05-b",
+          "free_capacity": 0,
+          "available": true,
+          "version": 8
+        }
+      ],
+      "quotes": [
+        {
+          "id": "fr05-quote-a",
+          "job_id": "fr05-job",
+          "courier_id": "fr05-a",
+          "cost_cents": 990,
+          "travel_min": 25,
+          "expires_at_min": 13,
+          "version": 3
+        },
+        {
+          "id": "fr05-quote-b",
+          "job_id": "fr05-job",
+          "courier_id": "fr05-b",
+          "cost_cents": 1335,
+          "travel_min": 22,
+          "expires_at_min": 15,
+          "version": 2
+        }
+      ],
+      "policy": {
+        "id": "fr05-policy",
+        "max_cost_cents": 1500,
+        "version": 2
+      },
+      "events": [
+        {
+          "id": "fr05-cancel",
+          "job_id": "fr05-job",
+          "kind": "cancellation",
+          "at_min": 3,
+          "custody": "depot",
+          "version": 1,
+          "note": "Courier cancelled before pickup; all parcels remain at the depot."
+        }
+      ]
+    },
+    "assignment": {
+      "id": "315bbf22653c4fc7ab06cdc795cc969d",
+      "incident_id": "final-fr05",
+      "proposal_id": "af7d196ac28e43b6ae1de4f8c1cdcf1b",
+      "courier_id": "fr05-b",
+      "operation_id": "final-fr05",
+      "status": "assigned"
+    },
+    "stats": {
+      "model_calls": 5,
+      "proposal_attempts": 2,
+      "assignments": 1,
+      "commit_events": 1
+    },
+    "terminal": "assigned"
+  },
+  "witnessed_path": {
+    "proposal_count": 2,
+    "approval_count": 2,
+    "first_quote_id": "fr05-quote-a",
+    "replanning_events": 1,
+    "fresh_approval_after_replan": true,
+    "changes_applied": true,
+    "accepted_native_escalation": false,
+    "escalation_detail": null,
+    "escalation_source": null,
+    "model_error_codes": [
+      "provider_unavailable"
+    ],
+    "rejected_proposals": []
+  },
+  "billing_before": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 757
+  },
+  "billing_after": {
+    "key_usage_usd": "0",
+    "account_usage_usd": "0",
+    "credit_balance_usd": "10",
+    "free_remaining": 753
+  }
+}
