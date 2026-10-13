@@ -114,3 +114,59 @@ def test_citation_feedback_never_supplies_unretrieved_evidence(workflow_factory,
     for unseen in ("courier:c1@1", "quote:q1@1", "policy:p1@1", "event:e1@1"):
         assert unseen not in feedback
     assert repo.assignment("i1") is None
+
+
+@pytest.mark.parametrize("prior_provider_faults", (0, 2))
+def test_replanning_hides_invalidated_context_without_resetting_audit_or_budgets(
+    prior_provider_faults, settings, workflow_factory, valid_candidate, service, repo, operator
+):
+    """Old tool results must not cross the fresh-investigation model boundary.
+
+    This checks the actual outgoing adapter payload and persisted business state;
+    the controlled provider does not claim to predict a live model's behavior.
+    """
+    from logistics_recovery.domain import DomainError
+
+    requests = []
+    replacement = {"quote_id": "q2", "evidence_ids": ["job:j1@1", "courier:c2@1", "quote:q2@1", "policy:p1@1", "event:e1@1"], "summary": "Use the available alternative courier."}
+
+    def provider(request):
+        requests.append(json.loads(request.content))
+        attempt = len(requests)
+        if attempt in (1, 3 + prior_provider_faults):
+            return provider_response(READS, {})
+        if 2 <= attempt <= 1 + prior_provider_faults:
+            return httpx.Response(200, json={"choices": []})
+        candidate = valid_candidate.model_dump() if attempt == 2 + prior_provider_faults else replacement
+        return provider_response(("propose_recovery",), candidate)
+
+    live = settings.model_copy(update={"mode": "live", "provider_key": SecretStr("private-test-sentinel"), "model_id": "test/model"})
+    with httpx.Client(transport=httpx.MockTransport(provider)) as client:
+        workflow = workflow_factory(OpenRouterModel(live, client))
+        first = workflow.start("i1")
+        service.approve(first.proposal.id, first.proposal.incident_version, operator)
+        repo.change_courier("c1", available=False)
+        second = workflow.resume("i1", first.proposal.id)
+
+        fresh_messages = requests[2 + prior_provider_faults]["messages"]
+        assert not any(message["role"] in {"tool", "assistant"} for message in fresh_messages)
+        assert "invalid_model_response" not in json.dumps(fresh_messages)
+        assert "i1" in json.dumps(fresh_messages)
+        for citation in valid_candidate.evidence_ids:
+            assert citation not in json.dumps(fresh_messages)
+        assert second.status == "awaiting_approval"
+        assert second.proposal.id != first.proposal.id
+        assert second.proposal.candidate.quote_id == "q2"
+        assert repo.assignment("i1") is None
+        assert repo.stats("i1")["model_calls"] == 4 + prior_provider_faults
+        assert repo.stats("i1")["proposal_attempts"] == 2
+        history = repo.history("i1")
+        assert len([event for event in history if event["kind"] == "tool_result"]) == 10
+        assert len([event for event in history if event["kind"] == "model_error"]) == prior_provider_faults
+        with pytest.raises(DomainError, match="approval_mismatch"):
+            workflow.resume("i1", first.proposal.id)
+        with pytest.raises(DomainError, match="approval_required"):
+            workflow.resume("i1", second.proposal.id)
+        service.approve(second.proposal.id, second.proposal.incident_version, operator)
+        assert workflow.resume("i1", second.proposal.id).assignment.courier_id == "c2"
+        assert repo.stats("i1")["commit_events"] == 1

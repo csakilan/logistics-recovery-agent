@@ -1,0 +1,32 @@
+{
+  "base_ref": "5c99fd5",
+  "source_sha256": "42fe3d44700093beb84a3e02dda6c359d5ec9f134096563ad07e89ebe220216d",
+  "reproduction": {
+    "command": "python -m pytest tests/test_revision_feedback.py -k replanning -q",
+    "exit_code": 1,
+    "result": "2 failed, 5 deselected in 0.54s",
+    "failure": "Old assistant/tool messages crossed the fresh-investigation request boundary in both controlled variants."
+  },
+  "verification": [
+    {
+      "environment": "development",
+      "command": "python -m pytest -q",
+      "exit_code": 0,
+      "result": "154 passed in 4.06s"
+    },
+    {
+      "environment": "clean locked",
+      "command": "python -m pytest -q",
+      "exit_code": 0,
+      "result": "154 passed in 3.61s"
+    }
+  ],
+  "attribution": "Assistant diagnosis and correction. Earlier provider faults in the two-fault regression are deliberately controlled external responses, not additional natural defects.",
+  "limitations": "Boundary and business-state regressions do not demonstrate live-model improvement; original rejected candidate arguments were not retained.",
+  "independent_review": {
+    "findings": [],
+    "focused_checks_passed": 31,
+    "additional_temporary_checks_passed": 4,
+    "scope": "Source/test delta only; both stale routes, zero/two prior external faults, workflow reconstruction; no live-model quality or UI/billing/deployment verdict."
+  }
+}

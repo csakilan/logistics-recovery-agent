@@ -135,7 +135,15 @@ class Workflow:
 
     def _replan(self, state: GraphState):
         self.repository.log_event(state["incident_id"], "replanning_required", {"code": "stale_proposal"})
-        return {"stage": "investigate", "proposal_id": None, "seen_evidence": [], "messages": state["messages"] + [{"role": "user", "content": "Availability or quote changed. Retrieve current evidence and propose a new plan requiring fresh approval."}]}
+        stats = self.repository.stats(state["incident_id"])
+        # Invalidate the model context together with its observed-reference set.
+        # Historical evidence and errors remain in the business audit/checkpoints.
+        return {"stage": "investigate", "proposal_id": None, "seen_evidence": [], "turn": None,
+                "messages": [state["messages"][0], {"role": "user", "content":
+                    f"Reinvestigate incident {state['incident_id']}. Availability or quote changed; previous evidence is invalidated. "
+                    "Request get_order, get_couriers, get_quotes, get_policy and get_events together to retrieve fresh evidence, "
+                    "then propose a new plan requiring fresh approval, or escalate if infeasible. "
+                    f"The incident has {6 - stats['model_calls']} model attempts and {3 - stats['proposal_attempts']} proposal drafts remaining."}]}
 
     def _finish(self, state: GraphState):
         self.repository.set_terminal(state["incident_id"], state["stage"], state["detail"])
