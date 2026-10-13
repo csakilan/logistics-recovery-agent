@@ -4,7 +4,9 @@ A dispatcher reviews an agent's evidence-backed recovery proposal after a driver
 
 The local prototype is runnable and passed **190 automated checks from a fresh installation**. On 12 fresh synthetic cases, the protected free Nemotron model matched **10/12 expected outcomes**; the baseline and scripted replay each matched 12/12. Both live failures remain visible, including an approval-check case that never reached its denial attempt. [Final validation and limits](docs/final-validation-results.md) preserve raw counts, traces and billing observations. The earlier 43/46 live report remains separate historical evidence.
 
-**[Watch the three-minute captioned replay walkthrough](docs/demo/final/replay-walkthrough.mp4).** It is an actual silent automated browser recording of synthetic investigations, simulated dispatcher approval, restart/repeat behavior, pickup/delivery and safe escalation. Replay needs no provider key. [Local handoff](docs/portfolio-handoff.md) explains what to inspect, run and review. [Dispatcher and browser evidence](docs/dispatcher-interface.md) records the usable screens and regression-backed review corrections.
+**[Watch the three-minute captioned replay walkthrough](docs/demo/final/replay-walkthrough.mp4).** It is an actual silent automated browser recording of synthetic investigations, simulated dispatcher approval, restart/repeat behavior, pickup/delivery and safe escalation. Replay needs no provider key. [Portfolio handoff](docs/portfolio-handoff.md) explains what to inspect, run and review. [Dispatcher and browser evidence](docs/dispatcher-interface.md) records the usable screens and regression-backed review corrections.
+
+[Private repository handoff](docs/private-publication.md) records the publication, author identity and verification checkpoint.
 
 ## Run locally
 

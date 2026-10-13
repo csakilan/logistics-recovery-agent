@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-10-13T20:14:02.219256+00:00",
+  "source_commit": "a7e4c2a88ca79cb2a2e65cef952b78384d2b9497",
+  "fresh_test_suite": "190 passed in 28.82s",
+  "tracked_files_scanned": 324,
+  "reachable_git_objects_scanned": 706,
+  "private_values_and_key_patterns_absent": true,
+  "commits_audited": 36,
+  "all_authors_and_committers": "AkilanChithra",
+  "codex_openai_or_coauthor_commit_credit": false,
+  "tracking_mirrors_match": true,
+  "csv_shape_lf_verified": true,
+  "new_model_requests": 0,
+  "remote_verified_at_utc": "2026-10-13T20:15:43.630733+00:00",
+  "repository": "https://github.com/csakilan/logistics-recovery-agent",
+  "private": true,
+  "default_branch": "main",
+  "verified_remote_commit": "a7e4c2a88ca79cb2a2e65cef952b78384d2b9497",
+  "github_author": "csakilan",
+  "github_committer": "csakilan",
+  "verified_paths": [
+    "README.md",
+    "docs/demo/final/replay-walkthrough.mp4",
+    "docs/final-validation-results.md",
+    "docs/portfolio-resume-draft.md",
+    "outputs/engineering-judgment-tracker.md"
+  ],
+  "video_remote_blob": "e45fca08d7e0929710cb38c401a70cda6f283827",
+  "video_remote_bytes": 814371,
+  "scope": "Initial source publication; later publication-document commit verified separately",
+  "personal_engineering_review": "Explicitly deferred; unchanged; no new personal diagnosis attributed"
+}

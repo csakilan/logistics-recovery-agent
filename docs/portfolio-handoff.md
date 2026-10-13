@@ -1,6 +1,6 @@
-# Local portfolio handoff
+# Portfolio handoff
 
-The technical prototype is ready locally. It investigates a cancelled delivery, checks available couriers and quotes, presents recorded facts, waits for dispatcher approval, creates one simulated assignment, and tracks simulated pickup/delivery. Changed facts require a fresh proposal and approval. Restart or repeated requests do not create another booking.
+The technical prototype is published in the private [csakilan/logistics-recovery-agent repository](https://github.com/csakilan/logistics-recovery-agent). [Publication evidence](private-publication.md) records privacy, commit identity and the initial upload. It investigates a cancelled delivery, checks available couriers and quotes, presents recorded facts, waits for dispatcher approval, creates one simulated assignment, and tracks simulated pickup/delivery. Changed facts require a fresh proposal and approval. Restart or repeated requests do not create another booking.
 
 ## What to inspect first
 
@@ -18,6 +18,6 @@ The fresh live evaluation used45 requests within a72-request cap. Thirty-five re
 
 ## What remains
 
-The builder explicitly deferred their own review. Complete that before making personal engineering-judgment claims. Adding the builder's own narration is optional for the captioned demonstration, and may make an interview walkthrough stronger. Choose repository destination and visibility before publication; files and setup are prepared locally but no public remote exists. These outstanding human actions prevent claiming the entire portfolio handoff is finished.
+The builder explicitly deferred their own review. Complete that before making personal engineering-judgment claims. Adding the builder's own narration is optional for the captioned demonstration, and may make an interview walkthrough stronger. The prepared code, evidence, résumé draft and video are now in the user-approved private repository. Recruiter access is the owner's choice. The deferred personal review prevents claiming the entire personal engineering-judgment portfolio handoff is finished.
 
 This is a local one-worker simulator with one dispatcher and one complete job per incident. There is no real courier integration, routing optimizer, production deployment or universal security/reliability guarantee. The rules baseline performed at least as well as the live model on the fresh set. Safe application enforcement and honest model evaluation are the project's evidence.
