@@ -1,0 +1,1310 @@
+{
+  "status": "completed",
+  "checked_at_utc": "2026-10-13T18:52:19.837506+00:00",
+  "base_commit": "391376c49ce1674974682a803f000cd9fcb7ec46",
+  "working_tree_dirty": true,
+  "source_and_templates_sha256": "5542c466b46c77325fb96afc003f6105aff5fa490b1e9d91f0d2f6162a96850b",
+  "files_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "assignments.py": "9fa69124103cadcd63ec6fe51ab653fefc1b88573e41163ddb9eeade07c170af",
+    "auth.py": "d4b12ecdd9f43725c50207f3d89451f0f232f40cb7b92697250a47ed1fef9982",
+    "baseline.py": "0bd14a8eed383cadb22334bd807f747ce5e9ffa01af6f9a20c258293c5cdbcf5",
+    "cli.py": "2c897d467614d2af85f11705bd233d096fc3b9e3cf1e605045dcace2bf772ede",
+    "config.py": "d7d364d464a4d0ab3a874d8771c7cf4c85653c577a5789ee77997e7d21fcf5e3",
+    "domain.py": "62eea76829ebd84c0eb548d02fda66d3a5324ccd674d4ce915625672be890de0",
+    "evaluation.py": "caeae2c2437236d9f893052fddebbf8daeb2c95b7c5e57a27bf65c9b02e8f4f1",
+    "free_billing.py": "b2bf81daf3df7d1d8af88c999931f9a9efc9137f5f13c64820106331b38df91d",
+    "live.py": "a6b01b182e39e1153a30e6aa2da5cc52d15911d76347754d228e39b6ae0cb5f4",
+    "model.py": "d15ecc4ce978f3f4d990b0f2e46a9e04610a48d0eb1801fbc2f4582757988a9e",
+    "policy.py": "60c458a81b847605c6484751d280321352b95375bf24073afa74e151987be3bc",
+    "presentation.py": "d541ccc88fe596c0324268c92dae21c942718e703a3cc055c1aa133f2f15d025",
+    "replay.py": "62a0794fd34320c14c297979eb7e5355bafa6ad03a5d8e1fbae3b9a97986a1ec",
+    "repository.py": "1b2707fc3f8bb0384f852681ca104a60fa308a6f92253b36c52fd3e9552d680a",
+    "templates/base.html": "64d5b19a8bf7f73d501e3f17f8ff017f4369906bc371fbd704d8517a65e52fed",
+    "templates/detail.html": "4674db31215391e70b7ba97cbccc871f2c1c2fd7428ed820b5bcffd056c04bca",
+    "templates/list.html": "d2a5e64fcc71ecb3a4073e86f737a7bb96108514f249298117a8297e2fdf9844",
+    "tools.py": "6c76c81eba61c9eec424375bdb376c1ac79cb14cfa34615f55158d65d1803897",
+    "web.py": "a97aa83677fa85ea7bdea13d38872dee9863f9101e0a7ab7a95e75d54cd24e46",
+    "workflow.py": "05b59b9b853836f2e8011607e59b1f47fcaccc52d61c30e546608bdf63ef859b"
+  },
+  "model_mode": "replay",
+  "live_model_http_requests": 0,
+  "account_billing_queries": 0,
+  "browser_checks_before_restart": 9,
+  "browser_checks_after_restart": 14,
+  "unique_incidents": 4,
+  "normal_assignment_identity_preserved": true,
+  "normal_commit_events": 1,
+  "stale_case_new_approval_required": true,
+  "cases": [
+    {
+      "incident_id": "demo-1",
+      "terminal_status": "assigned",
+      "assignment": {
+        "id": "e9e12ea445654263ac2881e94ddb6f1f",
+        "incident_id": "demo-1",
+        "proposal_id": "04604707b426461b8919b475006be38a",
+        "courier_id": "c1",
+        "operation_id": "demo-1",
+        "status": "delivered"
+      },
+      "stats": {
+        "model_calls": 2,
+        "proposal_attempts": 1,
+        "assignments": 1,
+        "commit_events": 1
+      },
+      "snapshot": {
+        "incident_id": "demo-1",
+        "incident_version": 4,
+        "now_min": 0,
+        "job": {
+          "id": "job-demo-1",
+          "parcel_count": 1,
+          "deadline_min": 60,
+          "custody": "delivered",
+          "version": 3
+        },
+        "couriers": [
+          {
+            "id": "c1",
+            "free_capacity": 3,
+            "available": false,
+            "version": 4
+          },
+          {
+            "id": "c2",
+            "free_capacity": 2,
+            "available": true,
+            "version": 2
+          }
+        ],
+        "quotes": [
+          {
+            "id": "q1-demo-1",
+            "job_id": "job-demo-1",
+            "courier_id": "c1",
+            "cost_cents": 900,
+            "travel_min": 30,
+            "expires_at_min": 10,
+            "version": 1
+          },
+          {
+            "id": "q2-demo-1",
+            "job_id": "job-demo-1",
+            "courier_id": "c2",
+            "cost_cents": 1400,
+            "travel_min": 15,
+            "expires_at_min": 10,
+            "version": 1
+          }
+        ],
+        "policy": {
+          "id": "p1",
+          "max_cost_cents": 1500,
+          "version": 1
+        },
+        "events": [
+          {
+            "id": "260e2d7aa6734b35b1c0273b7e8651ab",
+            "job_id": "job-demo-1",
+            "kind": "delivery",
+            "at_min": 0,
+            "custody": "delivered",
+            "version": 1,
+            "note": "Dispatcher-triggered simulated event."
+          },
+          {
+            "id": "b54a1573597646648302e685b7a1f7f0",
+            "job_id": "job-demo-1",
+            "kind": "pickup",
+            "at_min": 0,
+            "custody": "in_transit",
+            "version": 1,
+            "note": "Dispatcher-triggered simulated event."
+          },
+          {
+            "id": "e1",
+            "job_id": "job-demo-1",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        ]
+      },
+      "history": [
+        {
+          "kind": "source_event",
+          "payload": {
+            "id": "e1",
+            "job_id": "job-demo-1",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 1,
+            "kind": "tools",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_order",
+            "result": {
+              "records": [
+                {
+                  "id": "job-demo-1",
+                  "parcel_count": 1,
+                  "deadline_min": 60,
+                  "custody": "depot",
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "job:job-demo-1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_couriers",
+            "result": {
+              "records": [
+                {
+                  "id": "c1",
+                  "free_capacity": 3,
+                  "available": true,
+                  "version": 1
+                },
+                {
+                  "id": "c2",
+                  "free_capacity": 3,
+                  "available": true,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "courier:c1@1",
+                "courier:c2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_quotes",
+            "result": {
+              "records": [
+                {
+                  "id": "q1-demo-1",
+                  "job_id": "job-demo-1",
+                  "courier_id": "c1",
+                  "cost_cents": 900,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                },
+                {
+                  "id": "q2-demo-1",
+                  "job_id": "job-demo-1",
+                  "courier_id": "c2",
+                  "cost_cents": 1400,
+                  "travel_min": 15,
+                  "expires_at_min": 10,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "quote:q1-demo-1@1",
+                "quote:q2-demo-1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_policy",
+            "result": {
+              "records": [
+                {
+                  "id": "p1",
+                  "max_cost_cents": 1500,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "policy:p1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_events",
+            "result": {
+              "records": [
+                {
+                  "id": "e1",
+                  "job_id": "job-demo-1",
+                  "kind": "cancellation",
+                  "at_min": 0,
+                  "custody": "depot",
+                  "version": 1,
+                  "note": "Driver cancelled before pickup."
+                }
+              ],
+              "evidence_ids": [
+                "event:e1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 2,
+            "kind": "proposal",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "proposal_created",
+          "payload": {
+            "proposal_id": "04604707b426461b8919b475006be38a",
+            "quote_id": "q1-demo-1"
+          }
+        },
+        {
+          "kind": "proposal_approved",
+          "payload": {
+            "proposal_id": "04604707b426461b8919b475006be38a",
+            "operator_id": "dispatcher"
+          }
+        },
+        {
+          "kind": "assignment_committed",
+          "payload": {
+            "id": "e9e12ea445654263ac2881e94ddb6f1f",
+            "incident_id": "demo-1",
+            "proposal_id": "04604707b426461b8919b475006be38a",
+            "courier_id": "c1",
+            "operation_id": "demo-1",
+            "status": "assigned"
+          }
+        },
+        {
+          "kind": "simulated_pickup",
+          "payload": {
+            "id": "b54a1573597646648302e685b7a1f7f0",
+            "job_id": "job-demo-1",
+            "kind": "pickup",
+            "at_min": 0,
+            "custody": "in_transit",
+            "version": 1,
+            "note": "Dispatcher-triggered simulated event."
+          }
+        },
+        {
+          "kind": "simulated_delivery",
+          "payload": {
+            "id": "260e2d7aa6734b35b1c0273b7e8651ab",
+            "job_id": "job-demo-1",
+            "kind": "delivery",
+            "at_min": 0,
+            "custody": "delivered",
+            "version": 1,
+            "note": "Dispatcher-triggered simulated event."
+          }
+        }
+      ]
+    },
+    {
+      "incident_id": "demo-2",
+      "terminal_status": "escalated",
+      "assignment": null,
+      "stats": {
+        "model_calls": 2,
+        "proposal_attempts": 0,
+        "assignments": 0,
+        "commit_events": 0
+      },
+      "snapshot": {
+        "incident_id": "demo-2",
+        "incident_version": 1,
+        "now_min": 0,
+        "job": {
+          "id": "job-demo-2",
+          "parcel_count": 3,
+          "deadline_min": 60,
+          "custody": "depot",
+          "version": 1
+        },
+        "couriers": [
+          {
+            "id": "c1",
+            "free_capacity": 3,
+            "available": false,
+            "version": 4
+          },
+          {
+            "id": "c2",
+            "free_capacity": 2,
+            "available": true,
+            "version": 2
+          }
+        ],
+        "quotes": [
+          {
+            "id": "q1-demo-2",
+            "job_id": "job-demo-2",
+            "courier_id": "c1",
+            "cost_cents": 1200,
+            "travel_min": 30,
+            "expires_at_min": 10,
+            "version": 1
+          },
+          {
+            "id": "q2-demo-2",
+            "job_id": "job-demo-2",
+            "courier_id": "c2",
+            "cost_cents": 1400,
+            "travel_min": 30,
+            "expires_at_min": 10,
+            "version": 1
+          }
+        ],
+        "policy": {
+          "id": "policy-demo-2",
+          "max_cost_cents": 100,
+          "version": 1
+        },
+        "events": [
+          {
+            "id": "e1",
+            "job_id": "job-demo-2",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        ]
+      },
+      "history": [
+        {
+          "kind": "source_event",
+          "payload": {
+            "id": "e1",
+            "job_id": "job-demo-2",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 1,
+            "kind": "tools",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_order",
+            "result": {
+              "records": [
+                {
+                  "id": "job-demo-2",
+                  "parcel_count": 3,
+                  "deadline_min": 60,
+                  "custody": "depot",
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "job:job-demo-2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_couriers",
+            "result": {
+              "records": [
+                {
+                  "id": "c1",
+                  "free_capacity": 3,
+                  "available": false,
+                  "version": 4
+                },
+                {
+                  "id": "c2",
+                  "free_capacity": 2,
+                  "available": true,
+                  "version": 2
+                }
+              ],
+              "evidence_ids": [
+                "courier:c1@4",
+                "courier:c2@2"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_quotes",
+            "result": {
+              "records": [
+                {
+                  "id": "q1-demo-2",
+                  "job_id": "job-demo-2",
+                  "courier_id": "c1",
+                  "cost_cents": 1200,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                },
+                {
+                  "id": "q2-demo-2",
+                  "job_id": "job-demo-2",
+                  "courier_id": "c2",
+                  "cost_cents": 1400,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "quote:q1-demo-2@1",
+                "quote:q2-demo-2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_policy",
+            "result": {
+              "records": [
+                {
+                  "id": "policy-demo-2",
+                  "max_cost_cents": 100,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "policy:policy-demo-2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_events",
+            "result": {
+              "records": [
+                {
+                  "id": "e1",
+                  "job_id": "job-demo-2",
+                  "kind": "cancellation",
+                  "at_min": 0,
+                  "custody": "depot",
+                  "version": 1,
+                  "note": "Driver cancelled before pickup."
+                }
+              ],
+              "evidence_ids": [
+                "event:e1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 2,
+            "kind": "escalate",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "case_escalated",
+          "payload": {
+            "detail": "No feasible recovery from the retrieved records."
+          }
+        }
+      ]
+    },
+    {
+      "incident_id": "reject-demo",
+      "terminal_status": "rejected",
+      "assignment": null,
+      "stats": {
+        "model_calls": 2,
+        "proposal_attempts": 1,
+        "assignments": 0,
+        "commit_events": 0
+      },
+      "snapshot": {
+        "incident_id": "reject-demo",
+        "incident_version": 1,
+        "now_min": 0,
+        "job": {
+          "id": "job-reject-demo",
+          "parcel_count": 1,
+          "deadline_min": 60,
+          "custody": "depot",
+          "version": 1
+        },
+        "couriers": [
+          {
+            "id": "c1",
+            "free_capacity": 3,
+            "available": false,
+            "version": 4
+          },
+          {
+            "id": "c2",
+            "free_capacity": 2,
+            "available": true,
+            "version": 2
+          }
+        ],
+        "quotes": [
+          {
+            "id": "q1-reject-demo",
+            "job_id": "job-reject-demo",
+            "courier_id": "c1",
+            "cost_cents": 900,
+            "travel_min": 30,
+            "expires_at_min": 10,
+            "version": 1
+          },
+          {
+            "id": "q2-reject-demo",
+            "job_id": "job-reject-demo",
+            "courier_id": "c2",
+            "cost_cents": 1400,
+            "travel_min": 15,
+            "expires_at_min": 10,
+            "version": 1
+          }
+        ],
+        "policy": {
+          "id": "p1",
+          "max_cost_cents": 1500,
+          "version": 1
+        },
+        "events": [
+          {
+            "id": "e1",
+            "job_id": "job-reject-demo",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        ]
+      },
+      "history": [
+        {
+          "kind": "source_event",
+          "payload": {
+            "id": "e1",
+            "job_id": "job-reject-demo",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 1,
+            "kind": "tools",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_order",
+            "result": {
+              "records": [
+                {
+                  "id": "job-reject-demo",
+                  "parcel_count": 1,
+                  "deadline_min": 60,
+                  "custody": "depot",
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "job:job-reject-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_couriers",
+            "result": {
+              "records": [
+                {
+                  "id": "c1",
+                  "free_capacity": 3,
+                  "available": false,
+                  "version": 4
+                },
+                {
+                  "id": "c2",
+                  "free_capacity": 2,
+                  "available": true,
+                  "version": 2
+                }
+              ],
+              "evidence_ids": [
+                "courier:c1@4",
+                "courier:c2@2"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_quotes",
+            "result": {
+              "records": [
+                {
+                  "id": "q1-reject-demo",
+                  "job_id": "job-reject-demo",
+                  "courier_id": "c1",
+                  "cost_cents": 900,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                },
+                {
+                  "id": "q2-reject-demo",
+                  "job_id": "job-reject-demo",
+                  "courier_id": "c2",
+                  "cost_cents": 1400,
+                  "travel_min": 15,
+                  "expires_at_min": 10,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "quote:q1-reject-demo@1",
+                "quote:q2-reject-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_policy",
+            "result": {
+              "records": [
+                {
+                  "id": "p1",
+                  "max_cost_cents": 1500,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "policy:p1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_events",
+            "result": {
+              "records": [
+                {
+                  "id": "e1",
+                  "job_id": "job-reject-demo",
+                  "kind": "cancellation",
+                  "at_min": 0,
+                  "custody": "depot",
+                  "version": 1,
+                  "note": "Driver cancelled before pickup."
+                }
+              ],
+              "evidence_ids": [
+                "event:e1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 2,
+            "kind": "proposal",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "proposal_created",
+          "payload": {
+            "proposal_id": "bca1d62012a240ae96f3b80916e0721a",
+            "quote_id": "q2-reject-demo"
+          }
+        },
+        {
+          "kind": "proposal_rejected",
+          "payload": {
+            "proposal_id": "bca1d62012a240ae96f3b80916e0721a",
+            "operator_id": "dispatcher"
+          }
+        }
+      ]
+    },
+    {
+      "incident_id": "stale-demo",
+      "terminal_status": "assigned",
+      "assignment": {
+        "id": "59658d39cbea45fcb4d59d35d5abe97a",
+        "incident_id": "stale-demo",
+        "proposal_id": "5d82488701274553a59fa8f0e053cab9",
+        "courier_id": "c2",
+        "operation_id": "stale-demo",
+        "status": "assigned"
+      },
+      "stats": {
+        "model_calls": 4,
+        "proposal_attempts": 2,
+        "assignments": 1,
+        "commit_events": 1
+      },
+      "snapshot": {
+        "incident_id": "stale-demo",
+        "incident_version": 2,
+        "now_min": 0,
+        "job": {
+          "id": "job-stale-demo",
+          "parcel_count": 1,
+          "deadline_min": 60,
+          "custody": "depot",
+          "version": 1
+        },
+        "couriers": [
+          {
+            "id": "c1",
+            "free_capacity": 3,
+            "available": false,
+            "version": 4
+          },
+          {
+            "id": "c2",
+            "free_capacity": 2,
+            "available": true,
+            "version": 2
+          }
+        ],
+        "quotes": [
+          {
+            "id": "q1-stale-demo",
+            "job_id": "job-stale-demo",
+            "courier_id": "c1",
+            "cost_cents": 900,
+            "travel_min": 30,
+            "expires_at_min": 10,
+            "version": 1
+          },
+          {
+            "id": "q2-stale-demo",
+            "job_id": "job-stale-demo",
+            "courier_id": "c2",
+            "cost_cents": 1400,
+            "travel_min": 15,
+            "expires_at_min": 10,
+            "version": 1
+          }
+        ],
+        "policy": {
+          "id": "p1",
+          "max_cost_cents": 1500,
+          "version": 1
+        },
+        "events": [
+          {
+            "id": "e1",
+            "job_id": "job-stale-demo",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        ]
+      },
+      "history": [
+        {
+          "kind": "source_event",
+          "payload": {
+            "id": "e1",
+            "job_id": "job-stale-demo",
+            "kind": "cancellation",
+            "at_min": 0,
+            "custody": "depot",
+            "version": 1,
+            "note": "Driver cancelled before pickup."
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 1,
+            "kind": "tools",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_order",
+            "result": {
+              "records": [
+                {
+                  "id": "job-stale-demo",
+                  "parcel_count": 1,
+                  "deadline_min": 60,
+                  "custody": "depot",
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "job:job-stale-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_couriers",
+            "result": {
+              "records": [
+                {
+                  "id": "c1",
+                  "free_capacity": 3,
+                  "available": true,
+                  "version": 3
+                },
+                {
+                  "id": "c2",
+                  "free_capacity": 3,
+                  "available": true,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "courier:c1@3",
+                "courier:c2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_quotes",
+            "result": {
+              "records": [
+                {
+                  "id": "q1-stale-demo",
+                  "job_id": "job-stale-demo",
+                  "courier_id": "c1",
+                  "cost_cents": 900,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                },
+                {
+                  "id": "q2-stale-demo",
+                  "job_id": "job-stale-demo",
+                  "courier_id": "c2",
+                  "cost_cents": 1400,
+                  "travel_min": 15,
+                  "expires_at_min": 10,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "quote:q1-stale-demo@1",
+                "quote:q2-stale-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_policy",
+            "result": {
+              "records": [
+                {
+                  "id": "p1",
+                  "max_cost_cents": 1500,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "policy:p1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_events",
+            "result": {
+              "records": [
+                {
+                  "id": "e1",
+                  "job_id": "job-stale-demo",
+                  "kind": "cancellation",
+                  "at_min": 0,
+                  "custody": "depot",
+                  "version": 1,
+                  "note": "Driver cancelled before pickup."
+                }
+              ],
+              "evidence_ids": [
+                "event:e1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 2,
+            "kind": "proposal",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "proposal_created",
+          "payload": {
+            "proposal_id": "cf3f388c10034b5eb3ab60617a07dd5b",
+            "quote_id": "q1-stale-demo"
+          }
+        },
+        {
+          "kind": "proposal_approved",
+          "payload": {
+            "proposal_id": "cf3f388c10034b5eb3ab60617a07dd5b",
+            "operator_id": "dispatcher"
+          }
+        },
+        {
+          "kind": "replanning_required",
+          "payload": {
+            "code": "stale_proposal"
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 3,
+            "kind": "tools",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_order",
+            "result": {
+              "records": [
+                {
+                  "id": "job-stale-demo",
+                  "parcel_count": 1,
+                  "deadline_min": 60,
+                  "custody": "depot",
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "job:job-stale-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_couriers",
+            "result": {
+              "records": [
+                {
+                  "id": "c1",
+                  "free_capacity": 3,
+                  "available": false,
+                  "version": 4
+                },
+                {
+                  "id": "c2",
+                  "free_capacity": 3,
+                  "available": true,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "courier:c1@4",
+                "courier:c2@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_quotes",
+            "result": {
+              "records": [
+                {
+                  "id": "q1-stale-demo",
+                  "job_id": "job-stale-demo",
+                  "courier_id": "c1",
+                  "cost_cents": 900,
+                  "travel_min": 30,
+                  "expires_at_min": 10,
+                  "version": 1
+                },
+                {
+                  "id": "q2-stale-demo",
+                  "job_id": "job-stale-demo",
+                  "courier_id": "c2",
+                  "cost_cents": 1400,
+                  "travel_min": 15,
+                  "expires_at_min": 10,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "quote:q1-stale-demo@1",
+                "quote:q2-stale-demo@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_policy",
+            "result": {
+              "records": [
+                {
+                  "id": "p1",
+                  "max_cost_cents": 1500,
+                  "version": 1
+                }
+              ],
+              "evidence_ids": [
+                "policy:p1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "tool_result",
+          "payload": {
+            "tool": "get_events",
+            "result": {
+              "records": [
+                {
+                  "id": "e1",
+                  "job_id": "job-stale-demo",
+                  "kind": "cancellation",
+                  "at_min": 0,
+                  "custody": "depot",
+                  "version": 1,
+                  "note": "Driver cancelled before pickup."
+                }
+              ],
+              "evidence_ids": [
+                "event:e1@1"
+              ],
+              "incident_version": 1,
+              "now_min": 0
+            }
+          }
+        },
+        {
+          "kind": "model_turn",
+          "payload": {
+            "attempt": 4,
+            "kind": "proposal",
+            "usage": {
+              "prompt_tokens": null,
+              "completion_tokens": null,
+              "cost_usd": null
+            }
+          }
+        },
+        {
+          "kind": "proposal_created",
+          "payload": {
+            "proposal_id": "5d82488701274553a59fa8f0e053cab9",
+            "quote_id": "q2-stale-demo"
+          }
+        },
+        {
+          "kind": "proposal_approved",
+          "payload": {
+            "proposal_id": "5d82488701274553a59fa8f0e053cab9",
+            "operator_id": "dispatcher"
+          }
+        },
+        {
+          "kind": "assignment_committed",
+          "payload": {
+            "id": "59658d39cbea45fcb4d59d35d5abe97a",
+            "incident_id": "stale-demo",
+            "proposal_id": "5d82488701274553a59fa8f0e053cab9",
+            "courier_id": "c2",
+            "operation_id": "stale-demo",
+            "status": "assigned"
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Controlled synthetic courier availability mutation and pre-mutation approval; simulated bookings and delivery.",
+    "Browser check counts are assertions across four cases, not independent samples or a security rate.",
+    "No live model quality or fresh billing observation was collected.",
+    "Earlier pre-fix browser checks preserved in dispatcher-browser-run-1."
+  ],
+  "mobile_capture": {
+    "usable_evidence": [
+      "detail-mobile-viewport.png",
+      "detail-mobile-proposal.png",
+      "mobile-capture.json"
+    ],
+    "original_full_page_capture": "proposal-mobile.png",
+    "capture_limitation": "The resized-context tall full-page screenshot repeats viewport content; preserved as a capture artifact, not evidence of three headers. A fresh mobile context observes one header, document_width390 equal to viewport_width390; viewport captures visually verified. This is not an additional application defect or live observation."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "stage": "after-restart",
+  "status": "completed",
+  "checked_at_utc": "2026-10-13T18:50:59.976Z",
+  "checks": [
+    "Replay mode visibly labelled",
+    "Assignment display survives actual server restart",
+    "Pickup display uses in-transit custody",
+    "Delivery display has no further simulation action",
+    "Business history follows actual operation order",
+    "Changed availability visibly invalidates old proposal",
+    "Stale proposal has no approval control or current quote facts",
+    "Previously approved stale proposal cannot commit",
+    "Reinvestigation produces a fresh proposal for another courier",
+    "Fresh proposal still requires a new approval",
+    "Fresh approval assigns the replacement courier",
+    "Rejected case closes decision controls",
+    "Infeasible replay case shows escalation without approval controls",
+    "Incident list consistently shows delivered rejected escalated and assigned states"
+  ],
+  "method": "Actual isolated Chrome with local replay app. Four synthetic incidents; manual availability mutation and pre-mutation approval are controlled test inputs. No provider key, external HTTP, live quality score or user diagnosis."
+}

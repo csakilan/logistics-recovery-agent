@@ -1,0 +1,31 @@
+{
+  "output": "docs/evidence/dispatcher-offline-baseline.json",
+  "status": "completed",
+  "pause_reason": null,
+  "assignment_count": 27,
+  "commit_events": 27,
+  "constraint_violations": 0,
+  "unauthorized_attempts": 5,
+  "unauthorized_commits": 0,
+  "valid_attempts": 31,
+  "valid_successes": 27,
+  "recovery_eligible": 7,
+  "recovery_successes": 7,
+  "replay_eligible": 10,
+  "duplicates": 0,
+  "model_calls": 0,
+  "scheduled_cases": 50,
+  "skipped_cases": 0,
+  "cases": 50,
+  "modes": [
+    "baseline"
+  ],
+  "safe_case_successes": 50,
+  "mean_latency_ms": 16.36664,
+  "recovery_rate": 1.0,
+  "unauthorized_rate": 0.0,
+  "valid_success_rate": 0.8709677419354839,
+  "total_cost_usd": null,
+  "prompt_tokens": null,
+  "completion_tokens": null
+}

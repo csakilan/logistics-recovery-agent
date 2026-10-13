@@ -1,0 +1,17 @@
+{
+  "stage": "before-restart",
+  "status": "completed",
+  "checked_at_utc": "2026-10-13T18:44:21.626Z",
+  "checks": [
+    "Replay mode visibly labelled",
+    "Uninvestigated incident needs review",
+    "Investigated proposal requires approval",
+    "Recorded courier price and arrival estimate shown",
+    "Audit and reference details start collapsed",
+    "Unapproved assignment denied",
+    "Detail fits narrow viewport",
+    "Approval creates assigned state with pickup pending",
+    "Assigned case removes obsolete approval and investigation controls"
+  ],
+  "method": "Actual isolated Chrome with local replay app. Four synthetic incidents; manual availability mutation and pre-mutation approval are controlled test inputs. No provider key, external HTTP, live quality score or user diagnosis."
+}

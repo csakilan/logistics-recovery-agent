@@ -1,4 +1,4 @@
-from .domain import Candidate, Quote, Snapshot, ValidationReport
+from .domain import Candidate, Proposal, Quote, Snapshot, ValidationReport
 
 
 def evidence_records(snapshot: Snapshot) -> dict[str, int]:
@@ -6,6 +6,15 @@ def evidence_records(snapshot: Snapshot) -> dict[str, int]:
     for kind, values in (("courier", snapshot.couriers), ("quote", snapshot.quotes), ("event", snapshot.events)):
         records.update({f"{kind}:{r.id}": r.version for r in values})
     return records
+
+
+def proposal_is_current(proposal: Proposal, snapshot: Snapshot) -> bool:
+    current = evidence_records(snapshot)
+    return (
+        snapshot.incident_version == proposal.incident_version
+        and all(current.get(name) == version for name, version in proposal.observed_versions)
+        and validate_candidate(proposal.candidate, snapshot).valid
+    )
 
 
 def required_evidence(snapshot: Snapshot, quote: Quote) -> tuple[str, ...]:

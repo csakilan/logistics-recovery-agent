@@ -1,0 +1,14 @@
+{
+  "status": "completed",
+  "checked_at_utc": "2026-10-13T18:56:43.403Z",
+  "case": "stale-demo",
+  "state": "assigned",
+  "metrics": {
+    "header_count": 1,
+    "viewport_width": 390,
+    "document_width": 390,
+    "document_height": 2271,
+    "device_pixel_ratio": 1
+  },
+  "method": "Fresh isolated mobile-sized Chrome context; viewport captures instead of resized-context tall full-page screenshot. No writes or provider queries."
+}

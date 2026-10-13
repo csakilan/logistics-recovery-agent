@@ -2,7 +2,7 @@
 
 A dispatcher reviews an agent's evidence-backed recovery proposal after a driver cancels before pickup. Application code enforces custody, availability, capacity, price, deadline and quote expiry; only an authenticated dispatcher can approve an assignment. Retry and restart recovery preserves one booking. Pickup and delivery are explicitly simulated events.
 
-The local prototype is runnable; the latest integration suite is recorded in [web integration verification](docs/live-web-integration.md). **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected free profile and spending protections are now connected to the web app. Browser validation is tracked separately in [web integration verification](docs/live-web-integration.md).
+The local prototype is runnable; the latest dispatcher version passed190 checks in both verified environments; [interface and browser evidence](docs/dispatcher-interface.md) records the usable screens, stale-approval checks and independent-review correction. **Scripted replay** is deterministic and needs no API key. A larger Nemotron3Ultra free evaluation matched **43/46 synthetic expected outcomes**, including 9/10 held-out variants, with four protocol-only skips. There were no unauthorized commits in five attempts, no duplicates in ten replay cases, and seven of seven injected-failure recoveries. Three feasible replans escalated safely. See [full live results](docs/full-live-results.md). Approvals and courier booking are simulated; the selected free profile and spending protections are now connected to the web app. Browser validation is tracked separately in [web integration verification](docs/live-web-integration.md).
 
 ## Run locally
 
@@ -22,7 +22,7 @@ logistics-recovery seed-demo
 python -m uvicorn logistics_recovery.web:build_application --factory --host 127.0.0.1 --port 8000 --workers 1
 ```
 
-Open http://127.0.0.1:8000 and enter your private credentials. Investigate demo-1, inspect the proposal's evidence, then approve. The assignment status is not delivery completion. Simulate pickup, then delivery; review the incident history. Demo-2 has an infeasible spending limit and escalates. Restart retains data as long as LOGISTICS_DATA_DIR stays the same. For a fresh demo, select a new private directory and seed again; seeding does not erase existing history.
+Open http://127.0.0.1:8000 and enter your private credentials. Investigate demo-1, compare the recorded courier/price/simulated arrival against the explanation, inspect the evidence, then approve. Awaiting approval means no assignment exists; assignment status is distinct from delivery completion. Simulate pickup, then delivery; review the incident history. Demo-2 has an infeasible spending limit and escalates. Restart retains data as long as LOGISTICS_DATA_DIR stays the same. For a fresh demo, select a new private directory and seed again; seeding does not erase existing history.
 
 Keep credentials out of source control and screenshots. Runtime files belong outside this repository, in a private directory. Use loopback and one worker. Public hosting requires separately configured HTTPS, spending controls and operational review; no cloud resource is needed for this milestone.
 
@@ -56,7 +56,7 @@ Local replay computes a plan from the current tool results, including capacity a
 
 ## Live model and budget
 
-The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The full $10 balance remains available and no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
+The overall personal budget is $35; the initial model-credit checkout ceiling is $12 including fees, with no automatic top-ups. The user added $10 in provider credits; checkout fees are unmeasured. The last verified provider snapshot showed the full $10 balance and zero billed usage; no Cloud use occurred. LangGraph runs locally without a paid hosting plan. Google Cloud credits are optional and time limited.
 
 The user requires free models and a stop on detected inference spending. Both the web app and live CLI use the tested `nvidia/nemotron-3-ultra-550b-a55b:free` profile with current zero-price/capability verification, required native tools, disabled optional reasoning, zero provider price ceilings and no fallback. Before/after billing checks stop requests on a reported charge, increasing billed usage, declining balance, missing billing verification, or an exhausted allowance. Keep the provider key spending limit at $1 or less; the user's existing $1 monthly cap is retained, never changed by the app. Missing response costs stay unknown under the user's authorized policy.
 

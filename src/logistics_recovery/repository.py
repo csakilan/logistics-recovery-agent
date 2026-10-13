@@ -114,22 +114,46 @@ class Repository:
     def audit(self, connection, incident_id: str, kind: str, payload: dict, operation_id: str | None = None) -> None:
         connection.execute("INSERT INTO audit(incident_id,kind,operation_id,payload) VALUES (?,?,?,?)", (incident_id, kind, operation_id, json.dumps(payload)))
 
+    def _history(self, connection, incident_id: str) -> list[dict]:
+        activity = [{"kind": row["kind"], "payload": json.loads(row["payload"])} for row in connection.execute("SELECT kind,payload FROM audit WHERE incident_id=? ORDER BY seq", (incident_id,))]
+        simulated_ids = {item["payload"]["id"] for item in activity if item["kind"] in {"simulated_pickup", "simulated_delivery"}}
+        initial = [{"kind": "source_event", "payload": json.loads(row[0])} for row in connection.execute("SELECT payload FROM source_events WHERE incident_id=? ORDER BY rowid", (incident_id,)) if json.loads(row[0])["id"] not in simulated_ids]
+        return initial + activity
+
     def history(self, incident_id: str) -> list[dict]:
         with self.connection() as connection:
             connection.execute("BEGIN")
             self._snapshot(connection, incident_id)
-            activity = [{"kind": row["kind"], "payload": json.loads(row["payload"])} for row in connection.execute("SELECT kind,payload FROM audit WHERE incident_id=? ORDER BY seq", (incident_id,))]
-            simulated_ids = {item["payload"]["id"] for item in activity if item["kind"] in {"simulated_pickup", "simulated_delivery"}}
-            initial = [{"kind": "source_event", "payload": json.loads(row[0])} for row in connection.execute("SELECT payload FROM source_events WHERE incident_id=? ORDER BY rowid", (incident_id,)) if json.loads(row[0])["id"] not in simulated_ids]
-            return initial + activity
+            return self._history(connection, incident_id)
+
+    def _stats(self, connection, incident_id: str) -> dict[str, int]:
+        row = connection.execute("SELECT model_calls,proposal_attempts FROM incidents WHERE id=?", (incident_id,)).fetchone()
+        if row is None: raise DomainError("incident_not_found")
+        return {"model_calls": row[0], "proposal_attempts": row[1],
+            "assignments": connection.execute("SELECT count(*) FROM assignments WHERE incident_id=?", (incident_id,)).fetchone()[0],
+            "commit_events": connection.execute("SELECT count(*) FROM audit WHERE incident_id=? AND kind='assignment_committed'", (incident_id,)).fetchone()[0]}
 
     def stats(self, incident_id: str) -> dict[str, int]:
         with self.connection() as connection:
-            row = connection.execute("SELECT model_calls,proposal_attempts FROM incidents WHERE id=?", (incident_id,)).fetchone()
-            if row is None: raise DomainError("incident_not_found")
-            return {"model_calls": row[0], "proposal_attempts": row[1],
-                "assignments": connection.execute("SELECT count(*) FROM assignments WHERE incident_id=?", (incident_id,)).fetchone()[0],
-                "commit_events": connection.execute("SELECT count(*) FROM audit WHERE incident_id=? AND kind='assignment_committed'", (incident_id,)).fetchone()[0]}
+            return self._stats(connection, incident_id)
+
+    def read_incident(self, incident_id: str) -> dict:
+        """Materialize the complete dispatcher state at one database snapshot."""
+        with self.connection() as connection:
+            connection.execute("BEGIN")
+            snapshot = self._snapshot(connection, incident_id)
+            assignment = self._assignment(connection, incident_id)
+            if assignment:
+                proposal = self._proposal(connection, assignment.proposal_id)
+            else:
+                row = connection.execute("SELECT payload FROM proposals WHERE incident_id=? ORDER BY rowid DESC LIMIT 1", (incident_id,)).fetchone()
+                proposal = Proposal.model_validate_json(row[0]) if row else None
+            row = connection.execute("SELECT * FROM approvals WHERE proposal_id=?", (proposal.id,)).fetchone() if proposal else None
+            approval = Approval.model_validate(dict(row)) if row else None
+            terminal = connection.execute("SELECT terminal_status FROM incidents WHERE id=?", (incident_id,)).fetchone()[0]
+            return {"snapshot": snapshot, "assignment": assignment, "proposal": proposal,
+                "approval": approval, "terminal": terminal, "history": self._history(connection, incident_id),
+                "stats": self._stats(connection, incident_id)}
 
     def log_event(self, incident_id: str, kind: str, payload: dict) -> None:
         with self.transaction() as connection:

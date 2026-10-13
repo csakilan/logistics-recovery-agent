@@ -1,0 +1,31 @@
+{
+  "base_commit": "391376c49ce1674974682a803f000cd9fcb7ec46",
+  "working_tree_dirty": true,
+  "source_and_templates_sha256": "ae1129e970e8267b366d2a0824361aca522ca2e5eed7309b282a56edbaaa24d4",
+  "files_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "assignments.py": "53855bc3a97b6406029c9cf9ea7460b80375f377466b320a377ac26a48c702ee",
+    "auth.py": "d4b12ecdd9f43725c50207f3d89451f0f232f40cb7b92697250a47ed1fef9982",
+    "baseline.py": "0bd14a8eed383cadb22334bd807f747ce5e9ffa01af6f9a20c258293c5cdbcf5",
+    "cli.py": "2c897d467614d2af85f11705bd233d096fc3b9e3cf1e605045dcace2bf772ede",
+    "config.py": "d7d364d464a4d0ab3a874d8771c7cf4c85653c577a5789ee77997e7d21fcf5e3",
+    "domain.py": "62eea76829ebd84c0eb548d02fda66d3a5324ccd674d4ce915625672be890de0",
+    "evaluation.py": "caeae2c2437236d9f893052fddebbf8daeb2c95b7c5e57a27bf65c9b02e8f4f1",
+    "free_billing.py": "b2bf81daf3df7d1d8af88c999931f9a9efc9137f5f13c64820106331b38df91d",
+    "live.py": "a6b01b182e39e1153a30e6aa2da5cc52d15911d76347754d228e39b6ae0cb5f4",
+    "model.py": "d15ecc4ce978f3f4d990b0f2e46a9e04610a48d0eb1801fbc2f4582757988a9e",
+    "policy.py": "75b3edf6e61bda0a6bbd6500bfae74723930ff5977af414946263177a53ec6dd",
+    "presentation.py": "b8c3fa573f567efeb485014610166b3cffb095112485bacfd6067029363446d4",
+    "replay.py": "62a0794fd34320c14c297979eb7e5355bafa6ad03a5d8e1fbae3b9a97986a1ec",
+    "repository.py": "13664a7a4070babb7d7af10f455dc7a08b8fa9fefb0f61506bbce23007501d39",
+    "templates/base.html": "64d5b19a8bf7f73d501e3f17f8ff017f4369906bc371fbd704d8517a65e52fed",
+    "templates/detail.html": "4674db31215391e70b7ba97cbccc871f2c1c2fd7428ed820b5bcffd056c04bca",
+    "templates/list.html": "d2a5e64fcc71ecb3a4073e86f737a7bb96108514f249298117a8297e2fdf9844",
+    "tools.py": "6c76c81eba61c9eec424375bdb376c1ac79cb14cfa34615f55158d65d1803897",
+    "web.py": "f880ef7aa17fd8836453e5562b7a8e725a4d101acd42381f655444380fbf1563",
+    "workflow.py": "05b59b9b853836f2e8011607e59b1f47fcaccc52d61c30e546608bdf63ef859b"
+  },
+  "recorded_at_utc": "2026-10-13T18:45:20.601359+00:00",
+  "stage": "before-review-correction",
+  "limitation": "Pre-fix browser before-restart observation; mixed-read concurrency finding still pending correction."
+}

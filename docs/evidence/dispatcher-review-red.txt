@@ -1,0 +1,190 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+______ test_concurrent_action_cannot_mix_assignment_and_snapshot[commit] _______
+
+service = <logistics_recovery.assignments.AssignmentService object at 0x10be28830>
+approved = Approval(id='38d22e631e6e4c11bd8a1b9de0531bef', proposal_id='652c9b7ed64a406daa74b9ecf49c271b', incident_version=1, operator_id='dispatcher', consumed=False)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10b408ec0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bd6e780>
+action = 'commit'
+
+    @pytest.mark.parametrize("action", ["commit", "pickup"])
+    def test_concurrent_action_cannot_mix_assignment_and_snapshot(service, approved, operator, repo, monkeypatch, action):
+        if action == "pickup":
+            service.commit(approved.proposal_id, operator)
+        write_at_commit, write_done, triggered = Event(), Event(), Event()
+        errors = []
+        original_connection, original_snapshot, original_assignment = repo.connection, repo._snapshot, repo.assignment
+    
+        def write():
+            try:
+                if action == "commit":
+                    service.commit(approved.proposal_id, operator)
+                else:
+                    service.record_event("i1", "concurrent-pickup", "pickup", operator)
+            except Exception as error:
+                errors.append(error)
+            finally:
+                write_done.set()
+    
+        writer = Thread(target=write)
+    
+        @contextmanager
+        def traced_connection():
+            with original_connection() as connection:
+                def trace(sql):
+                    if sql == "COMMIT" and current_thread() is writer:
+                        write_at_commit.set()
+                connection.set_trace_callback(trace)
+                yield connection
+    
+        def interleaved_snapshot(connection, incident_id):
+            snapshot = original_snapshot(connection, incident_id)
+            if not triggered.is_set():
+                triggered.set()
+                writer.start()
+                assert write_at_commit.wait(5), "Concurrent real write never reached commit"
+            return snapshot
+    
+        def later_assignment(incident_id):
+            # Force the old separate-transaction implementation to see the new write.
+            assert write_done.wait(5)
+            return original_assignment(incident_id)
+    
+        monkeypatch.setattr(repo, "connection", traced_connection)
+        monkeypatch.setattr(repo, "_snapshot", interleaved_snapshot)
+        monkeypatch.setattr(repo, "assignment", later_assignment)
+        try:
+            view = incident_view(service, "i1")
+        finally:
+            writer.join(6)
+        assert not writer.is_alive() and not errors and write_done.is_set()
+        actual = original_assignment("i1")
+        assert actual.status == ("assigned" if action == "commit" else "picked_up")
+        if view["assignment"]:
+>           assert view["snapshot"].incident_version >= 2
+E           AssertionError: assert 1 >= 2
+E            +  where 1 = Snapshot(incident_id='i1', incident_version=1, now_min=0, job=Job(id='j1', parcel_count=3, deadline_min=60, custody='d...e1', job_id='j1', kind='cancellation', at_min=0, custody='depot', version=1, note='Driver cancelled before pickup.'),)).incident_version
+
+tests/test_dispatcher.py:226: AssertionError
+______ test_concurrent_action_cannot_mix_assignment_and_snapshot[pickup] _______
+
+service = <logistics_recovery.assignments.AssignmentService object at 0x10bef0690>
+approved = Approval(id='27af5567df2e418eb5f9f158b2a33b81', proposal_id='fce0a399a81d428f9fa9d1b790e8e1bc', incident_version=1, operator_id='dispatcher', consumed=False)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10bef0550>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bd6f360>
+action = 'pickup'
+
+    @pytest.mark.parametrize("action", ["commit", "pickup"])
+    def test_concurrent_action_cannot_mix_assignment_and_snapshot(service, approved, operator, repo, monkeypatch, action):
+        if action == "pickup":
+            service.commit(approved.proposal_id, operator)
+        write_at_commit, write_done, triggered = Event(), Event(), Event()
+        errors = []
+        original_connection, original_snapshot, original_assignment = repo.connection, repo._snapshot, repo.assignment
+    
+        def write():
+            try:
+                if action == "commit":
+                    service.commit(approved.proposal_id, operator)
+                else:
+                    service.record_event("i1", "concurrent-pickup", "pickup", operator)
+            except Exception as error:
+                errors.append(error)
+            finally:
+                write_done.set()
+    
+        writer = Thread(target=write)
+    
+        @contextmanager
+        def traced_connection():
+            with original_connection() as connection:
+                def trace(sql):
+                    if sql == "COMMIT" and current_thread() is writer:
+                        write_at_commit.set()
+                connection.set_trace_callback(trace)
+                yield connection
+    
+        def interleaved_snapshot(connection, incident_id):
+            snapshot = original_snapshot(connection, incident_id)
+            if not triggered.is_set():
+                triggered.set()
+                writer.start()
+                assert write_at_commit.wait(5), "Concurrent real write never reached commit"
+            return snapshot
+    
+        def later_assignment(incident_id):
+            # Force the old separate-transaction implementation to see the new write.
+            assert write_done.wait(5)
+            return original_assignment(incident_id)
+    
+        monkeypatch.setattr(repo, "connection", traced_connection)
+        monkeypatch.setattr(repo, "_snapshot", interleaved_snapshot)
+        monkeypatch.setattr(repo, "assignment", later_assignment)
+        try:
+            view = incident_view(service, "i1")
+        finally:
+            writer.join(6)
+        assert not writer.is_alive() and not errors and write_done.is_set()
+        actual = original_assignment("i1")
+        assert actual.status == ("assigned" if action == "commit" else "picked_up")
+        if view["assignment"]:
+            assert view["snapshot"].incident_version >= 2
+            if view["assignment"].status == "picked_up":
+>               assert view["snapshot"].job.custody == "in_transit"
+E               AssertionError: assert 'depot' == 'in_transit'
+E                 
+E                 - in_transit
+E                 + depot
+
+tests/test_dispatcher.py:228: AssertionError
+_________ test_action_after_view_read_cannot_change_that_pages_history _________
+
+client = <starlette.testclient.TestClient object at 0x10bf163c0>
+auth = ('dispatcher', 'test-password')
+service = <logistics_recovery.assignments.AssignmentService object at 0x10bef1590>
+proposal = Proposal(id='3990279c1ed64c1396a7e29d825b170c', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10bef0e10>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bfd2210>
+
+    def test_action_after_view_read_cannot_change_that_pages_history(client, auth, service, proposal, operator, repo, monkeypatch):
+        from logistics_recovery import web
+        original_view = web.incident_view
+        errors = []
+    
+        def write():
+            try:
+                service.approve(proposal.id, 1, operator)
+                service.commit(proposal.id, operator)
+            except Exception as error:
+                errors.append(error)
+    
+        def interleaved_view(*args):
+            view = original_view(*args)
+            writer = Thread(target=write)
+            writer.start()
+            writer.join(6)
+            assert not writer.is_alive() and not errors
+            return view
+    
+        monkeypatch.setattr(web, "incident_view", interleaved_view)
+        page = Page(client.get("/incidents/i1", auth=auth).text)
+        assert "Awaiting approval" in page.text("Recovery status")
+>       assert "Courier assigned" not in page.text("Incident history")
+E       assert 'Courier assigned' not in 'Incident hi..."assigned" }'
+E         
+E         'Courier assigned' is contained here:
+E         ?           -
+E           proposal. Courier assigned Courier c1. Pickup had not occurred at assignment. Full audit and diagnostics (4 records) source event { "id": "e1", "job_id": "j1", "kind": "cancellation", "at_min": 0, "custody": "depot", "version": 1, "note": "Driver cancelled before pickup." } proposal created { "proposal_id": "3990279c1ed64c1396a7e29d825b170c", "quote_id": "q1" } proposal approved { "proposal_id": "3990279c1ed64c1396a7e29d825b170c", "operator_id": "dispatcher" } assignment committed { "id": "3c17b7955cba473a8b24be986e64bf08", "inc...
+E         
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:256: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_dispatcher.py::test_concurrent_action_cannot_mix_assignment_and_snapshot[commit]
+FAILED tests/test_dispatcher.py::test_concurrent_action_cannot_mix_assignment_and_snapshot[pickup]
+FAILED tests/test_dispatcher.py::test_action_after_view_read_cannot_change_that_pages_history
+3 failed, 13 deselected in 0.34s

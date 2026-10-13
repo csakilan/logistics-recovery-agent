@@ -1,0 +1,372 @@
+FFFFFFFFFFFFF                                                            [100%]
+=================================== FAILURES ===================================
+_______ test_proposal_review_uses_quote_records_instead_of_model_claims ________
+
+client = <starlette.testclient.TestClient object at 0x10b5ed6a0>
+auth = ('dispatcher', 'test-password')
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b500590>
+valid_candidate = Candidate(quote_id='q1', evidence_ids=('job:j1@1', 'courier:c1@1', 'quote:q1@1', 'policy:p1@1', 'event:e1@1'), summary='Available courier within spending and delivery limits.')
+repo = <logistics_recovery.repository.Repository object at 0x10b5006e0>
+
+    def test_proposal_review_uses_quote_records_instead_of_model_claims(client, auth, service, valid_candidate, repo):
+        # A plausible explanation must never become the displayed price or ETA.
+        service.propose("i1", valid_candidate.model_copy(update={"summary": "Courier c2 costs $1.00 and arrives at minute 5."}))
+        history, stats = repo.history("i1"), repo.stats("i1")
+        html = client.get("/incidents/i1", auth=auth).text
+        page = Page(html)
+        facts = page.text("Recorded quote facts")
+>       assert "c1" in facts and "q1" in facts
+E       AssertionError: assert ('c1' in '')
+
+tests/test_dispatcher.py:45: AssertionError
+______ test_changed_facts_hide_old_approval_and_quote_facts[availability] ______
+
+client = <starlette.testclient.TestClient object at 0x10b728550>
+auth = ('dispatcher', 'test-password')
+proposal = Proposal(id='0a7f4698f19c4f809136860e392f15b1', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+repo = <logistics_recovery.repository.Repository object at 0x10b65e710>
+change = 'availability'
+
+    @pytest.mark.parametrize("change", ["availability", "expiry", "quote"])
+    def test_changed_facts_hide_old_approval_and_quote_facts(client, auth, proposal, repo, change):
+        if change == "availability":
+            repo.change_courier("c1", available=False)
+        elif change == "expiry":
+            repo.advance_clock("i1", 10)
+        else:
+            with repo.transaction() as connection:
+                quote = repo._snapshot(connection, "i1").quotes[0]
+                connection.execute("UPDATE quotes SET payload=? WHERE id=?", (quote.model_copy(update={"cost_cents": 1300, "version": 2}).model_dump_json(), "q1"))
+        history, stats = repo.history("i1"), repo.stats("i1")
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'name="decision" value="approve"' not in html
+E       assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E         
+E         'name="decision" value="approve"' is contained here:
+E           ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="0a7f4698f19c4f809136860e392f15b1"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E         ?           +++++++++++++++++++++++++++++++
+E           
+E           <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E             &#34;id&#34;: &#34;e1&#34;,...
+E         
+E         ...Full output truncated (11 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:68: AssertionError
+_________ test_changed_facts_hide_old_approval_and_quote_facts[expiry] _________
+
+client = <starlette.testclient.TestClient object at 0x10b728cd0>
+auth = ('dispatcher', 'test-password')
+proposal = Proposal(id='1b55cb37b5d742acb622fb6ed3e214c5', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+repo = <logistics_recovery.repository.Repository object at 0x10b65df90>
+change = 'expiry'
+
+    @pytest.mark.parametrize("change", ["availability", "expiry", "quote"])
+    def test_changed_facts_hide_old_approval_and_quote_facts(client, auth, proposal, repo, change):
+        if change == "availability":
+            repo.change_courier("c1", available=False)
+        elif change == "expiry":
+            repo.advance_clock("i1", 10)
+        else:
+            with repo.transaction() as connection:
+                quote = repo._snapshot(connection, "i1").quotes[0]
+                connection.execute("UPDATE quotes SET payload=? WHERE id=?", (quote.model_copy(update={"cost_cents": 1300, "version": 2}).model_dump_json(), "q1"))
+        history, stats = repo.history("i1"), repo.stats("i1")
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'name="decision" value="approve"' not in html
+E       assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E         
+E         'name="decision" value="approve"' is contained here:
+E           ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="1b55cb37b5d742acb622fb6ed3e214c5"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E         ?           +++++++++++++++++++++++++++++++
+E           
+E           <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E             &#34;id&#34;: &#34;e1&#34;,...
+E         
+E         ...Full output truncated (13 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:68: AssertionError
+_________ test_changed_facts_hide_old_approval_and_quote_facts[quote] __________
+
+client = <starlette.testclient.TestClient object at 0x10b6c63f0>
+auth = ('dispatcher', 'test-password')
+proposal = Proposal(id='82b6ab636df64a2790bd484536ffe4d8', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+repo = <logistics_recovery.repository.Repository object at 0x10b6c4fc0>
+change = 'quote'
+
+    @pytest.mark.parametrize("change", ["availability", "expiry", "quote"])
+    def test_changed_facts_hide_old_approval_and_quote_facts(client, auth, proposal, repo, change):
+        if change == "availability":
+            repo.change_courier("c1", available=False)
+        elif change == "expiry":
+            repo.advance_clock("i1", 10)
+        else:
+            with repo.transaction() as connection:
+                quote = repo._snapshot(connection, "i1").quotes[0]
+                connection.execute("UPDATE quotes SET payload=? WHERE id=?", (quote.model_copy(update={"cost_cents": 1300, "version": 2}).model_dump_json(), "q1"))
+        history, stats = repo.history("i1"), repo.stats("i1")
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'name="decision" value="approve"' not in html
+E       assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E         
+E         'name="decision" value="approve"' is contained here:
+E           ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="82b6ab636df64a2790bd484536ffe4d8"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E         ?           +++++++++++++++++++++++++++++++
+E           
+E           <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E             &#34;id&#34;: &#34;e1&#34;,...
+E         
+E         ...Full output truncated (11 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:68: AssertionError
+______ test_terminal_cases_have_no_misleading_decision_controls[rejected] ______
+
+client = <starlette.testclient.TestClient object at 0x10b794050>
+auth = ('dispatcher', 'test-password')
+proposal = Proposal(id='eb6cf51229464c5d8ddc6f06f6ac72f0', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b6c6ea0>
+repo = <logistics_recovery.repository.Repository object at 0x10b6c6d70>
+operator = Operator(id='dispatcher'), terminal = 'rejected'
+
+    @pytest.mark.parametrize("terminal", ["rejected", "escalated"])
+    def test_terminal_cases_have_no_misleading_decision_controls(client, auth, proposal, service, repo, operator, terminal):
+        if terminal == "rejected":
+            service.reject(proposal.id, operator)
+        else:
+            repo.set_terminal("i1", "escalated", "Model-attempt budget exhausted")
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'name="decision" value="approve"' not in html
+E       assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E         
+E         'name="decision" value="approve"' is contained here:
+E           ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="eb6cf51229464c5d8ddc6f06f6ac72f0"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E         ?           +++++++++++++++++++++++++++++++
+E           
+E           <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E             &#34;id&#34;: &#34;e1&#34;,...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:85: AssertionError
+_____ test_terminal_cases_have_no_misleading_decision_controls[escalated] ______
+
+client = <starlette.testclient.TestClient object at 0x10b7ac290>
+auth = ('dispatcher', 'test-password')
+proposal = Proposal(id='656502a6d65b49bca50939d69383c9eb', incident_id='i1', incident_version=1, candidate=Candidate(quote_id='q1..., observed_versions=(('courier:c1', 1), ('event:e1', 1), ('job:j1', 1), ('policy:p1', 1), ('quote:q1', 1)), revision=0)
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b67b9b0>
+repo = <logistics_recovery.repository.Repository object at 0x10b67b890>
+operator = Operator(id='dispatcher'), terminal = 'escalated'
+
+    @pytest.mark.parametrize("terminal", ["rejected", "escalated"])
+    def test_terminal_cases_have_no_misleading_decision_controls(client, auth, proposal, service, repo, operator, terminal):
+        if terminal == "rejected":
+            service.reject(proposal.id, operator)
+        else:
+            repo.set_terminal("i1", "escalated", "Model-attempt budget exhausted")
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'name="decision" value="approve"' not in html
+E       assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E         
+E         'name="decision" value="approve"' is contained here:
+E           ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="656502a6d65b49bca50939d69383c9eb"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E         ?           +++++++++++++++++++++++++++++++
+E           
+E           <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E             &#34;id&#34;: &#34;e1&#34;,...
+E         
+E         ...Full output truncated (13 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:85: AssertionError
+_ test_assignment_progress_is_distinct_from_approval_and_delivery[assigned-Assigned-At depot] _
+
+client = <starlette.testclient.TestClient object at 0x10b78b570>
+auth = ('dispatcher', 'test-password')
+approved = Approval(id='8cf91dbfe432450ca2ae66551f36a531', proposal_id='f4d9be4fe94f45a082665c339f26a9ab', incident_version=1, operator_id='dispatcher', consumed=False)
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b78a470>
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10b78a360>
+state = 'assigned', label = 'Assigned', custody = 'At depot'
+
+    @pytest.mark.parametrize("state,label,custody", [("assigned", "Assigned", "At depot"), ("picked_up", "Picked up", "In transit"), ("delivered", "Delivered", "Delivered")])
+    def test_assignment_progress_is_distinct_from_approval_and_delivery(client, auth, approved, service, operator, repo, state, label, custody):
+        service.commit(approved.proposal_id, operator)
+        if state != "assigned":
+            service.record_event("i1", "pickup-1", "pickup", operator)
+        if state == "delivered":
+            service.record_event("i1", "delivery-1", "delivery", operator)
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'action="/incidents/i1/investigate"' not in html
+E       assert 'action="/in...investigate"' not in '<!doctype h...body></html>'
+E         
+E         'action="/incidents/i1/investigate"' is contained here:
+E           od="post" action="/incidents/i1/investigate"><button>Investigate incident</button></form><p class="muted">Model calls: 0 / 6</p></section>
+E         ?           ++++++++++++++++++++++++++++++++++
+E           <section class="card"><h2>Proposed replacement</h2><p><strong>Quote q1</strong></p><p>Available courier within spending and delivery limits.</p><details><summary>Supporting evidence</summary><ul><li>job:j1@1</li><li>courier:c1@1</li><li>quote:q1@1</li><li>policy:p1@1</li><li>event:e1@1</li></ul></details></section></div>
+E           <section ...
+E         
+E         ...Full output truncated (24 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:103: AssertionError
+_ test_assignment_progress_is_distinct_from_approval_and_delivery[picked_up-Picked up-In transit] _
+
+client = <starlette.testclient.TestClient object at 0x10b7f1150>
+auth = ('dispatcher', 'test-password')
+approved = Approval(id='2d31d9b658374b98bd321e2c71a3ff60', proposal_id='1d93ea88a498466787b012bbac9281a4', incident_version=1, operator_id='dispatcher', consumed=False)
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b78bf00>
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10b78bdf0>
+state = 'picked_up', label = 'Picked up', custody = 'In transit'
+
+    @pytest.mark.parametrize("state,label,custody", [("assigned", "Assigned", "At depot"), ("picked_up", "Picked up", "In transit"), ("delivered", "Delivered", "Delivered")])
+    def test_assignment_progress_is_distinct_from_approval_and_delivery(client, auth, approved, service, operator, repo, state, label, custody):
+        service.commit(approved.proposal_id, operator)
+        if state != "assigned":
+            service.record_event("i1", "pickup-1", "pickup", operator)
+        if state == "delivered":
+            service.record_event("i1", "delivery-1", "delivery", operator)
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'action="/incidents/i1/investigate"' not in html
+E       assert 'action="/in...investigate"' not in '<!doctype h...body></html>'
+E         
+E         'action="/incidents/i1/investigate"' is contained here:
+E           od="post" action="/incidents/i1/investigate"><button>Investigate incident</button></form><p class="muted">Model calls: 0 / 6</p></section>
+E         ?           ++++++++++++++++++++++++++++++++++
+E           <section class="card"><h2>Proposed replacement</h2><p><strong>Quote q1</strong></p><p>Available courier within spending and delivery limits.</p><details><summary>Supporting evidence</summary><ul><li>job:j1@1</li><li>courier:c1@1</li><li>quote:q1@1</li><li>policy:p1@1</li><li>event:e1@1</li></ul></details></section></div>
+E           <section ...
+E         
+E         ...Full output truncated (32 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:103: AssertionError
+_ test_assignment_progress_is_distinct_from_approval_and_delivery[delivered-Delivered-Delivered] _
+
+client = <starlette.testclient.TestClient object at 0x10b7f3570>
+auth = ('dispatcher', 'test-password')
+approved = Approval(id='6f28338b4e074ede95418b59ceebf37b', proposal_id='13754d0b58364198a364253893c7adb7', incident_version=1, operator_id='dispatcher', consumed=False)
+service = <logistics_recovery.assignments.AssignmentService object at 0x10b76f450>
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10b76f150>
+state = 'delivered', label = 'Delivered', custody = 'Delivered'
+
+    @pytest.mark.parametrize("state,label,custody", [("assigned", "Assigned", "At depot"), ("picked_up", "Picked up", "In transit"), ("delivered", "Delivered", "Delivered")])
+    def test_assignment_progress_is_distinct_from_approval_and_delivery(client, auth, approved, service, operator, repo, state, label, custody):
+        service.commit(approved.proposal_id, operator)
+        if state != "assigned":
+            service.record_event("i1", "pickup-1", "pickup", operator)
+        if state == "delivered":
+            service.record_event("i1", "delivery-1", "delivery", operator)
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert 'action="/incidents/i1/investigate"' not in html
+E       assert 'action="/in...investigate"' not in '<!doctype h...body></html>'
+E         
+E         'action="/incidents/i1/investigate"' is contained here:
+E           od="post" action="/incidents/i1/investigate"><button>Investigate incident</button></form><p class="muted">Model calls: 0 / 6</p></section>
+E         ?           ++++++++++++++++++++++++++++++++++
+E           <section class="card"><h2>Proposed replacement</h2><p><strong>Quote q1</strong></p><p>Available courier within spending and delivery limits.</p><details><summary>Supporting evidence</summary><ul><li>job:j1@1</li><li>courier:c1@1</li><li>quote:q1@1</li><li>policy:p1@1</li><li>event:e1@1</li></ul></details></section></div>
+E           
+E           <sectio...
+E         
+E         ...Full output truncated (39 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:103: AssertionError
+_____________ test_existing_approval_is_visible_before_assignment ______________
+
+client = <starlette.testclient.TestClient object at 0x10b8485a0>
+auth = ('dispatcher', 'test-password')
+approved = Approval(id='28eb82d9586646349c2ccf5e5f6512ea', proposal_id='31469742e0d6400f9c33c3b35e20e14a', incident_version=1, operator_id='dispatcher', consumed=False)
+repo = <logistics_recovery.repository.Repository object at 0x10b835b50>
+
+    def test_existing_approval_is_visible_before_assignment(client, auth, approved, repo):
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert "Complete approved recovery" in html
+E       assert 'Complete approved recovery' in '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-... prototype · Simulated courier assignments · Every booking requires dispatcher approval.</footer></main></body></html>'
+
+tests/test_dispatcher.py:116: AssertionError
+___ test_reinvestigation_of_stale_approved_proposal_still_needs_new_approval ___
+
+settings = Settings(data_dir=PosixPath('/private/var/folders/vk/_mlvb1xd2v1chm6wq1n54zl80000gn/T/pytest-of-ak/pytest-243/test_rei...e='replay', model_id=None, billing_state_path=None, timeout_seconds=30, max_context_chars=24000, max_output_tokens=600)
+repo = <logistics_recovery.repository.Repository object at 0x10b81fc50>
+auth = ('dispatcher', 'test-password')
+origin = {'Origin': 'http://127.0.0.1:8000'}
+operator = Operator(id='dispatcher')
+
+    def test_reinvestigation_of_stale_approved_proposal_still_needs_new_approval(settings, repo, auth, origin, operator):
+        with TestClient(build_application(settings), base_url=settings.origin) as client:
+            first = client.post("/incidents/i1/investigate", auth=auth, headers=origin).json()["proposal"]
+            client.app.state.service.approve(first["id"], 1, operator)
+            repo.change_courier("c1", available=False)
+            stale = client.get("/incidents/i1", auth=auth).text
+>           assert 'name="decision" value="approve"' not in stale
+E           assert 'name="decis...ue="approve"' not in '<!doctype h...body></html>'
+E             
+E             'name="decision" value="approve"' is contained here:
+E               ="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/i1/decision"><input type="hidden" name="proposal_id" value="645cd85432984880bef214d539c9e449"><input type="hidden" name="incident_version" value="1"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form></section></div>
+E             ?           +++++++++++++++++++++++++++++++
+E               
+E               <section class="card"><h2>Incident history</h2><details open><summary>source event</summary><pre>{
+E                 &#34;id&#34;: &#34;e1&#34;,...
+E             
+E             ...Full output truncated (138 lines hidden), use '-vv' to show
+
+tests/test_dispatcher.py:128: AssertionError
+______ test_assigned_case_does_not_present_changed_quote_as_booked_facts _______
+
+client = <starlette.testclient.TestClient object at 0x10c286030>
+auth = ('dispatcher', 'test-password')
+service = <logistics_recovery.assignments.AssignmentService object at 0x10c306f30>
+approved = Approval(id='950c24a76725475f82e60cd3b0a7a797', proposal_id='83773fb62db4407c86fee29cb6f1e378', incident_version=1, operator_id='dispatcher', consumed=False)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10c2ea5f0>
+
+    def test_assigned_case_does_not_present_changed_quote_as_booked_facts(client, auth, service, approved, operator, repo):
+        service.commit(approved.proposal_id, operator)
+        with repo.transaction() as connection:
+            quote = repo._snapshot(connection, "i1").quotes[0]
+            connection.execute("UPDATE quotes SET payload=? WHERE id=?", (quote.model_copy(update={"cost_cents": 1300, "version": 2}).model_dump_json(), "q1"))
+        html = client.get("/incidents/i1", auth=auth).text
+>       assert "Assigned" in Page(html).text("Recovery status")
+E       assert 'Assigned' in ''
+E        +  where '' = text('Recovery status')
+E        +    where text = <test_dispatcher.Page object at 0x10bfe6c10>.text
+E        +      where <test_dispatcher.Page object at 0x10bfe6c10> = Page('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-... prototype · Simulated courier assignments · Every booking requires dispatcher approval.</footer></main></body></html>')
+
+tests/test_dispatcher.py:147: AssertionError
+___________ test_business_history_preserves_order_and_escaped_notes ____________
+
+client = <starlette.testclient.TestClient object at 0x10c287350>
+auth = ('dispatcher', 'test-password')
+service = <logistics_recovery.assignments.AssignmentService object at 0x10c3351d0>
+approved = Approval(id='cee2ea6b41424284a311fa9b51a60167', proposal_id='d573f07039c34517a508291ac798d05f', incident_version=1, operator_id='dispatcher', consumed=False)
+operator = Operator(id='dispatcher')
+repo = <logistics_recovery.repository.Repository object at 0x10c335ef0>
+
+    def test_business_history_preserves_order_and_escaped_notes(client, auth, service, approved, operator, repo):
+        service.commit(approved.proposal_id, operator)
+        service.record_event("i1", "pickup-1", "pickup", operator)
+        service.record_event("i1", "delivery-1", "delivery", operator)
+        with repo.transaction() as connection:
+            event = json.loads(connection.execute("SELECT payload FROM source_events WHERE id='e1'").fetchone()[0])
+            event["note"] = "<script>attack</script>"
+            connection.execute("UPDATE source_events SET payload=? WHERE id='e1'", (json.dumps(event),))
+        html = client.get("/incidents/i1", auth=auth).text
+        history = Page(html).text("Incident history")
+        labels = ("Cancellation", "Replacement proposed", "Dispatcher approved", "Courier assigned", "Simulated pickup", "Simulated delivery")
+        positions = [history.find(label) for label in labels]
+>       assert all(position >= 0 for position in positions) and positions == sorted(positions)
+E       assert (False)
+E        +  where False = all(<generator object test_business_history_preserves_order_and_escaped_notes.<locals>.<genexpr> at 0x10c382cf0>)
+
+tests/test_dispatcher.py:164: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_dispatcher.py::test_proposal_review_uses_quote_records_instead_of_model_claims
+FAILED tests/test_dispatcher.py::test_changed_facts_hide_old_approval_and_quote_facts[availability]
+FAILED tests/test_dispatcher.py::test_changed_facts_hide_old_approval_and_quote_facts[expiry]
+FAILED tests/test_dispatcher.py::test_changed_facts_hide_old_approval_and_quote_facts[quote]
+FAILED tests/test_dispatcher.py::test_terminal_cases_have_no_misleading_decision_controls[rejected]
+FAILED tests/test_dispatcher.py::test_terminal_cases_have_no_misleading_decision_controls[escalated]
+FAILED tests/test_dispatcher.py::test_assignment_progress_is_distinct_from_approval_and_delivery[assigned-Assigned-At depot]
+FAILED tests/test_dispatcher.py::test_assignment_progress_is_distinct_from_approval_and_delivery[picked_up-Picked up-In transit]
+FAILED tests/test_dispatcher.py::test_assignment_progress_is_distinct_from_approval_and_delivery[delivered-Delivered-Delivered]
+FAILED tests/test_dispatcher.py::test_existing_approval_is_visible_before_assignment
+FAILED tests/test_dispatcher.py::test_reinvestigation_of_stale_approved_proposal_still_needs_new_approval
+FAILED tests/test_dispatcher.py::test_assigned_case_does_not_present_changed_quote_as_booked_facts
+FAILED tests/test_dispatcher.py::test_business_history_preserves_order_and_escaped_notes
+13 failed in 0.88s

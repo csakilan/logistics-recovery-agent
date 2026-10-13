@@ -1,0 +1,16 @@
+{
+  "assignment": {
+    "id": "e9e12ea445654263ac2881e94ddb6f1f",
+    "incident_id": "demo-1",
+    "proposal_id": "04604707b426461b8919b475006be38a",
+    "courier_id": "c1",
+    "operation_id": "demo-1",
+    "status": "assigned"
+  },
+  "stats": {
+    "model_calls": 2,
+    "proposal_attempts": 1,
+    "assignments": 1,
+    "commit_events": 1
+  }
+}

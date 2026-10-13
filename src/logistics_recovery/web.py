@@ -18,6 +18,7 @@ from .config import Settings
 from .domain import DomainError, Identifier, Nonnegative, Operator, Record, WorkflowRunner
 from .free_billing import BillingPause
 from .live import PAUSE_MESSAGES, safe_pause_reason
+from .presentation import business_history, incident_view, money
 
 
 class DecisionRequest(Record):
@@ -110,13 +111,13 @@ def create_app(settings: Settings, service: AssignmentService, workflow: Workflo
 
     @app.get("/")
     def incident_list(request: Request, operator: Operator = Depends(operator_dependency)):
-        incidents = [{"snapshot": repository.snapshot(i), "assignment": repository.assignment(i)} for i in repository.list_incidents()]
+        incidents = [incident_view(service, i) for i in repository.list_incidents()]
         return templates.TemplateResponse(request=request, name="list.html", context={**context(), "incidents": incidents})
 
     @app.get("/incidents/{incident_id}")
     def incident_detail(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency)):
-        snapshot = repository.snapshot(incident_id)
-        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), "snapshot": snapshot, "event_id": uuid4().hex, "case_status": repository.terminal_status(incident_id), "proposal": repository.latest_proposal(incident_id), "assignment": repository.assignment(incident_id), "history": repository.history(incident_id), "stats": repository.stats(incident_id), "pretty": lambda value: json.dumps(value, indent=2)})
+        view = incident_view(service, incident_id)
+        return templates.TemplateResponse(request=request, name="detail.html", context={**context(), **view, "event_id": uuid4().hex, "activity": business_history(view["history"]), "money": money, "pretty": lambda value: json.dumps(value, indent=2)})
 
     @app.post("/incidents/{incident_id}/investigate")
     async def investigate(incident_id: str, request: Request, operator: Operator = Depends(operator_dependency), origin: None = Depends(origin_dependency)):

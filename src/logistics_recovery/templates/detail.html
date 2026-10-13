@@ -1,7 +1,41 @@
 {% extends "base.html" %}{% block content %}
-<a href="/">← All incidents</a><h1>Incident {{ snapshot.incident_id }}</h1><p class="muted">Job {{ snapshot.job.id }} · {{ snapshot.job.parcel_count }} parcels · Simulated time: minute {{ snapshot.now_min }}</p>
-<div class="grid"><section class="card"><h2>Recovery status</h2><p class="status">{{ (assignment.status if assignment else (case_status if case_status else 'Awaiting recovery'))|capitalize }}</p><p>Custody: {{ snapshot.job.custody }}<br>Deadline: minute {{ snapshot.job.deadline_min }}<br>Spending limit: {{ '%.2f'|format(snapshot.policy.max_cost_cents / 100) }}</p><form method="post" action="/incidents/{{ snapshot.incident_id }}/investigate"><button{% if live_budget and live_budget.paused %} disabled{% endif %}>Investigate incident</button></form><p class="muted">Model calls: {{ stats.model_calls }} / 6</p></section>
-<section class="card"><h2>Proposed replacement</h2>{% if proposal %}<p><strong>Quote {{ proposal.candidate.quote_id }}</strong></p><p>{{ proposal.candidate.summary }}</p><details><summary>Supporting evidence</summary><ul>{% for evidence in proposal.candidate.evidence_ids %}<li>{{ evidence }}</li>{% endfor %}</ul></details>{% if not assignment %}<form method="post" action="/incidents/{{ snapshot.incident_id }}/decision"><input type="hidden" name="proposal_id" value="{{ proposal.id }}"><input type="hidden" name="incident_version" value="{{ proposal.incident_version }}"><input type="hidden" name="decision" value="approve"><button>Approve recovery</button></form><form method="post" action="/incidents/{{ snapshot.incident_id }}/decision"><input type="hidden" name="proposal_id" value="{{ proposal.id }}"><input type="hidden" name="incident_version" value="{{ proposal.incident_version }}"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form>{% endif %}{% else %}<p class="muted">Start an investigation to gather facts and prepare a replacement.</p>{% endif %}</section></div>
-{% if assignment and assignment.status != 'delivered' %}<section class="card"><h2>Simulated courier events</h2><p class="muted">These controls simulate events; they do not track a real delivery.</p><form method="post" action="/incidents/{{ snapshot.incident_id }}/events"><input type="hidden" name="event_id" value="{{ event_id }}"><input type="hidden" name="kind" value="{{ 'pickup' if assignment.status == 'assigned' else 'delivery' }}"><button>Simulate {{ 'pickup' if assignment.status == 'assigned' else 'delivery' }}</button></form></section>{% endif %}
-<section class="card"><h2>Incident history</h2>{% for item in history %}<details open><summary>{{ item.kind|replace('_',' ') }}</summary><pre>{{ pretty(item.payload) }}</pre></details>{% endfor %}</section>
+<a href="/">← All incidents</a>
+<h1>Incident {{ snapshot.incident_id }}</h1>
+<p class="muted">Job {{ snapshot.job.id }} · {{ snapshot.job.parcel_count }} parcels · Simulated time: minute {{ snapshot.now_min }}</p>
+<div class="grid">
+  <section class="card" aria-label="Recovery status">
+    <h2>Recovery status</h2>
+    <p class="status">{{ status_label }}</p><p>{{ guidance }}</p>
+    <dl class="facts"><dt>Parcel custody</dt><dd>{{ custody_label }}</dd><dt>Delivery deadline</dt><dd>Simulated minute {{ snapshot.job.deadline_min }}</dd><dt>Spending limit</dt><dd>{{ money(snapshot.policy.max_cost_cents) }}</dd>
+    {% if assignment %}<dt>Assigned courier</dt><dd>{{ assignment.courier_id }}</dd><dt>Assignment reference</dt><dd class="reference">{{ assignment.id }}</dd>{% endif %}</dl>
+    {% if can_investigate %}<form method="post" action="/incidents/{{ snapshot.incident_id }}/investigate"><button{% if live_budget and live_budget.paused %} disabled{% endif %}>{{ 'Investigate again' if status == 'stale' else 'Investigate incident' }}</button></form>{% endif %}
+    <p class="muted">AI request attempts: {{ stats.model_calls }} / 6 · Proposal drafts: {{ stats.proposal_attempts }} / 3</p>
+  </section>
+  <section class="card" aria-label="Recovery proposal">
+    <h2>{{ 'Recorded recovery proposal' if assignment or status in ['rejected', 'escalated'] else 'Proposed replacement' }}</h2>
+    {% if quote %}
+      <section aria-label="Recorded quote facts">
+        <h3>Recorded facts</h3>
+        <dl class="facts"><dt>Courier</dt><dd>{{ quote.courier_id }}</dd><dt>Quote</dt><dd>{{ quote.id }}</dd><dt>Recovery price</dt><dd>{{ money(quote.cost_cents) }}</dd><dt>Spending limit</dt><dd>{{ money(snapshot.policy.max_cost_cents) }}</dd><dt>Estimated arrival</dt><dd>Simulated minute {{ arrival_min }}</dd><dt>Delivery deadline</dt><dd>Simulated minute {{ snapshot.job.deadline_min }}</dd><dt>Quote expires</dt><dd>Simulated minute {{ quote.expires_at_min }}</dd></dl>
+        <p class="muted">Checked against current custody, capacity, deadline and spending rules. These facts are checked again before assignment.</p>
+      </section>
+    {% elif status == 'stale' %}<p class="notice">This proposal is out of date. Its quote facts are hidden until a fresh investigation produces a valid replacement.</p>
+    {% elif assignment %}<p>Approved quote {{ proposal.candidate.quote_id }} · Assigned courier {{ assignment.courier_id }}</p><p class="muted">The explanation below is retained from the proposal. Current quotes are not presented as historical booking facts.</p>
+    {% elif proposal %}<p class="muted">Previous proposal: quote {{ proposal.candidate.quote_id }}. This case is closed for agent decisions.</p>
+    {% else %}<p class="muted">An investigation gathers the records and prepares a replacement for your review.</p>{% endif %}
+    {% if proposal %}
+      <section aria-label="Agent explanation"><h3>Agent explanation</h3><p>{{ proposal.candidate.summary }}</p><p class="muted">Model-generated explanation; use the recorded facts to review the decision.</p></section>
+      <details><summary>Evidence references and versions</summary><ul>{% for evidence in proposal.candidate.evidence_ids %}<li class="reference">{{ evidence }}</li>{% endfor %}</ul></details>
+      {% if can_decide %}
+        <form method="post" action="/incidents/{{ snapshot.incident_id }}/decision"><input type="hidden" name="proposal_id" value="{{ proposal.id }}"><input type="hidden" name="incident_version" value="{{ proposal.incident_version }}"><input type="hidden" name="decision" value="approve"><button>{{ 'Complete approved recovery' if approval else 'Approve recovery' }}</button></form>
+        <form method="post" action="/incidents/{{ snapshot.incident_id }}/decision"><input type="hidden" name="proposal_id" value="{{ proposal.id }}"><input type="hidden" name="incident_version" value="{{ proposal.incident_version }}"><input type="hidden" name="decision" value="reject"><button class="secondary">Reject</button></form>
+      {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% if assignment and assignment.status != 'delivered' %}
+<section class="card" aria-label="Simulated courier events"><h2>Simulated courier events</h2><p class="muted">These controls simulate events; they do not track a real delivery.</p><form method="post" action="/incidents/{{ snapshot.incident_id }}/events"><input type="hidden" name="event_id" value="{{ event_id }}"><input type="hidden" name="kind" value="{{ 'pickup' if assignment.status == 'assigned' else 'delivery' }}"><button>Simulate {{ 'pickup' if assignment.status == 'assigned' else 'delivery' }}</button></form></section>
+{% endif %}
+<section class="card" aria-label="Incident history"><h2>Incident history</h2><ol class="timeline">{% for item in activity %}<li><strong>{{ item.title }}</strong><p>{{ item.detail }}</p></li>{% endfor %}</ol>
+<details><summary>Full audit and diagnostics ({{ history|length }} records)</summary>{% for item in history %}<details><summary>{{ item.kind|replace('_',' ') }}</summary><pre>{{ pretty(item.payload) }}</pre></details>{% endfor %}</details></section>
 {% endblock %}

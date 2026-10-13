@@ -4,7 +4,7 @@ from typing import Literal
 from pydantic import TypeAdapter
 
 from .domain import Approval, Assignment, Candidate, DomainError, Identifier, IncidentEvent, Operator, Proposal
-from .policy import evidence_records, validate_candidate
+from .policy import proposal_is_current, validate_candidate
 from .repository import Repository
 
 
@@ -14,10 +14,7 @@ class AssignmentService:
 
     def _current(self, connection, proposal: Proposal):
         snapshot = self.repository._snapshot(connection, proposal.incident_id)
-        current = evidence_records(snapshot)
-        if snapshot.incident_version != proposal.incident_version or any(current.get(name) != version for name, version in proposal.observed_versions):
-            raise DomainError("stale_proposal")
-        if not validate_candidate(proposal.candidate, snapshot).valid:
+        if not proposal_is_current(proposal, snapshot):
             raise DomainError("stale_proposal")
         return snapshot
 
