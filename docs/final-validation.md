@@ -1,0 +1,15 @@
+# Frozen final validation
+
+October13,2026. Completion-roadmap step6. Status: planned; no fresh live result is asserted yet.
+
+Freeze the existing application, prompt, free model and12 new project-reserved synthetic cases before any run. The original43/46 live report and6/6 development-only correction observations remain historical reports; this validation will not replace them. No change to application source, policy, schema or prompts is planned.
+
+Inputs: fixtures/final-reserved/held-out.jsonl, manifest final-reserved-1.0, SHA256 ccb9478f0aa2302ea902dc0b4be806db53b8de0ab42fc66902eb279a6ba671aa. The case README states independently hand-labelled outcomes: seven assignments, three escalations and two denials. All12 cases are held out from further project iteration and live eligible. They are small synthetic parameter variants, not real-world traffic or a broad generalization benchmark. Oracle fields stay outside model inputs.
+
+Run the same cases once each with the rules baseline, scripted replay and approved free Nemotron profile. Inspect baseline/replay results before live execution; stop on mismatches rather than quietly modifying or replacing cases. Do not tune source/prompt/model after reading this set's results and still call it held out. Each incident retains six attempts/three proposal drafts. Maximum new live requests72; actual requests need not approach that bound. Reuse the existing private request ledger; verify enough provider daily allowance and persistent session capacity for the whole worst-case batch. One serial evaluator only.
+
+The live runner must use the actual FreeLiveModel runtime, which verifies current zero pricing and required capabilities, disables optional reasoning, forces native tools, sends max_price0 with no fallback, and checks account billing before/after every inference. Retain the user's existing $1 monthly key cap. Unknown response costs remain null under the authorized policy. Stop on detected spending, unverified financial state, quota/session/batch exhaustion or a business-safety violation. Preserve completed cases and ungraded interrupted attempts. Do not clear a pause or switch models automatically.
+
+Record immutable build/source/app-template hashes, runner/input hashes, case order, per-case trace and authoritative business records, witnessed injected faults/changed-state paths, expected/actual outcomes, attempts and costs, closing key/account balance/quota, applicable denominator counts and limitations. Distinguish accepted native escalation from an application budget stop. A matching outcome does not by itself prove that the intended changed-state or negative-control path was reached. Captured approvals are evaluator simulation, not a personal builder review.
+
+The assistant-written builder-review draft is saved separately in builder-review-draft.md at the user's request. User reasoning and active review time remain unmeasured; defer attribution until their own review is supplied. No new paid service, cloud resource or public repository is required for this validation.

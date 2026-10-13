@@ -1,0 +1,24 @@
+{
+  "version": "final-reserved-1.0",
+  "date": "2026-10-13",
+  "workflow_freeze_ref": "40364e09ff38ad52aa7d271a5035de32d29689ee",
+  "definition": "12 fresh project-reserved synthetic parameter variants, hand-labelled before any run. Same workflow, not broad generalization or independent real-world traffic. No tuning/repeats/replacements on their outcomes. All evaluator-only expectations stay outside model inputs.",
+  "sha256": {
+    "held-out.jsonl": "ccb9478f0aa2302ea902dc0b4be806db53b8de0ab42fc66902eb279a6ba671aa"
+  },
+  "maximum_new_live_requests": 72,
+  "case_order": [
+    "final-fr01",
+    "final-fr02",
+    "final-fr03",
+    "final-fr04",
+    "final-fr05",
+    "final-fr06",
+    "final-fr07",
+    "final-fr08",
+    "final-fr09",
+    "final-fr10",
+    "final-fr11",
+    "final-fr12"
+  ]
+}
